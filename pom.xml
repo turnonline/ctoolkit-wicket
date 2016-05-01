@@ -13,7 +13,7 @@
     <version>0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>TurnOnline.biz Apache Wicket Components</name>
-    <description>TurnOnline.biz Specific Apache Wicket Components</description>
+    <description>TurnOnline.biz Specific Apache Wicket Components designed for Google AppEngine</description>
     <url>https://github.com/turnonline/turnonline-wicket</url>
 
     <scm>
@@ -61,6 +61,26 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${gae.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${javax.inject.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-ioc</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-core</artifactId>
             <version>${wicket.version}</version>
@@ -102,6 +122,9 @@
 
     <properties>
         <servlet-api.version>2.5</servlet-api.version>
+        <javax.inject.version>1</javax.inject.version>
+        <gae.version>1.9.32</gae.version>
+        <guava.version>18.0</guava.version>
         <wicket.version>6.19.0</wicket.version>
         <slf4j-api.version>1.6.6</slf4j-api.version>
         <jmockit.version>1.22</jmockit.version>
