@@ -11,15 +11,17 @@ import org.apache.wicket.markup.html.GenericWebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.util.string.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,14 +32,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public class GenericBasePage<T>
+public abstract class GenericBasePage<T>
         extends GenericWebPage<T>
 {
     public static final String PARAM_LANG = "lang";
 
     private static final long serialVersionUID = 1L;
-
-    private static final Logger log = LoggerFactory.getLogger( GenericBasePage.class );
 
     public GenericBasePage()
     {
@@ -79,16 +79,18 @@ public class GenericBasePage<T>
      * @see #getGoogleAnalyticsScript(String)
      */
     @Override
-    protected void onInitialize()
+    protected final void onInitialize()
     {
+        T defaultModelObject = getModelObject();
+
+        if ( defaultModelObject == null )
+        {
+            throw new AbortWithHttpErrorCodeException( 404, "Default model object is null!" );
+        }
+
         super.onInitialize();
 
         final IModel<T> model = getModel();
-
-        if ( model == null )
-        {
-            log.info( "The model is null!" );
-        }
 
         // set google analytics script if any
         final String trackingId = getGoogleAnalyticsTrackingId();
@@ -136,6 +138,35 @@ public class GenericBasePage<T>
                 }
             } );
         }
+
+        onInitialize( defaultModelObject );
+    }
+
+    /**
+     * Called right after {@link #onInitialize()}. It's guaranteed to have non null model object.
+     *
+     * @param defaultModelObject the non null model object
+     */
+    protected abstract void onInitialize( T defaultModelObject );
+
+    /**
+     * Return HttpServletRequest request
+     *
+     * @return {@link HttpServletRequest}
+     */
+    protected HttpServletRequest getContainerRequest()
+    {
+        return ( ( ServletWebRequest ) getRequest() ).getContainerRequest();
+    }
+
+    /**
+     * Return HttpServletResponse request
+     *
+     * @return {@link HttpServletResponse}
+     */
+    protected HttpServletResponse getContainerResponse()
+    {
+        return ( HttpServletResponse ) getResponse().getContainerResponse();
     }
 
     /**
