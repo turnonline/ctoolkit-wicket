@@ -70,6 +70,11 @@
             <artifactId>servlet-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.ctoolkit.restapi</groupId>
+            <artifactId>ctoolkit-rest-facade-api</artifactId>
+            <version>${ctoolkit-rest-facade-api.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
             <version>${gae.version}</version>
@@ -119,6 +124,10 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jmockit</groupId>
             <artifactId>jmockit</artifactId>
             <version>${jmockit.version}</version>
@@ -129,6 +138,7 @@
     <properties>
         <ctoolkit-library-bom.version>2</ctoolkit-library-bom.version>
         <gae.version>1.9.38</gae.version>
+        <ctoolkit-rest-facade-api.version>0.11</ctoolkit-rest-facade-api.version>
         <wicket.version>6.19.0</wicket.version>
         <jmockit.version>1.24</jmockit.version>
         <!-- jmockit settings for OpenJDK otherwise throws 'IllegalStateException: To run on OpenJDK 64-Bit Server VM use -javaagent..' -->
