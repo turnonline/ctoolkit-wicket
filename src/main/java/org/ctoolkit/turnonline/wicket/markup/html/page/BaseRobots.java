@@ -1,4 +1,4 @@
-package org.ctoolkit.turnonline.wicket.page;
+package org.ctoolkit.turnonline.wicket.markup.html.page;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.http.WebResponse;

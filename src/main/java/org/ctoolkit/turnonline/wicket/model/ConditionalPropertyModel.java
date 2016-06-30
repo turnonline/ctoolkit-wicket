@@ -12,6 +12,8 @@ public abstract class ConditionalPropertyModel<T>
         extends AbstractPropertyModel<T>
         implements IConditionalModel<T>
 {
+    private static final long serialVersionUID = -5239607620538128310L;
+
     /**
      * Constructor
      *

@@ -1,6 +1,8 @@
-package org.ctoolkit.turnonline.wicket.page;
+package org.ctoolkit.turnonline.wicket.markup.html.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.Session;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -17,9 +19,15 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.util.string.Strings;
+import org.ctoolkit.turnonline.wicket.AppEngineApplication;
+import org.ctoolkit.turnonline.wicket.model.IModelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
@@ -28,36 +36,65 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The abstract and generic base page class with no associated HTML resource.
- * Provides common helpers impl.
+ * It's intended to be a base class of all page implementation across application.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public abstract class GenericBasePage<T>
+public abstract class Skeleton<T>
         extends GenericWebPage<T>
 {
     public static final String PARAM_LANG = "lang";
 
+    static final String DEFAULT_HEADER_DESCRIPTION_EXPRESSION = "headerDescription";
+
+    static final String DEFAULT_HEADER_KEYWORDS_EXPRESSION = "headerKeywords";
+
     private static final long serialVersionUID = 1L;
 
-    public GenericBasePage()
+    private static final Logger log = LoggerFactory.getLogger( Skeleton.class );
+
+    private boolean checkDefaultModelObjectIsNull = false;
+
+    @Inject
+    private IModelFactory modelFactory;
+
+    public Skeleton()
     {
         super();
 
         init();
     }
 
-    public GenericBasePage( IModel<T> model )
+    public Skeleton( IModel<T> model )
     {
         super( model );
 
         init();
     }
 
-    public GenericBasePage( PageParameters parameters )
+    public Skeleton( PageParameters parameters )
     {
         super( parameters );
 
         init();
+    }
+
+    @Override
+    public void renderHead( IHeaderResponse response )
+    {
+        IModel<?> model = getDefaultModel();
+        RuntimeConfigurationType configurationType = AppEngineApplication.get().getConfigurationType();
+        ResourceReference[] stylesheetReference = modelFactory.getStylesheetReference( model, configurationType );
+
+        for ( ResourceReference next : stylesheetReference )
+        {
+            response.render( CssHeaderItem.forReference( next ) );
+        }
+    }
+
+    protected IModelFactory modelFactory()
+    {
+        return modelFactory;
     }
 
     private void init()
@@ -73,22 +110,49 @@ public abstract class GenericBasePage<T>
     }
 
     /**
+     * Setting the boolean indication whether to check if default model object is <tt>null</tt>.
+     * If set to <tt>true</tt> and {@link #getModelObject()} returns <tt>null</tt> on {@link #onInitialize()}
+     * the {@link AbortWithHttpErrorCodeException} exception will be thrown.
+     * The default value is <tt>false</tt>.
+     *
+     * @param check set <tt>true</tt> to check
+     */
+    protected void checkDefaultModelObjectIsNull( boolean check )
+    {
+        this.checkDefaultModelObjectIsNull = check;
+    }
+
+    /**
      * The Tracking ID for google analytics is taken from {@link #getGoogleAnalyticsTrackingId()}
      * If no Tracking ID is being found, the analytics script is not rendered.
      *
      * @see #getGoogleAnalyticsScript(String)
      */
     @Override
-    protected final void onInitialize()
+    protected void onInitialize()
     {
-        T defaultModelObject = getModelObject();
+        IModel<T> pageModel = getModel();
 
-        if ( defaultModelObject == null )
+        if ( checkDefaultModelObjectIsNull )
         {
-            throw new AbortWithHttpErrorCodeException( 404, "Default model object is null!" );
+            if ( getModelObject() == null )
+            {
+                throw new AbortWithHttpErrorCodeException( 404, "Default model object is null!" );
+            }
         }
 
         super.onInitialize();
+
+        IModel<Locale> sellerLocaleModel = modelFactory.getSessionLocaleModel( pageModel );
+        if ( sellerLocaleModel != null )
+        {
+            Locale sellerLocale = sellerLocaleModel.getObject();
+            if ( sellerLocale != null )
+            {
+                log.info( "Session's locale: " + sellerLocale );
+                Session.get().setLocale( sellerLocale );
+            }
+        }
 
         final IModel<T> model = getModel();
 
@@ -109,7 +173,7 @@ public abstract class GenericBasePage<T>
 
         // meta tag description setup if any
         final String descriptionExpression = getHeaderDescriptionExpression();
-        if ( descriptionExpression != null )
+        if ( descriptionExpression != null && model != null )
         {
             add( new Behavior()
             {
@@ -125,7 +189,7 @@ public abstract class GenericBasePage<T>
 
         // meta tag keywords setup if any
         final String keywordsExpression = getHeaderKeywordsExpression();
-        if ( keywordsExpression != null )
+        if ( keywordsExpression != null && model != null )
         {
             add( new Behavior()
             {
@@ -138,16 +202,7 @@ public abstract class GenericBasePage<T>
                 }
             } );
         }
-
-        onInitialize( defaultModelObject );
     }
-
-    /**
-     * Called right after {@link #onInitialize()}. It's guaranteed to have non null model object.
-     *
-     * @param defaultModelObject the non null model object
-     */
-    protected abstract void onInitialize( T defaultModelObject );
 
     /**
      * Return HttpServletRequest request
@@ -229,6 +284,29 @@ public abstract class GenericBasePage<T>
     protected String getHeaderKeywordsExpression()
     {
         return null;
+    }
+
+    /**
+     * Returns the variation as a server name where app operates plus product name. Composed as Domain format expects,
+     * excluding '/p' prefix
+     * <p/>
+     * This value is being used to alternate the HTML markup for wicket web page (components reuse this value as well
+     * unless won't be overridden directly in component).
+     *
+     * @return the variation of the server name and product name (if any).
+     */
+    public String getVariation()
+    {
+        String fullVariation = getContainerRequest().getServerName();
+        // product name taken as parameter from '/p/${PARAM_PRODUCT_NAME}'
+        String productName = getPageParameters().get( AppEngineApplication.PARAM_PRODUCT_NAME ).toOptionalString();
+
+        if ( productName != null )
+        {
+            // composed as Domain format expects, excluding '/p' prefix
+            fullVariation = fullVariation + "/" + productName;
+        }
+        return fullVariation;
     }
 
     /**

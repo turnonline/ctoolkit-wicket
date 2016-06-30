@@ -1,4 +1,4 @@
-package org.ctoolkit.turnonline.wicket.page;
+package org.ctoolkit.turnonline.wicket.markup.html.page;
 
 import java.util.Date;
 

@@ -24,6 +24,20 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class AppEngineApplication
         extends AuthenticatedWebApplication
 {
+    public static final String SHOPPING_CART = "/shopping-cart";
+
+    public static final String SIGNUP = "/sign-up";
+
+    public static final String LOGIN = "/login";
+
+    public static final String LOGOUT = "/logout";
+
+    public static final String MY_ACCOUNT = "/my-account";
+
+    public static final String LOGIN_TROUBLE_HANDLER = "/login-trouble-handler";
+
+    public static final String PARAM_PRODUCT_NAME = "_productName";
+
     private static final String[] botAgents = {
             "googlebot", "msnbot", "slurp", "jeeves", "yadex", "baidu", "bing",
             "appie", "architext", "jeeves", "bjaaland", "ferret", "gulliver",
@@ -50,6 +64,8 @@ public abstract class AppEngineApplication
 
         // disable wickets redirect after post mechanism because it does not work well in GAE
         getRequestCycleSettings().setRenderStrategy( IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER );
+
+        getPageSettings().setVersionPagesByDefault( false );
 
         // mount sitemap
         mountPage( "/sitemap.xml", getSiteMapPage() );
