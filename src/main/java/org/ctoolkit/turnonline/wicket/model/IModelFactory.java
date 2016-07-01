@@ -24,6 +24,41 @@ import java.util.Locale;
 public interface IModelFactory
 {
     /**
+     * Returns the concrete class type for shopping cart page.
+     *
+     * @return the concrete page class type
+     */
+    Class<? extends Page> getShoppingCartPage();
+
+    /**
+     * Returns the concrete class type for login page.
+     *
+     * @return the concrete page class type
+     */
+    Class<? extends Page> getLoginPage();
+
+    /**
+     * Returns the concrete class type for sign-up page.
+     *
+     * @return the concrete page class type
+     */
+    Class<? extends Page> getSignUpPage();
+
+    /**
+     * Returns the concrete class type for my account page.
+     *
+     * @return the concrete page class type
+     */
+    Class<? extends Page> getMyAccountPage();
+
+    /**
+     * Returns the concrete class type for advanced account settings page.
+     *
+     * @return the concrete page class type
+     */
+    Class<? extends Page> getAccountSettingsPage();
+
+    /**
      * Returns the terms URL model or <tt>null</tt> if not specified.
      *
      * @param pageModel the model as an optional source

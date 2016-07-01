@@ -12,6 +12,7 @@ import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.settings.IRequestCycleSettings;
+import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class AppEngineApplication
         extends AuthenticatedWebApplication
+        implements GaeApplication
 {
     public static final String SHOPPING_CART = "/shopping-cart";
 

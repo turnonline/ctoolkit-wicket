@@ -27,15 +27,10 @@ import org.ctoolkit.turnonline.wicket.AppEngineApplication;
 import org.ctoolkit.turnonline.wicket.behavior.FixedElementBehavior;
 import org.ctoolkit.turnonline.wicket.event.AjaxRequestTargetEvent;
 import org.ctoolkit.turnonline.wicket.event.RecalculateRequestEvent;
-import org.ctoolkit.turnonline.wicket.identity.page.IdentityLogin;
-import org.ctoolkit.turnonline.wicket.identity.page.SignUp;
 import org.ctoolkit.turnonline.wicket.markup.html.basic.ULabel;
-import org.ctoolkit.turnonline.wicket.markup.html.page.ShoppingCart;
 import org.ctoolkit.turnonline.wicket.model.ExternalLinkModel;
 import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
 import org.ctoolkit.turnonline.wicket.model.IModelFactory;
-import org.ctoolkit.turnonline.wicket.myaccount.page.AccountSettings;
-import org.ctoolkit.turnonline.wicket.myaccount.page.MyAccountBasics;
 
 import javax.annotation.Nullable;
 import java.text.MessageFormat;
@@ -90,6 +85,13 @@ public class Header
         final IModel<Long> itemsCountModel = factory.getCartItemsCountModel();
         IModel<String> myAccountLabelModel = factory.getMyAccountLabelModel();
 
+        Class cartPage = checkNotNull( factory.getShoppingCartPage(), "The ShoppingCart class is mandatory!" );
+        Class loginPage = checkNotNull( factory.getLoginPage(), "The login page class is mandatory!" );
+        Class signUpPage = checkNotNull( factory.getSignUpPage(), "The sign up page class is mandatory!" );
+        Class myAccountPage = checkNotNull( factory.getMyAccountPage(), "The my account page class is mandatory!" );
+        Class settingsPage = checkNotNull( factory.getAccountSettingsPage(), "The account settings page class is" +
+                " mandatory!" );
+
         MenuSchema schema = factory.provideMenuSchema( page, rolesModel );
 
         // logo
@@ -128,8 +130,7 @@ public class Header
         updateByAjaxItemCount = new Label( "cart-items", itemsCountModel );
         updateByAjaxItemCount.setOutputMarkupId( true );
 
-        Link<ShoppingCart> shoppingCartButton;
-        shoppingCartButton = new BookmarkablePageLink<ShoppingCart>( "shopping-cart-button", ShoppingCart.class )
+        Link shoppingCartButton = new BookmarkablePageLink( "shopping-cart-button", cartPage )
         {
             private static final long serialVersionUID = -145642660154420823L;
 
@@ -167,7 +168,7 @@ public class Header
         PageParameters params = new PageParameters();
         params.add( "mode", "select" );
 
-        Link<IdentityLogin> login = new BookmarkablePageLink<IdentityLogin>( "link-login", IdentityLogin.class, params )
+        Link login = new BookmarkablePageLink( "link-login", loginPage, params )
         {
             private static final long serialVersionUID = -6308037382669267883L;
 
@@ -181,7 +182,7 @@ public class Header
         topMenu.add( login );
 
         // sign up link
-        Link<SignUp> signUp = new BookmarkablePageLink<SignUp>( "link-signUp", SignUp.class, params )
+        Link signUp = new BookmarkablePageLink( "link-signUp", signUpPage, params )
         {
             private static final long serialVersionUID = -6003066496511986670L;
 
@@ -208,7 +209,7 @@ public class Header
         topMenu.add( logout );
 
         // settings link
-        Link<AccountSettings> settings = new BookmarkablePageLink<AccountSettings>( "link-settings", AccountSettings.class )
+        Link settings = new BookmarkablePageLink( "link-settings", settingsPage )
         {
             private static final long serialVersionUID = 3764066608838121794L;
 
@@ -221,8 +222,7 @@ public class Header
         topMenu.add( settings );
 
         // my account link
-        Link<MyAccountBasics> myAccount;
-        myAccount = new BookmarkablePageLink<MyAccountBasics>( "link-myAccount", MyAccountBasics.class )
+        Link myAccount = new BookmarkablePageLink( "link-myAccount", myAccountPage )
         {
             private static final long serialVersionUID = 8956879706072490572L;
 
