@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <div class="col-gap-bottom-20" wicket:id="row-switcher">
+        <span valign="top" wicket:id="switcher" class="radio-group">
+            <label><input wicket:id="1" type="radio"/><wicket:message key="label.switcher.company"/></label>
+            &nbsp;&nbsp;
+            <label><input wicket:id="2" type="radio"/><wicket:message key="label.switcher.person"/></label>
+
+            <span style="display:none;" class="progress progress-mini" id="company-switcher-indicator">
+            </span>
+        </span>
+    </div>
+</wicket:panel>
+</body>
+</html>
