@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <fieldset>
+        <div class="title">
+            <wicket:message key="title.companyBasicInfo"/>
+        </div>
+
+        <input type="text" class="comp" wicket:id="businessName"/>
+        <select class="comp" wicket:id="legalForm"></select>
+        <input type="text" class="comp" wicket:id="companyId"/>
+        <input type="text" class="comp" wicket:id="taxId"/>
+        <input type="checkbox" class="comp" wicket:id="vatPayer"/>
+
+        <div wicket:id="wrapper.vatId">
+            <input type="text" class="comp" wicket:id="vatId"/>
+        </div>
+
+        <input type="text" class="comp" wicket:id="contactCellPhoneNumber"/>
+
+    </fieldset>
+</wicket:panel>
+</body>
+</html>
