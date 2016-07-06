@@ -1,4 +1,4 @@
-package org.ctoolkit.turnonline.wicket.markup.autocomplete;
+package org.ctoolkit.turnonline.wicket.markup.autofill;
 
 import org.apache.wicket.AttributeModifier;
 
@@ -7,19 +7,19 @@ import org.apache.wicket.AttributeModifier;
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public class AutocompleteOff
+public class AutofillOff
         extends AttributeModifier
 {
     private static final long serialVersionUID = -2374551670941613390L;
 
-    private static AutocompleteOff INSTANCE = new AutocompleteOff();
+    private static AutofillOff INSTANCE = new AutofillOff();
 
-    private AutocompleteOff()
+    private AutofillOff()
     {
-        super( AutocompleteBehavior.AUTOCOMPLETE, "off" );
+        super( AutofillBehavior.AUTOFILL, "off" );
     }
 
-    public static AutocompleteOff get()
+    public static AutofillOff get()
     {
         return INSTANCE;
     }

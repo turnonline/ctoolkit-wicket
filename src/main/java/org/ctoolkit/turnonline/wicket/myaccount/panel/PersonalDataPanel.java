@@ -4,7 +4,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.ctoolkit.turnonline.wicket.markup.autocomplete.AutocompleteBehavior;
+import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillBehavior;
 import org.ctoolkit.turnonline.wicket.markup.html.formrow.FormRowBehavior;
 import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
 
@@ -41,7 +41,7 @@ public class PersonalDataPanel<T>
         add( name );
 
         name.add( new FormRowBehavior() );
-        name.add( new AutocompleteBehavior( AutocompleteBehavior.Autocomplete.GIVEN_NAME ) );
+        name.add( new AutofillBehavior( AutofillBehavior.Autofill.GIVEN_NAME ) );
 
         // surname
         TextField<String> surname = new TextField<>( "surname" );
@@ -51,6 +51,6 @@ public class PersonalDataPanel<T>
         add( surname );
 
         surname.add( new FormRowBehavior() );
-        surname.add( new AutocompleteBehavior( AutocompleteBehavior.Autocomplete.SURNAME ) );
+        surname.add( new AutofillBehavior( AutofillBehavior.Autofill.SURNAME ) );
     }
 }

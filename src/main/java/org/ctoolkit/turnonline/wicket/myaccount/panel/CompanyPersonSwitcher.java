@@ -9,7 +9,7 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.ctoolkit.turnonline.wicket.markup.autocomplete.AutocompleteOff;
+import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillOff;
 import org.ctoolkit.turnonline.wicket.markup.html.form.ajax.IndicatingAjaxRadioGroup;
 import org.ctoolkit.turnonline.wicket.myaccount.event.ToggleCompanyPersonChangeEvent;
 
@@ -35,7 +35,7 @@ public class CompanyPersonSwitcher
 
         companyRadioGroup.setModel( model );
         final Radio<Boolean> company = new Radio<>( "1", new Model<>( Boolean.TRUE ) );
-        company.add( AutocompleteOff.get() );
+        company.add( AutofillOff.get() );
         companyRadioGroup.add( company );
         companyRadioGroup.setRenderBodyOnly( false );
         company.add( new AjaxFormSubmitBehavior( "click" )
@@ -60,7 +60,7 @@ public class CompanyPersonSwitcher
 
         // person radio button
         final Radio<Boolean> person = new Radio<>( "2", new Model<>( Boolean.FALSE ) );
-        person.add( AutocompleteOff.get() );
+        person.add( AutofillOff.get() );
         companyRadioGroup.add( person );
         person.add( new AjaxFormSubmitBehavior( "click" )
         {

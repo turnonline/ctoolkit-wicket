@@ -9,8 +9,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.ctoolkit.turnonline.wicket.markup.autocomplete.AutocompleteBehavior;
-import org.ctoolkit.turnonline.wicket.markup.autocomplete.AutocompleteOff;
+import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillBehavior;
+import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillOff;
 import org.ctoolkit.turnonline.wicket.markup.html.form.ajax.IndicatingAjaxCheckBox;
 import org.ctoolkit.turnonline.wicket.markup.html.formrow.FormRowBehavior;
 import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
@@ -19,16 +19,16 @@ import org.ctoolkit.turnonline.wicket.validator.TaxIdValidator;
 import org.ctoolkit.turnonline.wicket.validator.VatIdValidator;
 
 /**
- * Company basic info form. Must be located within HTML form to post data.
+ * The company basic info form. Must be located within HTML form to post data.
  * Expected model properties:
  * <ul>
- * <li>businessName</li>
- * <li>legalForm</li>
- * <li>companyId</li>
- * <li>taxId</li>
- * <li>vatId</li>
- * <li>vatPayer</li>
- * <li>contactCellPhoneNumber</li>
+ * <li>businessName &lt;String&gt;</li>
+ * <li>legalForm  &lt;String&gt;</li>
+ * <li>companyId &lt;String&gt;</li>
+ * <li>taxId &lt;String&gt;</li>
+ * <li>vatId &lt;String&gt;</li>
+ * <li>vatPayer &lt;Boolean&gt;</li>
+ * <li>contactCellPhoneNumber &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  *
@@ -70,7 +70,7 @@ public abstract class CompanyBasicInfo<T>
      *
      * @param id       the component id
      * @param model    the component model
-     * @param readOnly the boolean indication whether this component to be rendered as read only
+     * @param readOnly the boolean indication whether to render this component as read only
      */
     public CompanyBasicInfo( String id, final IModel<T> model, boolean readOnly )
     {
@@ -82,8 +82,8 @@ public abstract class CompanyBasicInfo<T>
      *
      * @param id       the component id
      * @param model    the component model
-     * @param readOnly the boolean indication whether this component to be rendered as read only
-     * @param required the boolean indication whether this component to be rendered as required
+     * @param readOnly the boolean indication whether to render this component as read only
+     * @param required the boolean indication whether to render this component as required
      */
     public CompanyBasicInfo( String id, final IModel<T> model, boolean readOnly, boolean required )
     {
@@ -97,7 +97,7 @@ public abstract class CompanyBasicInfo<T>
         add( businessName );
 
         businessName.add( new FormRowBehavior() );
-        businessName.add( new AutocompleteBehavior( AutocompleteBehavior.Autocomplete.ORGANIZATION ) );
+        businessName.add( new AutofillBehavior( AutofillBehavior.Autofill.ORGANIZATION ) );
 
         // legal form
         DropDownChoice legalForm = provideLegalForm( "legalForm" );
@@ -118,7 +118,7 @@ public abstract class CompanyBasicInfo<T>
 
         companyId.add( new FormRowBehavior() );
         companyId.add( CompanyIdValidator.get() );
-        companyId.add( AutocompleteOff.get() );
+        companyId.add( AutofillOff.get() );
 
         // tax id
         final TextField<String> taxId = new TextField<>( "taxId" );
@@ -129,7 +129,7 @@ public abstract class CompanyBasicInfo<T>
 
         taxId.add( new FormRowBehavior() );
         taxId.add( TaxIdValidator.get() );
-        taxId.add( AutocompleteOff.get() );
+        taxId.add( AutofillOff.get() );
 
         // vat id
         final WebMarkupContainer wrapperVatId = new WebMarkupContainer( "wrapper.vatId" );
@@ -142,7 +142,7 @@ public abstract class CompanyBasicInfo<T>
         add( wrapperVatId );
         vatId.add( new FormRowBehavior() );
         vatId.add( VatIdValidator.get() );
-        vatId.add( AutocompleteOff.get() );
+        vatId.add( AutofillOff.get() );
 
         // vat payer checkbox
         final CheckBox vatPayer = new IndicatingAjaxCheckBox( "vatPayer" );
@@ -153,13 +153,12 @@ public abstract class CompanyBasicInfo<T>
 
         // contact cell phone number
         TextField<String> contactCellPhoneNumber = new TextField<>( "contactCellPhoneNumber" );
-// FIXME contactCellPhoneNumber.setXAutocompleteType( AutocompleteType.X_PHONE_NUMBER );
         contactCellPhoneNumber.setLabel( new I18NResourceModel( "label.contactPhoneNumber" ) );
         contactCellPhoneNumber.setEnabled( !readOnly );
         add( contactCellPhoneNumber );
 
         contactCellPhoneNumber.add( new FormRowBehavior() );
-        contactCellPhoneNumber.add( new AutocompleteBehavior( AutocompleteBehavior.Autocomplete.PHONE_NUMBER ) );
+        contactCellPhoneNumber.add( new AutofillBehavior( AutofillBehavior.Autofill.PHONE_NUMBER ) );
 
         this.businessNamePath = businessName.getPageRelativePath();
         this.legalFormPath = legalForm.getPageRelativePath();

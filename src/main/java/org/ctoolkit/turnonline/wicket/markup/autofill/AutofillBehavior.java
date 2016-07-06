@@ -1,4 +1,4 @@
-package org.ctoolkit.turnonline.wicket.markup.autocomplete;
+package org.ctoolkit.turnonline.wicket.markup.autofill;
 
 import org.apache.wicket.AttributeModifier;
 
@@ -7,24 +7,24 @@ import org.apache.wicket.AttributeModifier;
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public class AutocompleteBehavior
+public class AutofillBehavior
         extends AttributeModifier
 {
-    public static final String AUTOCOMPLETE = "autocomplete";
+    public static final String AUTOFILL = "autocomplete";
 
     private static final long serialVersionUID = 4724667967280946822L;
 
-    public AutocompleteBehavior( Autocomplete type )
+    public AutofillBehavior( Autofill type )
     {
-        super( AUTOCOMPLETE, type.getAttribute() );
+        super( AUTOFILL, type.getAttribute() );
     }
 
     /**
      * TODO look at the autocomplete link below and implement it as much as make a sense.
      *
-     * @see <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/association-of-controls-and-forms.html#attr-fe-autocomplete">Autocomplete</a>
+     * @see <a href="https://html.spec.whatwg.org/multipage/forms.html#autofill">Autofill</a>
      */
-    public enum Autocomplete
+    public enum Autofill
     {
         EMAIL( "email" ),
         GIVEN_NAME( "given-name" ),
@@ -35,14 +35,14 @@ public class AutocompleteBehavior
         ADDRESS( "street-address" ),
         ADDRESS_LINE1( "address-line1" ),
         ADDRESS_LINE2( "address-line2" ),
-        CITY( "locality" ),
+        CITY( "address-level2" ),
         POSTAL_CODE( "postal-code" ),
         PHONE_NUMBER( "tel" ),
         COUNTRY( "country" );
 
         private String attribute;
 
-        Autocomplete( String attribute )
+        Autofill( String attribute )
         {
             this.attribute = attribute;
         }
