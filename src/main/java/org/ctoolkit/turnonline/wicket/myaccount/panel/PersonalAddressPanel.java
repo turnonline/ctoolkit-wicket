@@ -24,6 +24,15 @@ import org.ctoolkit.turnonline.wicket.validator.ZipValidator;
  * <li>personalAddressState &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.address</li>
+ * <li>label.street</li>
+ * <li>label.city</li>
+ * <li>label.zip</li>
+ * <li>label.state</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
@@ -31,7 +40,7 @@ import org.ctoolkit.turnonline.wicket.validator.ZipValidator;
 public abstract class PersonalAddressPanel<T>
         extends GenericPanel<T>
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3308357904788269745L;
 
     private String personalAddressStreetPath;
 
@@ -43,6 +52,7 @@ public abstract class PersonalAddressPanel<T>
 
     /**
      * Constructor of personal address form panel instance.
+     * By default fields are editable and not required.
      *
      * @param id    the component id
      * @param model the component model
@@ -54,6 +64,7 @@ public abstract class PersonalAddressPanel<T>
 
     /**
      * Constructor of personal address form panel instance.
+     * By default fields are not required.
      *
      * @param id       the component id
      * @param model    the component model
