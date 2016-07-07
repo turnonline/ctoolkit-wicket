@@ -16,19 +16,41 @@ import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
  * <li>surname<String></li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.basicInfo</li>
+ * <li>label.name</li>
+ * <li>label.surname</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class PersonalDataPanel<T>
         extends GenericPanel<T>
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1149426367926037047L;
 
+    /**
+     * Constructor of personal address form panel instance.
+     * By default fields are editable and not required.
+     *
+     * @param id    the component id
+     * @param model the component model
+     */
     public PersonalDataPanel( String id, IModel<T> model )
     {
         this( id, model, false, false );
     }
 
+    /**
+     * Constructor of personal address form panel instance.
+     *
+     * @param id       the component id
+     * @param model    the component model
+     * @param readOnly the boolean indication whether to render this component as read only
+     * @param required the boolean indication whether to render this component as required
+     */
     public PersonalDataPanel( String id, IModel<T> model, boolean readOnly, boolean required )
     {
         super( id, new CompoundPropertyModel<>( model ) );

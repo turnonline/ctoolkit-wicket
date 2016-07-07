@@ -16,14 +16,26 @@ import org.ctoolkit.turnonline.wicket.myaccount.event.ToggleCompanyPersonChangeE
 /**
  * Company/Person switcher implemented as radio button group. Must be located within HTML form.
  * Switching fires {@link ToggleCompanyPersonChangeEvent} event.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>label.switcher.company</li>
+ * <li>label.switcher.person</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class CompanyPersonSwitcher
         extends GenericPanel<Boolean>
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 4912320189867139608L;
 
+    /**
+     * Constructor of switcher company/person.
+     *
+     * @param id    the component id
+     * @param model the component model
+     */
     public CompanyPersonSwitcher( String id, IModel<Boolean> model )
     {
         super( id, model );

@@ -18,6 +18,12 @@ import java.util.Locale;
 
 /**
  * Footer of a page. It renders footer links based on list of navigation items.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.copyright</li>
+ * <li>title.trademarks</li>
+ * </ul>
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */

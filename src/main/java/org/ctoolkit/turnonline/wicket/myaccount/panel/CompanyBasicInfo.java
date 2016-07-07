@@ -31,6 +31,18 @@ import org.ctoolkit.turnonline.wicket.validator.VatIdValidator;
  * <li>contactCellPhoneNumber &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.companyBasicInfo</li>
+ * <li>label.businessName</li>
+ * <li>label.legalForm</li>
+ * <li>label.companyId</li>
+ * <li>label.taxId</li>
+ * <li>label.vatId</li>
+ * <li>label.vatPayer</li>
+ * <li>label.contactPhoneNumber</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
@@ -56,6 +68,7 @@ public abstract class CompanyBasicInfo<T>
 
     /**
      * Constructor of company basic info panel instance.
+     * By default fields are editable and not required.
      *
      * @param id    the component id
      * @param model the component model
@@ -67,6 +80,7 @@ public abstract class CompanyBasicInfo<T>
 
     /**
      * Constructor of company basic info panel instance.
+     * By default fields are not required.
      *
      * @param id       the component id
      * @param model    the component model

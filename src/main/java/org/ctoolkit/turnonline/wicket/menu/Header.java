@@ -41,6 +41,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The header that renders menu items based on the contextual page and role.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.login</li>
+ * <li>title.sign-up</li>
+ * <li>title.shopping-cart</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
@@ -48,7 +55,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Header
         extends Panel
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6101446612087943943L;
 
     private final IModel<Boolean> loggedInModel;
 

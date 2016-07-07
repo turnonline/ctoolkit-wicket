@@ -10,6 +10,11 @@ import javax.inject.Inject;
 
 /**
  * The sign up page that implements Google Identity Toolkit's widget to sign up.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.sign-up</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */

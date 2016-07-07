@@ -17,13 +17,17 @@ import java.util.Locale;
 
 /**
  * The component renders a language panel
+ * Expected i18 resource bundle, its based on the given list of locale.
+ * <ul>
+ * <li>language.en</li>
+ * </ul>
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
 public class LanguagePanel
         extends Panel
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 764336739357423363L;
 
     /**
      * Construct a new language panel

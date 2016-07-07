@@ -16,13 +16,20 @@ import javax.inject.Inject;
 
 /**
  * The login page that implements Google Identity Toolkit's widget.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>
+ * <li>title.login</li>
+ * <li>text.login</li>
+ * <li>label.resetPassword</li>
+ * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class IdentityLogin<T>
         extends DecoratedPage<T>
 {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6264709084901970501L;
 
     private LoginHeaderTitleResourceModel titleModel = new LoginHeaderTitleResourceModel();
 
