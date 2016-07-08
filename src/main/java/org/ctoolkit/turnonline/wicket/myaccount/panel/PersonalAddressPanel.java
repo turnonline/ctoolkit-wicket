@@ -9,6 +9,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillAddress;
 import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillCity;
+import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillCountry;
 import org.ctoolkit.turnonline.wicket.markup.autofill.AutofillPostalCode;
 import org.ctoolkit.turnonline.wicket.markup.html.formrow.FormRowBehavior;
 import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
@@ -130,6 +131,7 @@ public abstract class PersonalAddressPanel<T>
         add( state );
 
         state.add( new FormRowBehavior() );
+        state.add( AutofillCountry.get() );
 
         this.personalAddressStreetPath = street.getPageRelativePath();
         this.personalAddressCityPath = city.getPageRelativePath();
