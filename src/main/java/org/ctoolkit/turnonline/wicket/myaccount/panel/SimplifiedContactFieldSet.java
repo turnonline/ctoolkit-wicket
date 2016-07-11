@@ -97,7 +97,7 @@ public class SimplifiedContactFieldSet<T>
 
         add( visibility );
 
-        visibility.add( new FormRowBehavior() );
+        visibility.add( new FormRowBehavior( true ) );
         visibility.add( AutofillOff.get() );
 
         // contact prefix

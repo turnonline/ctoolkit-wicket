@@ -25,44 +25,65 @@ public class FormRowBehavior
 {
     private static final long serialVersionUID = -8684400463659951337L;
 
+    private boolean componentFirst;
+
     private Variant variant;
 
     private IModel<String> label;
 
     public FormRowBehavior()
     {
-        this( Variant.INLINE_BLOCK, null );
+        this( Variant.INLINE_BLOCK, null, false );
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param componentFirst if true the component will be rendered before label element
+     */
+    public FormRowBehavior( boolean componentFirst )
+    {
+        this( Variant.INLINE_BLOCK, null, componentFirst );
     }
 
     public FormRowBehavior( Variant variant )
     {
-        this( variant, null );
+        this( variant, null, false );
     }
 
     public FormRowBehavior( IModel<String> label )
     {
-        this( Variant.INLINE_BLOCK, label );
+        this( Variant.INLINE_BLOCK, label, false );
     }
 
-    public FormRowBehavior( Variant variant, IModel<String> label )
+    public FormRowBehavior( Variant variant, IModel<String> label, boolean componentFirst )
     {
         this.variant = variant;
         this.label = label;
+        this.componentFirst = componentFirst;
     }
 
     @Override
     public void beforeRender( Component component )
     {
-        String label = getLabel( component ).getObject();
+        Response response = component.getResponse();
+        response.write( "<div class='" + getCssClass( component ) + "'>" );
+        if ( !componentFirst )
+        {
+            renderLabel( component, response );
+        }
 
-        Response r = component.getResponse();
-        r.write( "<div class='" + getCssClass( component ) + "'>" );
+    }
+
+    private void renderLabel( Component component, Response response )
+    {
+        String label = getLabel( component ).getObject();
 
         if ( !Strings.isEmpty( label ) )
         {
-            r.write( "<label for='" + component.getMarkupId( true ) + "'>" );
-            r.write( label );
-            r.write( "</label>" );
+            response.write( "<label for='" + component.getMarkupId( true ) + "'>" );
+            response.write( label );
+            response.write( "</label>" );
         }
     }
 
@@ -96,16 +117,28 @@ public class FormRowBehavior
     @Override
     public void afterRender( Component component )
     {
-        component.getResponse().write( "</div>" );
+        Response response = component.getResponse();
+        if ( componentFirst )
+        {
+            renderLabel( component, response );
+        }
+        response.write( "</div>" );
     }
 
     public String getCssClass( Component component )
     {
         StringBuilder sb = new StringBuilder();
 
-        if ( component instanceof CheckBox )
+        if ( componentFirst )
         {
-            sb.append( "component-checkbox " );
+            sb.append( "component-first " );
+        }
+        else
+        {
+            if ( component instanceof CheckBox )
+            {
+                sb.append( "component-checkbox " );
+            }
         }
 
         sb.append( "form-row" );
