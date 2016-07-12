@@ -2,6 +2,7 @@ package org.ctoolkit.turnonline.wicket.markup.html.formrow;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
@@ -75,6 +76,17 @@ public class FormRowBehavior
 
     }
 
+    @Override
+    public void onComponentTag( Component component, ComponentTag tag )
+    {
+        super.onComponentTag( component, tag );
+
+        if ( component.hasErrorMessage() )
+        {
+            tag.append( "class", "error", " " );
+        }
+    }
+
     private void renderLabel( Component component, Response response )
     {
         String label = getLabel( component ).getObject();
@@ -125,7 +137,7 @@ public class FormRowBehavior
         response.write( "</div>" );
     }
 
-    public String getCssClass( Component component )
+    protected String getCssClass( Component component )
     {
         StringBuilder sb = new StringBuilder();
 
@@ -146,11 +158,6 @@ public class FormRowBehavior
         if ( isRequired( component ) )
         {
             sb.append( " required" );
-        }
-
-        if ( component.hasErrorMessage() )
-        {
-            sb.append( " error" );
         }
 
         if ( variant == Variant.BLOCK )
