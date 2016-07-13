@@ -15,6 +15,7 @@ import org.apache.wicket.settings.IRequestCycleSettings;
 import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * The base wicket application intended to run on Google AppEngine.
@@ -94,6 +95,13 @@ public abstract class AppEngineApplication
             }
         };
     }
+
+    /**
+     * Returns the list of theme names that application support.
+     *
+     * @return the list of themes or empty set
+     */
+    public abstract Set<String> getThemeNames();
 
     /**
      * Return sitemap page which will be mapped to /sitemap.xml
