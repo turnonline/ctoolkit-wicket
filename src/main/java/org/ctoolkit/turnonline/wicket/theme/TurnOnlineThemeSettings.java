@@ -40,7 +40,17 @@ public class TurnOnlineThemeSettings
      */
     public ResourceReference getDefaultStylesheetReference()
     {
-        return themeMap.get( STANDARD );
+        ResourceReference reference = themeMap.get( STANDARD );
+
+        if ( reference == null )
+        {
+            String msg = "First default stylesheet reference must be initialized, employ "
+                    + TurnOnlineThemeInitializer.class.getSimpleName();
+
+            throw new NullPointerException( msg );
+        }
+
+        return reference;
     }
 
     /**

@@ -16,6 +16,8 @@ import static org.ctoolkit.turnonline.wicket.theme.TurnOnlineThemeSettings.MIN_C
 /**
  * TurnOnline theme wicket initializer. It mounts theme names taken from {@link AppEngineApplication#getThemeNames()}
  * as {@link CssResourceReference} + default one 'turnonline-ui' mounted under '/turnonline-ui.min.css'.
+ * The referenced package for CSS is 'org/ctoolkit/turnonline/wicket/theme/turnonline-ui.min.css',
+ * the package of this {@link TurnOnlineThemeInitializer}.
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
@@ -33,7 +35,8 @@ public class TurnOnlineThemeInitializer
         {
             if ( !Strings.isEmpty( theme ) )
             {
-                CssResourceReference cssRef = new CssResourceReference( TurnOnlineThemeInitializer.class, theme + MIN_CSS_SUFFIX );
+                CssResourceReference cssRef;
+                cssRef = new CssResourceReference( TurnOnlineThemeInitializer.class, theme + MIN_CSS_SUFFIX );
                 TurnOnlineThemeSettings.get().setStylesheetReference( theme, cssRef );
 
                 gaeApp.mountResource( "/" + theme + MIN_CSS_SUFFIX, cssRef );
