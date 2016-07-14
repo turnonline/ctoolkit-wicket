@@ -121,16 +121,16 @@ public class IdentityOptions
         EMAIL_FIRST( "emailFirst" ),
         PROVIDER_FIRST( "providerFirst" );
 
-        private String type;
+        private String value;
 
-        DisplayMode( String type )
+        DisplayMode( String value )
         {
-            this.type = type;
+            this.value = value;
         }
 
-        public String getType()
+        public String getValue()
         {
-            return type;
+            return value;
         }
     }
 

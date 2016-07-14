@@ -77,11 +77,11 @@ public class IdentityLoginPanel
 
         if ( emailFirst )
         {
-            variables.put( "displayMode", IdentityOptions.DisplayMode.EMAIL_FIRST );
+            variables.put( "displayMode", IdentityOptions.DisplayMode.EMAIL_FIRST.getValue() );
         }
         else
         {
-            variables.put( "displayMode", options.getDisplayMode().getType() );
+            variables.put( "displayMode", options.getDisplayMode().getValue() );
         }
         variables.put( "signInOptions", options.getSignInOptionsAsString() );
 

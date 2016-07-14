@@ -1,5 +1,7 @@
 package org.ctoolkit.turnonline.wicket;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.IApplicationListener;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.markup.html.WebPage;
@@ -57,6 +59,21 @@ public abstract class AppEngineApplication
     @Override
     protected void init()
     {
+        getApplicationListeners().add( new IApplicationListener()
+        {
+            @Override
+            public void onAfterInitialized( Application application )
+            {
+                // setting custom configuration of the HTTPS mapper -> in development mode no HTTPS is being used
+                setRootRequestMapper( getHttpsMapper() );
+            }
+
+            @Override
+            public void onBeforeDestroyed( Application application )
+            {
+            }
+        } );
+
         super.init();
 
         // set default markup encoding
