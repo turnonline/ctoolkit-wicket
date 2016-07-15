@@ -151,14 +151,12 @@ public interface IModelFactory
     MenuSchema provideMenuSchema( @Nonnull Page context, @Nonnull IModel<Roles> roles );
 
     /**
-     * Creates a new shopping mall instance or gets the one from the session if exists.
+     * Returns either a new or existing shopping mall model.
      *
      * @param request HTTP request
-     * @return the shopping mall model object
+     * @return the shopping mall model
      */
-//    ShoppingMall createOrGetShoppingMallModel( @Nonnull HttpServletRequest request );
-
-//    void updateMallModel( @Nonnull HttpServletRequest request, ShoppingMall mall );
+    IModel<?> getShoppingMallModel( @Nonnull HttpServletRequest request );
 
     /**
      * Returns the country from which the request originated, as an ISO 3166-1 alpha-2 country code.
@@ -185,13 +183,6 @@ public interface IModelFactory
      * @return the name of the city
      */
     String getCityOriginRequest( @Nonnull HttpServletRequest request );
-
-    /**
-     * Updates {@link ShoppingMall} model's customer by logged in user.
-     *
-     * @param request the HTTP request
-     */
-    void updateMallCustomerFromSession( @Nonnull HttpServletRequest request );
 
     /**
      * Search response list provider
