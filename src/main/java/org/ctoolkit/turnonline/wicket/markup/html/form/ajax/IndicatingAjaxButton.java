@@ -34,6 +34,12 @@ public class IndicatingAjaxButton
 
     private final AjaxStandardIndicatorAppender indicatorAppender = new AjaxStandardIndicatorAppender();
 
+    public IndicatingAjaxButton( String id, Form<?> form )
+    {
+        super( id, form );
+        add( indicatorAppender );
+    }
+
     public IndicatingAjaxButton( String id, IModel<String> model, Form<?> form )
     {
         super( id, model, form );

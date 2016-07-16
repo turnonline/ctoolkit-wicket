@@ -10,6 +10,11 @@ import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
 
 /**
  * The toggle menu button. Contributes a JavaScript snippet to the header.
+ * <p>
+ * Expected i18 resource bundle:
+ * <ul>D
+ * <li>label.menu</li>
+ * </ul>
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
@@ -18,6 +23,11 @@ public class ToggleMenuButton
 {
     private static final long serialVersionUID = 63632730942266970L;
 
+    /**
+     * Constructor
+     *
+     * @param id the component id
+     */
     public ToggleMenuButton( String id )
     {
         super( id, new Model() );
