@@ -9,8 +9,8 @@ import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
-import org.ctoolkit.turnonline.wicket.event.AjaxButtonErrorEvent;
-import org.ctoolkit.turnonline.wicket.event.AjaxButtonSubmitEvent;
+import org.ctoolkit.turnonline.wicket.event.AjaxSubmitErrorEvent;
+import org.ctoolkit.turnonline.wicket.event.AjaxSubmitEvent;
 import org.ctoolkit.turnonline.wicket.markup.html.basic.ajax.AjaxStandardIndicatorAppender;
 import org.ctoolkit.turnonline.wicket.markup.html.page.DecoratedPage;
 
@@ -20,8 +20,8 @@ import org.ctoolkit.turnonline.wicket.markup.html.page.DecoratedPage;
  * {@link DecoratedPage#FEEDBACK_MARKUP_ID}.
  * Fires following events:
  * <ul>
- * <li>onSubmit: {@link AjaxButtonSubmitEvent}</li>
- * <li>onError: {@link AjaxButtonErrorEvent}</li>
+ * <li>onSubmit: {@link AjaxSubmitEvent}</li>
+ * <li>onError: {@link AjaxSubmitErrorEvent}</li>
  * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
@@ -49,7 +49,7 @@ public class IndicatingAjaxButton
     @Override
     protected void onSubmit( AjaxRequestTarget target, Form<?> form )
     {
-        send( getPage(), Broadcast.BREADTH, new AjaxButtonSubmitEvent( target ) );
+        send( getPage(), Broadcast.BREADTH, new AjaxSubmitEvent( target ) );
 
         Component feedback = getPage().get( DecoratedPage.FEEDBACK_MARKUP_ID );
         //noinspection ConstantConditions
@@ -62,7 +62,7 @@ public class IndicatingAjaxButton
     @Override
     protected void onError( AjaxRequestTarget target, Form<?> form )
     {
-        send( getPage(), Broadcast.BREADTH, new AjaxButtonErrorEvent( target ) );
+        send( getPage(), Broadcast.BREADTH, new AjaxSubmitErrorEvent( target ) );
 
         Component feedback = getPage().get( DecoratedPage.FEEDBACK_MARKUP_ID );
         //noinspection ConstantConditions

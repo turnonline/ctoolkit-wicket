@@ -3,20 +3,20 @@ package org.ctoolkit.turnonline.wicket.event;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 
 /**
- * The AJAX fallback button error event.
+ * The AJAX submit error event.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public class AjaxButtonErrorEvent
+public class AjaxSubmitErrorEvent
         extends AjaxRequestTargetEvent
 {
     private static final long serialVersionUID = 4682829871660484266L;
 
-    public AjaxButtonErrorEvent()
+    public AjaxSubmitErrorEvent()
     {
     }
 
-    public AjaxButtonErrorEvent( AjaxRequestTarget target )
+    public AjaxSubmitErrorEvent( AjaxRequestTarget target )
     {
         super( target );
     }
