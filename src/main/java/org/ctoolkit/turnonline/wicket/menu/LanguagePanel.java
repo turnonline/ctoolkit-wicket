@@ -10,6 +10,7 @@ import org.apache.wicket.request.Url;
 import org.ctoolkit.turnonline.wicket.markup.html.page.Skeleton;
 import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,9 +75,20 @@ public class LanguagePanel
     {
         Url url = getRequest().getUrl();
         List<Url.QueryParameter> params = url.getQueryParameters();
-        //noinspection SuspiciousMethodCalls
-        params.remove( Skeleton.PARAM_LANG );
-        params.add( new Url.QueryParameter( Skeleton.PARAM_LANG, item.getLanguage() ) );
+
+        Iterator<Url.QueryParameter> iterator = params.iterator();
+        while ( iterator.hasNext() )
+        {
+            Url.QueryParameter next = iterator.next();
+            if ( Skeleton.PARAM_LANG.equals( next.getName() ) )
+            {
+                iterator.remove();
+            }
+        }
+
+        Url.QueryParameter langParam;
+        langParam = new Url.QueryParameter( Skeleton.PARAM_LANG, item.getLanguage() );
+        params.add( langParam );
 
         return url.toString();
     }
