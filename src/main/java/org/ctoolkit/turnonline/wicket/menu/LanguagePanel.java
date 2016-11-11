@@ -6,12 +6,10 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.Url;
 import org.ctoolkit.turnonline.wicket.markup.html.page.Skeleton;
 import org.ctoolkit.turnonline.wicket.model.I18NResourceModel;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,21 +72,11 @@ public class LanguagePanel
      */
     private String createLocalizationUrl( Locale item )
     {
-        StringBuilder url = new StringBuilder();
-        try
-        {
-            URL u = new URL( ( ( ServletWebRequest ) getRequest() ).getContainerRequest().getRequestURL().toString() );
-            url.append( u.getPath() );
-        }
-        catch ( MalformedURLException e )
-        {
-            url.append( "/" );
-        }
-
-        url.append( "?" );
-        url.append( Skeleton.PARAM_LANG );
-        url.append( "=" );
-        url.append( item.getLanguage() );
+        Url url = getRequest().getUrl();
+        List<Url.QueryParameter> params = url.getQueryParameters();
+        //noinspection SuspiciousMethodCalls
+        params.remove( Skeleton.PARAM_LANG );
+        params.add( new Url.QueryParameter( Skeleton.PARAM_LANG, item.getLanguage() ) );
 
         return url.toString();
     }
