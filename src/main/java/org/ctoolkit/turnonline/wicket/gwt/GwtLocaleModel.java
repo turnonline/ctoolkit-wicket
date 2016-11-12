@@ -1,7 +1,7 @@
 package org.ctoolkit.turnonline.wicket.gwt;
 
-import org.apache.wicket.model.AbstractPropertyModel;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.ctoolkit.turnonline.wicket.model.LanguageModel;
 
 /**
  * The property model to render expression's value as <code>"locale=${gwtLocaleExpression}"</code>
@@ -9,36 +9,32 @@ import org.apache.wicket.model.IModel;
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class GwtLocaleModel
-        extends AbstractPropertyModel<String>
+        extends LanguageModel
 {
     private static final long serialVersionUID = 1L;
 
-    private final String gwtLocaleExpression;
-
-    public GwtLocaleModel( IModel<?> model, String gwtLocaleExpression )
+    /**
+     * Constructor
+     *
+     * @param component the parent component to access session
+     */
+    public GwtLocaleModel( Component component )
     {
-        super( model );
-        this.gwtLocaleExpression = gwtLocaleExpression;
+        super( component );
     }
 
     @Override
     public String getObject()
     {
-        String locale = super.getObject();
+        String language = super.getObject();
 
-        if ( locale == null )
+        if ( language == null )
         {
             return null;
         }
         else
         {
-            return "locale=" + locale.toLowerCase();
+            return "locale=" + language.toLowerCase();
         }
-    }
-
-    @Override
-    protected String propertyExpression()
-    {
-        return gwtLocaleExpression;
     }
 }
