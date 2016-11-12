@@ -3,8 +3,10 @@ package org.ctoolkit.turnonline.wicket.menu;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.Url;
 import org.ctoolkit.turnonline.wicket.markup.html.page.Skeleton;
@@ -34,7 +36,7 @@ public class LanguagePanel
      * @param id    wicket id
      * @param items list of supported languages
      */
-    public LanguagePanel( String id, List<Locale> items )
+    public LanguagePanel( String id, final List<Locale> items )
     {
         super( id );
         setOutputMarkupId( false );
@@ -43,26 +45,31 @@ public class LanguagePanel
         WebMarkupContainer language = new WebMarkupContainer( "language" );
         add( language );
 
-        RepeatingView rv = new RepeatingView( "flag-repeater" );
-        language.add( rv );
-
-        if ( items.size() < 2 )
+        IModel<List<? extends Locale>> itemsModel = Model.ofList( items );
+        ListView<Locale> listView = new ListView<Locale>( "flag-repeater", itemsModel )
         {
-            rv.setVisible( false );
-        }
+            private static final long serialVersionUID = 1L;
 
-        for ( final Locale item : items )
-        {
-            WebMarkupContainer wrapper = new WebMarkupContainer( rv.newChildId() );
-            wrapper.add( AttributeModifier.replace( "class", "flag flag-" + item.getLanguage() ) );
-            rv.add( wrapper );
+            @Override
+            public boolean isVisible()
+            {
+                return !( items.size() < 2 );
+            }
 
-            String url = createLocalizationUrl( item );
+            @Override
+            protected void populateItem( ListItem<Locale> item )
+            {
+                Locale locale = item.getModelObject();
+                item.add( AttributeModifier.replace( "class", "flag flag-" + locale.getLanguage() ) );
 
-            I18NResourceModel labelModel = new I18NResourceModel( "language." + item.getLanguage() );
-            ExternalLink flag = new ExternalLink( "flag", Model.of( url ), labelModel );
-            wrapper.add( flag );
-        }
+                String url = createLocalizationUrl( locale );
+
+                I18NResourceModel labelModel = new I18NResourceModel( "language." + locale.getLanguage() );
+                ExternalLink flag = new ExternalLink( "flag", Model.of( url ), labelModel );
+                item.add( flag );
+            }
+        };
+        language.add( listView );
     }
 
     /**
@@ -90,6 +97,8 @@ public class LanguagePanel
         langParam = new Url.QueryParameter( Skeleton.PARAM_LANG, item.getLanguage() );
         params.add( langParam );
 
-        return url.toString();
+        String done = url.toString();
+
+        return url.isContextAbsolute() ? done : "/" + done;
     }
 }
