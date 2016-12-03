@@ -16,7 +16,7 @@ import static org.ctoolkit.wicket.turnonline.theme.TurnOnlineThemeSettings.MIN_C
 /**
  * TurnOnline theme wicket initializer. It mounts theme names taken from {@link AppEngineApplication#getThemeNames()}
  * as {@link CssResourceReference} + default one 'turnonline-ui' mounted under '/turnonline-ui.min.css'.
- * The referenced package for CSS is 'org/ctoolkit/turnonline/wicket/theme/turnonline-ui.min.css',
+ * The referenced package for CSS is 'org/ctoolkit/wicket/turnonline/theme/turnonline-ui.min.css',
  * the package of this {@link TurnOnlineThemeInitializer}.
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>

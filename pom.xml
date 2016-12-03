@@ -8,23 +8,23 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.ctoolkit.turnonline</groupId>
-    <artifactId>turnonline-wicket</artifactId>
+    <groupId>org.ctoolkit.wicket</groupId>
+    <artifactId>ctoolkit-wicket</artifactId>
     <version>0.5-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>TurnOnline.biz Apache Wicket Components</name>
-    <description>TurnOnline.biz Specific Apache Wicket Components designed for Google AppEngine</description>
-    <url>https://github.com/turnonline/turnonline-wicket</url>
+    <name>CtoolkiT Apache Wicket Components</name>
+    <description>CtoolkiT Apache Wicket Components designed for Google AppEngine</description>
+    <url>https://github.com/turnonline/ctoolkit-wicket</url>
 
     <scm>
-        <connection>scm:git:[fetch=]git@github.com:turnonline/turnonline-wicket.git</connection>
-        <developerConnection>scm:git:[push=]git@github.com:turnonline/turnonline-wicket.git</developerConnection>
-        <url>https://github.com/turnonline/turnonline-wicket</url>
+        <connection>scm:git:[fetch=]git@github.com:turnonline/ctoolkit-wicket.git</connection>
+        <developerConnection>scm:git:[push=]git@github.com:turnonline/ctoolkit-wicket.git</developerConnection>
+        <url>https://github.com/turnonline/ctoolkit-wicket</url>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/turnonline/turnonline-wicket/issues</url>
+        <url>https://github.com/turnonline/ctoolkit-wicket/issues</url>
     </issueManagement>
 
     <developers>

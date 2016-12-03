@@ -1,2 +1,2 @@
-# turnonline-wicket
-TurnOnline.biz Apache Wicket components
+# ctoolkit-wicket
+CtoolkiT Apache Wicket Components designed for Google AppEngine
