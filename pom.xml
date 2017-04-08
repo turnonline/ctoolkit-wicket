@@ -3,8 +3,8 @@
 
     <parent>
         <groupId>org.ctoolkit.maven</groupId>
-        <artifactId>ctoolkit-parent</artifactId>
-        <version>5</version>
+        <artifactId>ctoolkit-public</artifactId>
+        <version>1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -142,10 +142,10 @@
 
     <properties>
         <ctoolkit-library-bom.version>2</ctoolkit-library-bom.version>
-        <gae.version>1.9.38</gae.version>
+        <gae.version>1.9.51</gae.version>
         <ctoolkit-rest-facade-api.version>0.11</ctoolkit-rest-facade-api.version>
-        <wicket.version>6.19.0</wicket.version>
-        <jmockit.version>1.24</jmockit.version>
+        <wicket.version>6.25.0</wicket.version>
+        <jmockit.version>1.31</jmockit.version>
         <!-- jmockit settings for OpenJDK otherwise throws 'IllegalStateException: To run on OpenJDK 64-Bit Server VM use -javaagent..' -->
         <jmockit.setting>
             -javaagent:${settings.localRepository}/org/jmockit/jmockit/${jmockit.version}/jmockit-${jmockit.version}.jar
