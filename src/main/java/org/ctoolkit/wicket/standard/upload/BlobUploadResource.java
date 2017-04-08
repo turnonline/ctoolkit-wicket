@@ -2,6 +2,7 @@ package org.ctoolkit.wicket.standard.upload;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.FileInfo;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.common.eventbus.EventBus;
@@ -117,12 +118,19 @@ public class BlobUploadResource
         try
         {
             HttpServletRequest request = webRequest.getContainerRequest();
+            Map<String, List<FileInfo>> fileInfos = blobstoreService.getFileInfos( request );
+            List<FileInfo> list = fileInfos.get( BlobUploadBehavior.PARAMETER_FILE_FIELD );
+            FileInfo info = list.get( 0 );
+
             Map<String, List<BlobKey>> blobs = blobstoreService.getUploads( request );
             BlobKey blobKey = blobs.get( BlobUploadBehavior.PARAMETER_FILE_FIELD ).get( 0 );
+
             String uploadName = request.getParameter( BlobUploadBehavior.UPLOAD_NAME );
+            String gStorageName = info.getGsObjectName();
 
             logger.info( "Upload name: " + uploadName );
             logger.info( "BlobKey: " + blobKey );
+            logger.info( "StorageName: " + gStorageName );
 
             ServingUrlOptions options;
             options = ServingUrlOptions.Builder.withBlobKey( blobKey ).crop( false ).secureUrl( true );
@@ -130,7 +138,7 @@ public class BlobUploadResource
 
             logger.info( "Thumbnail URL: " + servingUrl );
 
-            eventBus.post( new BlobUploadSuccessEvent( uploadName, blobKey, servingUrl ) );
+            eventBus.post( new BlobUploadSuccessEvent( blobKey, info, servingUrl, uploadName ) );
 
             jsonEntry.put( "thumbnail_url", servingUrl );
             json.put( jsonEntry );
