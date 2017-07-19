@@ -25,7 +25,8 @@ import java.util.Date;
  * <li>CTOOLKIT_SERVICE_ROOT (RestServiceProfile)</li>
  * </ul>
  * Used by GWT widgets to authorize REST calls. Timer will refresh the token based on the token expiration time.
- * The initial update interval is set to 30 minutes.
+ * The initial update interval is set to 20 seconds. The first timer's call will setup next update interval
+ * based on the token expiration time. If unknown default 1 hour will be used.
  *
  * @author <a href="mailto:medvegy@turnonline.biz">Aurel Medvegy</a>
  */
@@ -112,7 +113,17 @@ public abstract class RestServiceProfileTimer
         } );
     }
 
+    /**
+     * Update cookies {@link #PROFILE_OBO_EMAIL} and {@link #PROFILE_TOKEN} with current values.
+     *
+     * @param response the HTTP response to be updated
+     */
     public void updateCookies( HttpServletResponse response )
+    {
+        updateCookies( response, null );
+    }
+
+    private void updateCookies( HttpServletResponse response, Long seconds )
     {
         String email = getEmail();
         if ( Strings.isNullOrEmpty( email ) )
@@ -126,15 +137,27 @@ public abstract class RestServiceProfileTimer
             throw new NullPointerException( "Access token cannot be null or empty!" );
         }
 
-        int oneDay = 86400;
+        Long age;
+        if ( seconds == null )
+        {
+            age = getRemainingSeconds();
+        }
+        else
+        {
+            age = seconds;
+        }
+
+        // including reserve 30 seconds
+        age = age + 30;
+
         Cookie cookie = new Cookie( PROFILE_OBO_EMAIL, email );
         cookie.setPath( "/" );
-        cookie.setMaxAge( oneDay );
+        cookie.setMaxAge( age.intValue() );
         response.addCookie( cookie );
 
         cookie = new Cookie( PROFILE_TOKEN, accessToken );
         cookie.setPath( "/" );
-        cookie.setMaxAge( oneDay );
+        cookie.setMaxAge( age.intValue() );
         response.addCookie( cookie );
     }
 
@@ -166,6 +189,20 @@ public abstract class RestServiceProfileTimer
      */
     protected abstract String getServiceRootUrl();
 
+    private Long getRemainingSeconds()
+    {
+        Date expirationTime = getExpirationTime();
+        // default validity in seconds
+        Long seconds = 3600L;
+        if ( expirationTime != null )
+        {
+            long time = expirationTime.getTime();
+            // convert to remaining seconds and deduct 30s for reserve
+            seconds = ( time - new Date().getTime() ) / 1000 - 30;
+        }
+        return seconds;
+    }
+
     private class Timer
             extends AjaxSelfUpdatingTimerBehavior
     {
@@ -177,26 +214,17 @@ public abstract class RestServiceProfileTimer
          */
         Timer()
         {
-            super( Duration.seconds( 1800 ) );
+            super( Duration.seconds( 20 ) );
         }
 
         @Override
         protected void onPostProcessTarget( AjaxRequestTarget target )
         {
-            Date expirationTime = getExpirationTime();
-            if ( expirationTime != null )
-            {
-                long time = expirationTime.getTime();
-                // convert to remaining seconds and deduct 30s for reserve
-                long seconds = ( time - new Date().getTime() ) / 1000 - 30;
-                if ( seconds > 0 )
-                {
-                    setUpdateInterval( Duration.seconds( seconds ) );
-                }
-            }
+            Long seconds = getRemainingSeconds();
+            setUpdateInterval( Duration.seconds( seconds ) );
 
             Response response = target.getHeaderResponse().getResponse();
-            updateCookies( ( HttpServletResponse ) response.getContainerResponse() );
+            updateCookies( ( HttpServletResponse ) response.getContainerResponse(), seconds );
         }
     }
 }
