@@ -24,6 +24,11 @@ import java.util.Date;
  * <li>CTOOLKIT_TOKEN (cookie)</li>
  * <li>CTOOLKIT_SERVICE_ROOT (RestServiceProfile)</li>
  * </ul>
+ * And JS Object 'UserProfile' in HTML header with:
+ * <ul>
+ * <li>EMAIL (same as CTOOLKIT_OBO_EMAIL - logged in user)</li>
+ * <li>DOMICILE (UserProfile - seller's domicile)</li>
+ * </ul>
  * Used by GWT widgets to authorize REST calls. Timer will refresh the token based on the token expiration time.
  * The initial update interval is set to 20 seconds. The first timer's call will setup next update interval
  * based on the token expiration time. If unknown default 1 hour will be used.
@@ -43,7 +48,8 @@ public abstract class RestServiceProfileTimer
 
     static
     {
-        script = "var RestServiceProfile  = '{'CTOOLKIT_SERVICE_ROOT: ''{0}'''}';";
+        script = "var RestServiceProfile  = '{'CTOOLKIT_SERVICE_ROOT: ''{0}'''}';"
+                + " var UserProfile  = '{'EMAIL: ''{1}'',DOMICILE: ''{2}'''}';";
     }
 
     public RestServiceProfileTimer( String id )
@@ -106,8 +112,18 @@ public abstract class RestServiceProfileTimer
                 {
                     throw new NullPointerException( "REST service URL cannot be null or empty!" );
                 }
+                String email = getEmail();
+                if ( Strings.isNullOrEmpty( email ) )
+                {
+                    throw new NullPointerException( "Email cannot be null or empty!" );
+                }
+                String domicile = getDomicile();
+                if ( Strings.isNullOrEmpty( domicile ) )
+                {
+                    throw new NullPointerException( "Seller's domicile cannot be null or empty!" );
+                }
 
-                String script = MessageFormat.format( RestServiceProfileTimer.script, serviceRootUrl );
+                String script = MessageFormat.format( RestServiceProfileTimer.script, serviceRootUrl, email, domicile );
                 response.render( JavaScriptHeaderItem.forScript( script, component.getMarkupId() ) );
             }
         } );
@@ -167,6 +183,13 @@ public abstract class RestServiceProfileTimer
      * @return the logged in email
      */
     protected abstract String getEmail();
+
+    /**
+     * Returns the seller's domicile.
+     *
+     * @return the seller's domicile
+     */
+    protected abstract String getDomicile();
 
     /**
      * Returns valid access token.
