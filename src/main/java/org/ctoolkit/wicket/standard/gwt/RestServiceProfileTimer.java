@@ -33,7 +33,7 @@ import java.util.Date;
  * The initial update interval is set to 20 seconds. The first timer's call will setup next update interval
  * based on the token expiration time. If unknown default 1 hour will be used.
  *
- * @author <a href="mailto:medvegy@turnonline.biz">Aurel Medvegy</a>
+ * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public abstract class RestServiceProfileTimer
         extends WebMarkupContainer
