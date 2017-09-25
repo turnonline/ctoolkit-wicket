@@ -2,8 +2,11 @@ package org.ctoolkit.wicket.turnonline.menu;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
+import org.ctoolkit.wicket.standard.model.I18NResourceModel;
 
 import java.io.Serializable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The <code>NavigationItem</code> object with payloads for {@link Navigation} renderer.
@@ -108,6 +111,18 @@ public class NavigationItem
         this.labelModel = label;
         this.cssClass = cssClass;
         this.privatePage = privatePage;
+    }
+
+    /**
+     * Creates I18N resource model for given key.
+     *
+     * @param key property key
+     * @return the I18N resource model
+     */
+    public static I18NResourceModel i18n( String key )
+    {
+        checkNotNull( key );
+        return new I18NResourceModel( key );
     }
 
     public Class<? extends WebPage> getPageClass()

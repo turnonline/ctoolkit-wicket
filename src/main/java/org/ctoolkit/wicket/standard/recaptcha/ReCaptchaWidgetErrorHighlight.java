@@ -6,6 +6,7 @@ import org.apache.wicket.markup.ComponentTag;
 
 /**
  * The error highlight behavior for {@link ReCaptchaWidget}.
+ * Adds 'error' to class attribute as an additional value if ReCaptcha widget is invalid.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
