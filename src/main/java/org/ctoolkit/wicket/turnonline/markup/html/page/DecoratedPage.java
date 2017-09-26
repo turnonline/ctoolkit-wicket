@@ -2,6 +2,8 @@ package org.ctoolkit.wicket.turnonline.markup.html.page;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -15,7 +17,9 @@ import org.ctoolkit.wicket.standard.model.I18NResourceModel;
 import org.ctoolkit.wicket.turnonline.menu.DefaultSchema;
 import org.ctoolkit.wicket.turnonline.menu.Footer;
 import org.ctoolkit.wicket.turnonline.menu.Header;
+import org.ctoolkit.wicket.turnonline.menu.MenuSchema;
 import org.ctoolkit.wicket.turnonline.menu.NavigationItem;
+import org.ctoolkit.wicket.turnonline.model.IModelFactory;
 import org.ctoolkit.wicket.turnonline.util.CookiesUtil;
 
 import java.util.Arrays;
@@ -58,7 +62,9 @@ public abstract class DecoratedPage<T>
         add( new ULabel( "title", getPageTitle() ) );
 
         // header
-        add( new Header( "header", getPage(), modelFactory(), model ) );
+        Page page = getPage();
+        IModelFactory modelFactory = modelFactory();
+        add( new Header( "header", page, modelFactory, model ) );
 
         final IModel<?> titleModel = getPageH1Header();
         add( new ULabel( "headerTitle", titleModel )
@@ -73,7 +79,12 @@ public abstract class DecoratedPage<T>
         } );
 
         // footer
-        add( new Footer( "footer", getNavigationPages(), Arrays.asList( Locale.US, new Locale( "sk" ) ) ) );
+        Roles roles = modelFactory.getRoles();
+        MenuSchema menuSchema = modelFactory.provideMenuSchema( page, roles );
+        IModel<List<NavigationItem>> footerItems;
+        footerItems = menuSchema == null ? DefaultSchema.EMPTY : menuSchema.getFooterMenuItems();
+
+        add( new Footer( "footer", footerItems, Arrays.asList( Locale.US, new Locale( "sk" ) ) ) );
 
         FeedbackPanel feedbackPanel = new FeedbackPanel( FEEDBACK_MARKUP_ID )
         {

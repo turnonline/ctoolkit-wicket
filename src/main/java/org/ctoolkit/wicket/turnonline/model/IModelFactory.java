@@ -99,11 +99,11 @@ public interface IModelFactory
     IModel<Long> getCartItemsCountModel();
 
     /**
-     * Returns the model representation of roles of currently logged in user. The empty instance means no roles.
+     * Returns the roles of currently logged in user. The null value means no roles.
      *
-     * @return the model representation of roles of currently logged in user
+     * @return the roles of currently logged in user
      */
-    IModel<Roles> getRolesModel();
+    Roles getRoles();
 
     /**
      * The model that renders a label of currently logged in user.
@@ -148,7 +148,7 @@ public interface IModelFactory
      * @param roles   the set of roles to be evaluated
      * @return the menu schema instance that is based on current roles
      */
-    MenuSchema provideMenuSchema( @Nonnull Page context, @Nonnull IModel<Roles> roles );
+    MenuSchema provideMenuSchema( @Nonnull Page context, @Nullable Roles roles );
 
     /**
      * Returns either a new or existing shopping mall model.

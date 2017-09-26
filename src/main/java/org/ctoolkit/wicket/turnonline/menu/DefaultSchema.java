@@ -19,13 +19,13 @@ public class DefaultSchema
 
     private static final long serialVersionUID = -3699216716579329067L;
 
-    protected IModel<Roles> roles;
+    private Roles roles;
 
     public DefaultSchema()
     {
     }
 
-    public DefaultSchema( IModel<Roles> roles )
+    public DefaultSchema( Roles roles )
     {
         this.roles = roles;
     }
@@ -35,6 +35,7 @@ public class DefaultSchema
      *
      * @return the empty list
      */
+    @Override
     public IModel<List<NavigationItem>> getSwipeMenuItems()
     {
         return EMPTY;
@@ -45,8 +46,25 @@ public class DefaultSchema
      *
      * @return the empty list
      */
+    @Override
     public IModel<List<NavigationItem>> getMenuItems()
     {
         return EMPTY;
+    }
+
+    /**
+     * Returns the default list of footer menu items.
+     *
+     * @return the empty list
+     */
+    @Override
+    public IModel<List<NavigationItem>> getFooterMenuItems()
+    {
+        return EMPTY;
+    }
+
+    protected Roles roles()
+    {
+        return roles;
     }
 }

@@ -82,11 +82,10 @@ public class Header
         this.localeModel = factory.getSessionLocaleModel( pageModel );
 
         final IModel<Boolean> cartVisibilityModel = factory.getShoppingCartVisibilityModel();
-        final IModel<Roles> rolesModel = factory.getRolesModel();
+        final Roles roles = factory.getRoles();
         final String accountRole = factory.getAccountRole();
 
         checkNotNull( cartVisibilityModel, "IModelFactory#getShoppingCartVisibilityModel() cannot return null!" );
-        checkNotNull( rolesModel, "IModelFactory#getRolesModel() cannot return null!" );
 
         final IModel<String> logoUrl = factory.getLogoUrlModel( pageModel );
         final IModel<Long> itemsCountModel = factory.getCartItemsCountModel();
@@ -99,7 +98,7 @@ public class Header
         Class settingsPage = checkNotNull( factory.getAccountSettingsPage(), "The account settings page class is" +
                 " mandatory!" );
 
-        MenuSchema schema = factory.provideMenuSchema( page, rolesModel );
+        MenuSchema schema = factory.provideMenuSchema( page, roles );
 
         // logo
         BookmarkablePageLink logoLink = new BookmarkablePageLink( "logo-link", AppEngineApplication.get().getHomePage() )
@@ -223,7 +222,7 @@ public class Header
             @Override
             public boolean isVisible()
             {
-                return rolesModel.getObject().hasRole( accountRole );
+                return roles != null && roles.hasRole( accountRole );
             }
         };
         topMenu.add( settings );

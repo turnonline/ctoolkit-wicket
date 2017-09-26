@@ -26,4 +26,11 @@ public interface MenuSchema
      * @return the list of {@link NavigationItem}
      */
     IModel<List<NavigationItem>> getMenuItems();
+
+    /**
+     * Returns the list of footer menu items.
+     *
+     * @return the list of {@link NavigationItem}
+     */
+    IModel<List<NavigationItem>> getFooterMenuItems();
 }
