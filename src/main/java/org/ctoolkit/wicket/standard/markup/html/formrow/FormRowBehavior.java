@@ -26,7 +26,16 @@ public class FormRowBehavior
 {
     private static final long serialVersionUID = -8684400463659951337L;
 
+    private static FormRowBehavior DEFAULT;
+
+    private static FormRowBehavior LABEL_NOT_RENDERED;
+
     private boolean componentFirst;
+
+    /**
+     * The boolean indication whether to render associated label or not. Default value is true.
+     */
+    private Boolean labelNotRendered;
 
     private Variant variant;
 
@@ -64,6 +73,44 @@ public class FormRowBehavior
         this.componentFirst = componentFirst;
     }
 
+    /**
+     * Returns thread-safe instance with default configuration.
+     * <ul>
+     * <li>{@link Variant#INLINE_BLOCK}</li>
+     * <li>no custom label model defined</li>
+     * <li>componentFirst is <code>false</code></li>
+     * </ul>
+     *
+     * @return the reusable behavior instance
+     */
+    public static FormRowBehavior get()
+    {
+        if ( DEFAULT == null )
+        {
+            DEFAULT = new FormRowBehavior();
+        }
+        return DEFAULT;
+    }
+
+    /**
+     * Returns thread-safe instance with following configuration.
+     * <ul>
+     * <li>{@link Variant#INLINE_BLOCK} where label won't be rendered</li>
+     * <li>componentFirst is irrelevant</li>
+     * </ul>
+     *
+     * @return the reusable behavior instance
+     */
+    public static FormRowBehavior labelNotRendered()
+    {
+        if ( LABEL_NOT_RENDERED == null )
+        {
+            LABEL_NOT_RENDERED = new FormRowBehavior();
+            LABEL_NOT_RENDERED.labelNotRendered = Boolean.TRUE;
+        }
+        return LABEL_NOT_RENDERED;
+    }
+
     @Override
     public void beforeRender( Component component )
     {
@@ -89,6 +136,11 @@ public class FormRowBehavior
 
     private void renderLabel( Component component, Response response )
     {
+        if ( labelNotRendered != null && labelNotRendered )
+        {
+            // label is being configured to be not rendered, thus nothing to do.
+            return;
+        }
         String label = getLabel( component ).getObject();
 
         if ( !Strings.isEmpty( label ) )
