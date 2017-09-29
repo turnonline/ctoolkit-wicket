@@ -13,7 +13,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The {@link IModel} factory consumed by wicket components.
@@ -73,14 +72,6 @@ public interface IModelFactory
      * @return the logo URL model or <tt>null</tt>
      */
     IModel<String> getLogoUrlModel( @Nullable IModel<?> pageModel );
-
-    /**
-     * Returns the locale model. Model or model's object may return <tt>null</tt> value meaning locale is not set.
-     *
-     * @param pageModel the model as an optional source
-     * @return the locale model
-     */
-    IModel<Locale> getSessionLocaleModel( @Nullable IModel<?> pageModel );
 
     /**
      * Returns the model representation whether an user is logged in or not.

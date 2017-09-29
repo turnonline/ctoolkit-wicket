@@ -2,7 +2,6 @@ package org.ctoolkit.wicket.turnonline.markup.html.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.RuntimeConfigurationType;
-import org.apache.wicket.Session;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -61,22 +60,16 @@ public abstract class Skeleton<T>
     public Skeleton()
     {
         super();
-
-        init();
     }
 
     public Skeleton( IModel<T> model )
     {
         super( model );
-
-        init();
     }
 
     public Skeleton( PageParameters parameters )
     {
         super( parameters );
-
-        init();
     }
 
     @Override
@@ -97,16 +90,11 @@ public abstract class Skeleton<T>
         return modelFactory;
     }
 
-    private void init()
+    private String getLangParam()
     {
         // override locale with lang parameter
         Request request = RequestCycle.get().getRequest();
-        String language = request.getRequestParameters().getParameterValue( PARAM_LANG ).toOptionalString();
-
-        if ( language != null )
-        {
-            getSession().setLocale( new Locale( language ) );
-        }
+        return request.getRequestParameters().getParameterValue( PARAM_LANG ).toOptionalString();
     }
 
     /**
@@ -131,8 +119,6 @@ public abstract class Skeleton<T>
     @Override
     protected void onInitialize()
     {
-        IModel<T> pageModel = getModel();
-
         if ( checkDefaultModelObjectIsNull )
         {
             if ( getModelObject() == null )
@@ -143,15 +129,10 @@ public abstract class Skeleton<T>
 
         super.onInitialize();
 
-        IModel<Locale> sellerLocaleModel = modelFactory.getSessionLocaleModel( pageModel );
-        if ( sellerLocaleModel != null )
+        String langParam = getLangParam();
+        if ( langParam != null )
         {
-            Locale sellerLocale = sellerLocaleModel.getObject();
-            if ( sellerLocale != null )
-            {
-                log.info( "Session's locale: " + sellerLocale );
-                Session.get().setLocale( sellerLocale );
-            }
+            getSession().setLocale( new Locale( langParam ) );
         }
 
         final IModel<T> model = getModel();

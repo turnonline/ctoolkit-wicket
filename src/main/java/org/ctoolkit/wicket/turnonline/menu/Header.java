@@ -2,6 +2,7 @@ package org.ctoolkit.wicket.turnonline.menu;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.event.IEvent;
@@ -35,7 +36,6 @@ import org.ctoolkit.wicket.turnonline.model.IModelFactory;
 import javax.annotation.Nullable;
 import java.text.MessageFormat;
 import java.util.Iterator;
-import java.util.Locale;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -59,8 +59,6 @@ public class Header
 
     private final IModel<Boolean> loggedInModel;
 
-    private final IModel<Locale> localeModel;
-
     private Label updateByAjaxItemCount;
 
     /**
@@ -79,7 +77,6 @@ public class Header
         checkNotNull( factory, "IModelFactory cannot be null!" );
 
         this.loggedInModel = checkNotNull( factory.isLoggedInModel(), "LoggedInModel cannot be null!" );
-        this.localeModel = factory.getSessionLocaleModel( pageModel );
 
         final IModel<Boolean> cartVisibilityModel = factory.getShoppingCartVisibilityModel();
         final Roles roles = factory.getRoles();
@@ -308,7 +305,7 @@ public class Header
     {
         super.renderHead( response );
 
-        String language = localeModel == null ? "" : localeModel.getObject().getLanguage();
+        String language = Session.get().getLocale().getLanguage();
 
         MessageFormat fmt = new MessageFormat( "//www.gstatic.com/authtoolkit/{0}js/gitkit.js" );
         Object[] args = new Object[1];
