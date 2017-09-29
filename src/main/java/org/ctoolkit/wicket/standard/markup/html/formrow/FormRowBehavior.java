@@ -111,11 +111,28 @@ public class FormRowBehavior
         return LABEL_NOT_RENDERED;
     }
 
+    public String getRowMarkupId( Component component )
+    {
+        return component.getMarkupId() + "-row";
+    }
+
     @Override
     public void beforeRender( Component component )
     {
+        StringBuilder builder = new StringBuilder( "<div class='" );
+        builder.append( getCssClass( component ) );
+        builder.append( "'" );
+
+        if ( component.getOutputMarkupId() )
+        {
+            builder.append( " id='" );
+            builder.append( getRowMarkupId( component ) );
+            builder.append( "'" );
+        }
+        builder.append( ">" );
+
         Response response = component.getResponse();
-        response.write( "<div class='" + getCssClass( component ) + "'>" );
+        response.write( builder.toString() );
         if ( !componentFirst )
         {
             renderLabel( component, response );
