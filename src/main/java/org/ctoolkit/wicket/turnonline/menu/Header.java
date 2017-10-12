@@ -79,6 +79,7 @@ public class Header
         this.loggedInModel = checkNotNull( factory.isLoggedInModel(), "LoggedInModel cannot be null!" );
 
         final IModel<Boolean> cartVisibilityModel = factory.getShoppingCartVisibilityModel();
+        final IModel<Boolean> searchVisibilityModel = factory.getSearchBoxVisibilityModel();
         final Roles roles = factory.getRoles();
         final String accountRole = factory.getAccountRole();
 
@@ -240,6 +241,18 @@ public class Header
         topMenu.add( myAccount );
 
         // search box
+        WebMarkupContainer searchVisibility = new WebMarkupContainer( "searchVisibility" )
+        {
+            private static final long serialVersionUID = -2626117427164560433L;
+
+            @Override
+            public boolean isVisible()
+            {
+                Boolean visible = searchVisibilityModel == null ? Boolean.TRUE : searchVisibilityModel.getObject();
+                checkNotNull( visible, "Model object of the search visibility model cannot be null!" );
+                return visible;
+            }
+        };
         SearchBox search = new SearchBox( "search" )
         {
             private static final long serialVersionUID = -5522734332756207784L;
@@ -250,7 +263,8 @@ public class Header
                 return factory.getSearchResponseList( input ).iterator();
             }
         };
-        topMenu.add( search );
+        searchVisibility.add( search );
+        topMenu.add( searchVisibility );
     }
 
     @Override

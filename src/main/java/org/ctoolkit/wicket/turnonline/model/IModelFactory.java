@@ -105,12 +105,20 @@ public interface IModelFactory
     IModel<String> getMyAccountLabelModel();
 
     /**
-     * Returns the model representation whether shopping cart link will be rendered or not.
+     * Returns the model representation whether page header's shopping cart link will be rendered or not.
      * Cannot return <tt>null</tt>.
      *
      * @return the shopping cart link visibility model
      */
     IModel<Boolean> getShoppingCartVisibilityModel();
+
+    /**
+     * Returns the model representation whether page header's search box will be rendered or not.
+     * If returns <tt>null</tt> the search box will be rendered.
+     *
+     * @return the search box visibility model
+     */
+    IModel<Boolean> getSearchBoxVisibilityModel();
 
     /**
      * Returns application default stylesheet resource reference array or empty array.
