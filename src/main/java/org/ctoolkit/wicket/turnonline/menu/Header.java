@@ -2,14 +2,11 @@ package org.ctoolkit.wicket.turnonline.menu;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptContentHeaderItem;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
@@ -20,10 +17,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.Url;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.UrlResourceReference;
-import org.apache.wicket.util.string.Strings;
 import org.ctoolkit.wicket.standard.behavior.FixedElementBehavior;
 import org.ctoolkit.wicket.standard.event.AjaxRequestTargetEvent;
 import org.ctoolkit.wicket.standard.markup.html.basic.ULabel;
@@ -31,10 +25,10 @@ import org.ctoolkit.wicket.standard.model.ExternalLinkModel;
 import org.ctoolkit.wicket.standard.model.I18NResourceModel;
 import org.ctoolkit.wicket.turnonline.AppEngineApplication;
 import org.ctoolkit.wicket.turnonline.event.RecalculateRequestEvent;
+import org.ctoolkit.wicket.turnonline.identity.behavior.IdentityJsHeaderReference;
 import org.ctoolkit.wicket.turnonline.model.IModelFactory;
 
 import javax.annotation.Nullable;
-import java.text.MessageFormat;
 import java.util.Iterator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -95,6 +89,8 @@ public class Header
         Class myAccountPage = checkNotNull( factory.getMyAccountPage(), "The my account page class is mandatory!" );
         Class settingsPage = checkNotNull( factory.getAccountSettingsPage(), "The account settings page class is" +
                 " mandatory!" );
+
+        add( IdentityJsHeaderReference.get() );
 
         MenuSchema schema = factory.provideMenuSchema( page, roles );
 
@@ -312,35 +308,6 @@ public class Header
         //container.getHeaderResponse().render( new OnDomReadyHeaderItem( "$('[title]').tooltip({track:true});" ) );
 
         super.renderHead( container );
-    }
-
-    @Override
-    public void renderHead( IHeaderResponse response )
-    {
-        super.renderHead( response );
-
-        String language = Session.get().getLocale().getLanguage();
-
-        MessageFormat fmt = new MessageFormat( "//www.gstatic.com/authtoolkit/{0}js/gitkit.js" );
-        Object[] args = new Object[1];
-        String stringUrl;
-
-        if ( Strings.isEmpty( language ) )
-        {
-            args[0] = "";
-            stringUrl = fmt.format( args );
-        }
-        else
-        {
-            args[0] = language.toLowerCase() + "/";
-            stringUrl = fmt.format( args );
-        }
-
-        // render gitkit JavaScript
-        Url url = Url.parse( stringUrl );
-
-        UrlResourceReference jsCdnReference = new UrlResourceReference( url );
-        response.render( JavaScriptHeaderItem.forReference( jsCdnReference ) );
     }
 
     private class IconInClassModel

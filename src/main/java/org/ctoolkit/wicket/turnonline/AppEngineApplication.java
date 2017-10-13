@@ -17,6 +17,7 @@ import org.apache.wicket.settings.IRequestCycleSettings;
 import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -118,7 +119,10 @@ public abstract class AppEngineApplication
      *
      * @return the list of themes or empty set
      */
-    public abstract Set<String> getThemeNames();
+    public Set<String> getThemeNames()
+    {
+        return new HashSet<>();
+    }
 
     /**
      * Return sitemap page which will be mapped to /sitemap.xml
