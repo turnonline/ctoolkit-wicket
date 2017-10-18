@@ -3,13 +3,13 @@ package org.ctoolkit.wicket.turnonline.identity.page;
 import org.apache.wicket.model.IModel;
 import org.ctoolkit.wicket.standard.model.I18NResourceModel;
 import org.ctoolkit.wicket.turnonline.identity.IdentityOptions;
-import org.ctoolkit.wicket.turnonline.identity.markup.IdentityLoginPanel;
+import org.ctoolkit.wicket.turnonline.identity.behavior.FirebaseAuthInit;
 import org.ctoolkit.wicket.turnonline.markup.html.page.DecoratedPage;
 
 import javax.inject.Inject;
 
 /**
- * The sign up page that implements Google Identity Toolkit's widget to sign up.
+ * The sign up page that implements Firebase App widget to sign up.
  * <p>
  * Expected i18 resource bundle:
  * <ul>
@@ -31,13 +31,7 @@ public class SignUp<T>
     public SignUp()
     {
         // login panel configured as sign up panel
-        add( new IdentityLoginPanel( "login-panel", identityOptions, true ) );
-    }
-
-    @Override
-    protected IModel<?> getPageH1Header()
-    {
-        return getPageTitle();
+        add( new FirebaseAuthInit( identityOptions ) );
     }
 
     @Override

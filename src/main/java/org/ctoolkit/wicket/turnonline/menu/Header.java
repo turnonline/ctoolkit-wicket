@@ -17,7 +17,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.ctoolkit.wicket.standard.behavior.FixedElementBehavior;
 import org.ctoolkit.wicket.standard.event.AjaxRequestTargetEvent;
 import org.ctoolkit.wicket.standard.markup.html.basic.ULabel;
@@ -25,7 +24,6 @@ import org.ctoolkit.wicket.standard.model.ExternalLinkModel;
 import org.ctoolkit.wicket.standard.model.I18NResourceModel;
 import org.ctoolkit.wicket.turnonline.AppEngineApplication;
 import org.ctoolkit.wicket.turnonline.event.RecalculateRequestEvent;
-import org.ctoolkit.wicket.turnonline.identity.behavior.IdentityJsHeaderReference;
 import org.ctoolkit.wicket.turnonline.model.IModelFactory;
 
 import javax.annotation.Nullable;
@@ -89,8 +87,6 @@ public class Header
         Class myAccountPage = checkNotNull( factory.getMyAccountPage(), "The my account page class is mandatory!" );
         Class settingsPage = checkNotNull( factory.getAccountSettingsPage(), "The account settings page class is" +
                 " mandatory!" );
-
-        add( IdentityJsHeaderReference.get() );
 
         MenuSchema schema = factory.provideMenuSchema( page, roles );
 
@@ -165,10 +161,7 @@ public class Header
         shoppingCartButton.add( updateByAjaxItemCount );
 
         // login link
-        PageParameters params = new PageParameters();
-        params.add( "mode", "select" );
-
-        Link login = new BookmarkablePageLink( "link-login", loginPage, params )
+        Link login = new BookmarkablePageLink( "link-login", loginPage )
         {
             private static final long serialVersionUID = -6308037382669267883L;
 
@@ -182,7 +175,7 @@ public class Header
         topMenu.add( login );
 
         // sign up link
-        Link signUp = new BookmarkablePageLink( "link-signUp", signUpPage, params )
+        Link signUp = new BookmarkablePageLink( "link-signUp", signUpPage )
         {
             private static final long serialVersionUID = -6003066496511986670L;
 

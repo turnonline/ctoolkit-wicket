@@ -5,6 +5,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.markup.head.filter.HeaderResponseContainer;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
@@ -36,6 +37,8 @@ public abstract class DecoratedPage<T>
         extends Skeleton<T>
 {
     public static final String FEEDBACK_MARKUP_ID = IndicatingAjaxButton.FEEDBACK_MARKUP_ID;
+
+    public static final String HTML_BOTTOM_FILTER_NAME = "html-bottom-container";
 
     private static final long serialVersionUID = 1L;
 
@@ -114,6 +117,8 @@ public abstract class DecoratedPage<T>
         feedbackPanel.setEscapeModelStrings( false );
         feedbackPanel.setOutputMarkupId( true );
         add( feedbackPanel );
+
+        add( new HeaderResponseContainer( "html-bottom-container", HTML_BOTTOM_FILTER_NAME ) );
     }
 
     protected IModel<List<NavigationItem>> getNavigationPages()

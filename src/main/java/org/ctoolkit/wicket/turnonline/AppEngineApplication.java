@@ -14,11 +14,14 @@ import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.settings.IRequestCycleSettings;
+import org.ctoolkit.wicket.turnonline.markup.html.basic.HtmlBottomJavaScriptDecorator;
 import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.ctoolkit.wicket.turnonline.markup.html.page.DecoratedPage.HTML_BOTTOM_FILTER_NAME;
 
 /**
  * The base wicket application intended to run on Google AppEngine.
@@ -39,8 +42,6 @@ public abstract class AppEngineApplication
     public static final String LOGOUT = "/logout";
 
     public static final String MY_ACCOUNT = "/my-account";
-
-    public static final String LOGIN_TROUBLE_HANDLER = "/login-trouble-handler";
 
     public static final String PARAM_PRODUCT_NAME = "_productName";
 
@@ -76,6 +77,8 @@ public abstract class AppEngineApplication
         } );
 
         super.init();
+
+        setHeaderResponseDecorator( new HtmlBottomJavaScriptDecorator( HTML_BOTTOM_FILTER_NAME ) );
 
         // set default markup encoding
         getMarkupSettings().setDefaultMarkupEncoding( "UTF-8" );

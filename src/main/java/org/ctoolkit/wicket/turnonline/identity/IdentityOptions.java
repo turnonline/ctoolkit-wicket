@@ -1,13 +1,17 @@
 package org.ctoolkit.wicket.turnonline.identity;
 
+import com.google.common.base.Strings;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * Identity options value holder.
+ * The Firebase configuration options value holder.
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
+ * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class IdentityOptions
         implements Serializable
@@ -16,22 +20,32 @@ public class IdentityOptions
 
     private String signInSuccessUrl;
 
-    private String signOutUrl;
+    private String termsUrl;
 
-    private String oobActionUrl;
+    private String credentialHelper = "firebaseui.auth.CredentialHelper.NONE";
 
     private String apiKey;
 
-    private String siteName;
+    private String projectId;
 
-    private DisplayMode displayMode;
+    private String databaseName;
 
-    private List<SignInOption> signInOptions = new ArrayList<>();
+    private String bucketName;
+
+    private String senderId;
+
+    private List<String> signInOptions = new ArrayList<>();
 
     public IdentityOptions()
     {
     }
 
+    /**
+     * The URL (relative) where to redirect the user after a successful sign-in.
+     * Required when the signInSuccess callback is not used or when it returns true.
+     *
+     * @return the where to redirect URL
+     */
     public String getSignInSuccessUrl()
     {
         return signInSuccessUrl;
@@ -42,26 +56,46 @@ public class IdentityOptions
         this.signInSuccessUrl = signInSuccessUrl;
     }
 
-    public String getSignOutUrl()
+    /**
+     * The URL (relative) of the terms of service page.
+     *
+     * @return the relative terms path
+     */
+    public String getTermsUrl()
     {
-        return signOutUrl;
+        return termsUrl;
     }
 
-    public void setSignOutUrl( String signOutUrl )
+    public void setTermsUrl( String termsUrl )
     {
-        this.signOutUrl = signOutUrl;
+        this.termsUrl = termsUrl;
     }
 
-    public String getOobActionUrl()
+    /**
+     * The credential helper configuration whether to use accountchooser.com or not.
+     *
+     * @return the credential helper
+     */
+    public String getCredentialHelper()
     {
-        return oobActionUrl;
+        return credentialHelper;
     }
 
-    public void setOobActionUrl( String oobActionUrl )
+    /**
+     * Possible values:
+     * firebaseui.auth.CredentialHelper.NONE
+     * firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+     */
+    public void setCredentialHelper( String credentialHelper )
     {
-        this.oobActionUrl = oobActionUrl;
+        this.credentialHelper = credentialHelper;
     }
 
+    /**
+     * The Firebase API key.
+     *
+     * @return the api key
+     */
     public String getApiKey()
     {
         return apiKey;
@@ -72,89 +106,130 @@ public class IdentityOptions
         this.apiKey = apiKey;
     }
 
-    public String getSiteName()
-    {
-        return siteName;
-    }
-
-    public void setSiteName( String siteName )
-    {
-        this.siteName = siteName;
-    }
-
-    public DisplayMode getDisplayMode()
-    {
-        return displayMode;
-    }
-
-    public void setDisplayMode( DisplayMode displayMode )
-    {
-        this.displayMode = displayMode;
-    }
-
-    public List<SignInOption> getSignInOptions()
+    /**
+     * The list of providers enabled for signing into your app.
+     *
+     * @return the list of providers
+     */
+    public List<String> getSignInOptions()
     {
         return signInOptions;
     }
 
+    /**
+     * The order you specify them will be the order they are displayed
+     * on the sign-in provider selection screen.
+     *
+     * @param signInOptions the list of sign in options to be set
+     */
+    public void setSignInOptions( List<String> signInOptions )
+    {
+        if ( signInOptions == null )
+        {
+            this.signInOptions.clear();
+            return;
+        }
+        this.signInOptions = signInOptions;
+    }
+
+    /**
+     * The list of comma separated providers to be rendered as a string.
+     *
+     * @return the list of comma separated providers
+     */
     public String getSignInOptionsAsString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append( "[" );
+        StringBuilder builder = new StringBuilder();
+        Iterator<String> iterator = signInOptions.iterator();
 
-        for ( SignInOption signInOption : getSignInOptions() )
+        while ( iterator.hasNext() )
         {
-            if ( sb.length() > 1 )
+            String signInOption = iterator.next();
+            if ( Strings.isNullOrEmpty( signInOption ) )
             {
-                sb.append( "," );
+                continue;
             }
-            sb.append( "\"" ).append( signInOption.getType() ).append( "\"" );
+
+            builder.append( signInOption );
+            if ( iterator.hasNext() )
+            {
+                builder.append( "," );
+                builder.append( "\n" );
+            }
         }
 
-        sb.append( "]" );
-
-        return sb.toString();
+        return builder.toString();
     }
 
-    public enum DisplayMode
+    /**
+     * The project ID, know as App Engine application ID.
+     *
+     * @return the project id
+     */
+    public String getProjectId()
     {
-        EMAIL_FIRST( "emailFirst" ),
-        PROVIDER_FIRST( "providerFirst" );
-
-        private String value;
-
-        DisplayMode( String value )
-        {
-            this.value = value;
-        }
-
-        public String getValue()
-        {
-            return value;
-        }
+        return projectId;
     }
 
-    public enum SignInOption
+    /**
+     * Rendered as authDomain ${projectId}.firebaseapp.com and projectId ${projectId}.
+     */
+    public void setProjectId( String projectId )
     {
-        PASSWORD( "password" ),
-        GOOGLE( "google" ),
-        FACEBOOK( "facebook" ),
-        YAHOO( "yahoo" ),
-        PAYPAL( "paypal" ),
-        AOL( "aol" ),
-        MICROSOFT( "microsoft" ),
-        TWITTER( "twitter" );
+        this.projectId = projectId;
+    }
 
-        private String type;
+    /**
+     * The Firebase database name.
+     *
+     * @return the database name
+     */
+    public String getDatabaseName()
+    {
+        return databaseName;
+    }
 
-        SignInOption( String type )
-        {
-            this.type = type;
-        }
+    /**
+     * Rendered as databaseURL https://${databaseName}.firebaseio.com
+     */
+    public void setDatabaseName( String databaseName )
+    {
+        this.databaseName = databaseName;
+    }
 
-        public String getType()
-        {
-            return type;
-        }
+    /**
+     * The Firebase store bucket name.
+     *
+     * @return the store bucket name
+     */
+    public String getBucketName()
+    {
+        return bucketName;
+    }
+
+    /**
+     * Rendered as storageBucket ${bucketName}.appspot.com
+     */
+    public void setBucketName( String bucketName )
+    {
+        this.bucketName = bucketName;
+    }
+
+    /**
+     * The Firebase sender Id.
+     *
+     * @return the sender id
+     */
+    public String getSenderId()
+    {
+        return senderId;
+    }
+
+    /**
+     * Rendered as messagingSenderId ${senderId}.
+     */
+    public void setSenderId( String senderId )
+    {
+        this.senderId = senderId;
     }
 }
