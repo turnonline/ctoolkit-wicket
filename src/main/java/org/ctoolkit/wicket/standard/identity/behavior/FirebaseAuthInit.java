@@ -1,4 +1,4 @@
-package org.ctoolkit.wicket.turnonline.identity.behavior;
+package org.ctoolkit.wicket.standard.identity.behavior;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
