@@ -27,39 +27,46 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public class FirebaseAuthInit
+public class FirebaseAppInit
         extends Behavior
 {
     private static final long serialVersionUID = 1L;
 
     private static final String JS_AUTH_CDN_URL = "https://www.gstatic.com/firebasejs/ui/{0}/firebase-ui-auth{1}.js";
 
-    private static UrlResourceReference cssAuthCdnReference;
-
-    private static UrlResourceReference jsFirebaseCdnReference;
-
-    private static UrlResourceReference jsAuthCdnReference;
-
-    private static String firebaseInitScript;
-
     private final String uiWidgetVersion;
 
     private final String firebaseVersion;
 
+    private final boolean uiOn;
+
+    private UrlResourceReference cssAuthCdnReference;
+
+    private UrlResourceReference jsFirebaseCdnReference;
+
+    private String firebaseInitScript;
+
     private IdentityOptions options;
 
-    public FirebaseAuthInit( @Nonnull IdentityOptions options )
+    public FirebaseAppInit( @Nonnull IdentityOptions options )
     {
-        this( "2.4.0", "4.5.1", options );
+        this( options, false );
     }
 
-    public FirebaseAuthInit( @Nonnull String uiWidgetVersion,
-                             @Nonnull String firebaseVersion,
-                             @Nonnull IdentityOptions options )
+    public FirebaseAppInit( @Nonnull IdentityOptions options, boolean uiOn )
+    {
+        this( "2.4.0", "4.5.1", options, uiOn );
+    }
+
+    public FirebaseAppInit( @Nonnull String uiWidgetVersion,
+                            @Nonnull String firebaseVersion,
+                            @Nonnull IdentityOptions options,
+                            boolean uiOn )
     {
         this.uiWidgetVersion = checkNotNull( uiWidgetVersion );
         this.firebaseVersion = checkNotNull( firebaseVersion );
         this.options = checkNotNull( options );
+        this.uiOn = uiOn;
     }
 
     @Override
@@ -70,13 +77,9 @@ public class FirebaseAuthInit
 
         // JavaScript firebase init script preparation
         PackageTextTemplate template;
-        template = new PackageTextTemplate( FirebaseAuthInit.class, "FirebaseAuthConfig.js" );
+        template = new PackageTextTemplate( FirebaseAppInit.class, "FirebaseAppInit.js" );
         Map<String, Object> variables = new HashMap<>();
 
-        variables.put( "signInSuccessUrl", options.getSignInSuccessUrl() );
-        variables.put( "credentialHelper", options.getCredentialHelper() );
-        variables.put( "signInOptions", options.getSignInOptionsAsString() );
-        variables.put( "termsUrl", options.getTermsUrl() );
         variables.put( "apiKey", options.getApiKey() );
         variables.put( "projectId", options.getProjectId() );
         variables.put( "databaseName", options.getDatabaseName() );
@@ -84,6 +87,20 @@ public class FirebaseAuthInit
         variables.put( "senderId", options.getSenderId() );
 
         firebaseInitScript = template.asString( variables );
+
+        if ( uiOn )
+        {
+            // JavaScript firebase UI config script preparation
+            template = new PackageTextTemplate( FirebaseAppInit.class, "FirebaseUiConfig.js" );
+            variables = new HashMap<>();
+
+            variables.put( "signInSuccessUrl", options.getSignInSuccessUrl() );
+            variables.put( "credentialHelper", options.getCredentialHelper() );
+            variables.put( "signInOptions", options.getSignInOptionsAsString() );
+            variables.put( "termsUrl", options.getTermsUrl() );
+
+            firebaseInitScript = firebaseInitScript + template.asString( variables );
+        }
 
         // CSS reference preparation
         url = Url.parse( "https://www.gstatic.com/firebasejs/ui/" + uiWidgetVersion + "/firebase-ui-auth.css" );
@@ -113,7 +130,7 @@ public class FirebaseAuthInit
 
         // JavaScript reference preparation
         Url url = Url.parse( stringUrl );
-        jsAuthCdnReference = new UrlResourceReference( url );
+        UrlResourceReference jsAuthCdnReference = new UrlResourceReference( url );
 
         // CSS header contribution
         response.render( CssHeaderItem.forReference( cssAuthCdnReference ) );

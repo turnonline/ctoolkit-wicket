@@ -1,7 +1,7 @@
 package org.ctoolkit.wicket.turnonline.identity.page;
 
 import org.apache.wicket.model.IModel;
-import org.ctoolkit.wicket.standard.identity.behavior.FirebaseAuthInit;
+import org.ctoolkit.wicket.standard.identity.behavior.FirebaseAppInit;
 import org.ctoolkit.wicket.standard.model.I18NResourceModel;
 import org.ctoolkit.wicket.turnonline.identity.IdentityOptions;
 import org.ctoolkit.wicket.turnonline.markup.html.page.DecoratedPage;
@@ -29,7 +29,7 @@ public class IdentityLogin<T>
 
     public IdentityLogin()
     {
-        add( new FirebaseAuthInit( identityOptions ) );
+        add( new FirebaseAppInit( identityOptions, true ) );
     }
 
     @Override

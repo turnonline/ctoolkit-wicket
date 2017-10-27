@@ -201,6 +201,10 @@ public class Header
         };
         topMenu.add( logout );
 
+        String script = "firebase.auth().signOut().then(function(){window.location.href='"
+                + AppEngineApplication.LOGOUT + "'});";
+        logout.add( new AttributeAppender( "onclick", script, ";" ) );
+
         // settings link
         Link settings = new BookmarkablePageLink( "link-settings", settingsPage )
         {
