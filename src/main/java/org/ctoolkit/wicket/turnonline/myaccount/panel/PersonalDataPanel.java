@@ -12,16 +12,16 @@ import org.ctoolkit.wicket.standard.model.I18NResourceModel;
  * Personal data form. Must be located within HTML form.
  * Expected model properties:
  * <ul>
- * <li>name<String></li>
- * <li>surname<String></li>
+ * <li>firstName<String></li>
+ * <li>lastName<String></li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>
  * Expected i18 resource bundle:
  * <ul>
  * <li>title.basicInfo</li>
- * <li>label.name</li>
- * <li>label.surname</li>
+ * <li>label.firstName</li>
+ * <li>label.lastName</li>
  * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
@@ -55,24 +55,24 @@ public class PersonalDataPanel<T>
     {
         super( id, new CompoundPropertyModel<>( model ) );
 
-        // name
-        TextField<String> name = new TextField<>( "name" );
-        name.setRequired( required );
-        name.setEnabled( !readOnly );
-        name.setLabel( new I18NResourceModel( "label.name" ) );
-        add( name );
+        // firstName
+        TextField<String> firstName = new TextField<>( "firstName" );
+        firstName.setRequired( required );
+        firstName.setEnabled( !readOnly );
+        firstName.setLabel( new I18NResourceModel( "label.firstName" ) );
+        add( firstName );
 
-        name.add( new FormRowBehavior() );
-        name.add( new AutofillBehavior( AutofillBehavior.Autofill.GIVEN_NAME ) );
+        firstName.add( new FormRowBehavior() );
+        firstName.add( new AutofillBehavior( AutofillBehavior.Autofill.GIVEN_NAME ) );
 
-        // surname
-        TextField<String> surname = new TextField<>( "surname" );
-        surname.setRequired( required );
-        surname.setEnabled( !readOnly );
-        surname.setLabel( new I18NResourceModel( "label.surname" ) );
-        add( surname );
+        // lastName
+        TextField<String> lastName = new TextField<>( "lastName" );
+        lastName.setRequired( required );
+        lastName.setEnabled( !readOnly );
+        lastName.setLabel( new I18NResourceModel( "label.lastName" ) );
+        add( lastName );
 
-        surname.add( new FormRowBehavior() );
-        surname.add( new AutofillBehavior( AutofillBehavior.Autofill.SURNAME ) );
+        lastName.add( new FormRowBehavior() );
+        lastName.add( new AutofillBehavior( AutofillBehavior.Autofill.SURNAME ) );
     }
 }

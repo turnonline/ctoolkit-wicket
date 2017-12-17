@@ -22,8 +22,8 @@ import org.ctoolkit.wicket.turnonline.validator.ZipValidator;
  * <ul>
  * <li>street &lt;String&gt;</li>
  * <li>city &lt;String&gt;</li>
- * <li>zip &lt;String&gt;</li>
- * <li>state &lt;String&gt;</li>
+ * <li>postcode &lt;String&gt;</li>
+ * <li>country &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>
@@ -32,8 +32,8 @@ import org.ctoolkit.wicket.turnonline.validator.ZipValidator;
  * <li>title.companyAddress</li>
  * <li>label.street</li>
  * <li>label.city</li>
- * <li>label.zip</li>
- * <li>label.state</li>
+ * <li>label.postcode</li>
+ * <li>label.country</li>
  * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
@@ -48,9 +48,9 @@ public abstract class CompanyAddressPanel<T>
 
     private String cityPath;
 
-    private String zipPath;
+    private String postcodePath;
 
-    private String statePath;
+    private String countryPath;
 
     /**
      * Constructor of company address form panel instance.
@@ -114,31 +114,31 @@ public abstract class CompanyAddressPanel<T>
         city.add( new FormRowBehavior() );
         city.add( AutofillCity.get() );
 
-        // zip
-        TextField<String> zip = new TextField<>( "zip" );
-        zip.setLabel( new I18NResourceModel( "label.zip" ) );
-        zip.setEnabled( !readOnly );
-        zip.setRequired( required );
-        add( zip );
+        // postcode
+        TextField<String> postcode = new TextField<>( "postcode" );
+        postcode.setLabel( new I18NResourceModel( "label.postcode" ) );
+        postcode.setEnabled( !readOnly );
+        postcode.setRequired( required );
+        add( postcode );
 
-        zip.add( new FormRowBehavior() );
-        zip.add( ZipValidator.get() );
-        zip.add( AutofillPostalCode.get() );
+        postcode.add( new FormRowBehavior() );
+        postcode.add( ZipValidator.get() );
+        postcode.add( AutofillPostalCode.get() );
 
-        // state
-        DropDownChoice state = provideCountry( "state" );
-        state.setRequired( required );
-        state.setLabel( new I18NResourceModel( "label.state" ) );
-        state.setEnabled( !readOnly );
-        add( state );
+        // country
+        DropDownChoice country = provideCountry( "country" );
+        country.setRequired( required );
+        country.setLabel( new I18NResourceModel( "label.country" ) );
+        country.setEnabled( !readOnly );
+        add( country );
 
-        state.add( new FormRowBehavior() );
-        state.add( AutofillCountry.get() );
+        country.add( new FormRowBehavior() );
+        country.add( AutofillCountry.get() );
 
         this.streetPath = street.getPageRelativePath();
         this.cityPath = city.getPageRelativePath();
-        this.zipPath = zip.getPageRelativePath();
-        this.statePath = state.getPageRelativePath();
+        this.postcodePath = postcode.getPageRelativePath();
+        this.countryPath = country.getPageRelativePath();
     }
 
     /**
@@ -155,9 +155,9 @@ public abstract class CompanyAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the company address street text field instance
      */
-    public TextField addCompanyAddressStreet( Behavior... behaviors )
+    public TextField addStreet( Behavior... behaviors )
     {
-        return ( TextField ) getCompanyAddressStreet().add( behaviors );
+        return ( TextField ) getStreet().add( behaviors );
     }
 
     /**
@@ -166,31 +166,31 @@ public abstract class CompanyAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the company address city text field instance
      */
-    public TextField addCompanyAddressCity( Behavior... behaviors )
+    public TextField addCity( Behavior... behaviors )
     {
-        return ( TextField ) getCompanyAddressCity().add( behaviors );
+        return ( TextField ) getCity().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the company address zip text field component.
+     * Adds a behavior modifier to the company address postcode text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the company address zip text field instance
+     * @return the company address postcode text field instance
      */
-    public TextField addCompanyAddressZip( Behavior... behaviors )
+    public TextField addPostcode( Behavior... behaviors )
     {
-        return ( TextField ) getCompanyAddressZip().add( behaviors );
+        return ( TextField ) getPostcode().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the company address state drop down select box component.
+     * Adds a behavior modifier to the company address country drop down select box component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the company address state drop down select box instance
+     * @return the company address country drop down select box instance
      */
-    public DropDownChoice addCompanyAddressState( Behavior... behaviors )
+    public DropDownChoice addCountry( Behavior... behaviors )
     {
-        return ( DropDownChoice ) getCompanyAddressState().add( behaviors );
+        return ( DropDownChoice ) getCountry().add( behaviors );
     }
 
     /**
@@ -198,7 +198,7 @@ public abstract class CompanyAddressPanel<T>
      *
      * @return the company address street text field instance
      */
-    public TextField getCompanyAddressStreet()
+    public TextField getStreet()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.streetPath;
         Component component = getPage().get( componentPath );
@@ -210,7 +210,7 @@ public abstract class CompanyAddressPanel<T>
      *
      * @return the company address city text field instance
      */
-    public TextField getCompanyAddressCity()
+    public TextField getCity()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.cityPath;
         Component component = getPage().get( componentPath );
@@ -218,25 +218,25 @@ public abstract class CompanyAddressPanel<T>
     }
 
     /**
-     * Returns the company address zip text field instance.
+     * Returns the company address postcode text field instance.
      *
-     * @return the company address zip text field instance
+     * @return the company address postcode text field instance
      */
-    public TextField getCompanyAddressZip()
+    public TextField getPostcode()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.zipPath;
+        String componentPath = this.getPageRelativePath() + ":" + this.postcodePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
 
     /**
-     * Returns the company address state drop down select box instance.
+     * Returns the company address country drop down select box instance.
      *
-     * @return the company address state drop down select box instance
+     * @return the company address country drop down select box instance
      */
-    public DropDownChoice getCompanyAddressState()
+    public DropDownChoice getCountry()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.statePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.countryPath;
         Component component = getPage().get( componentPath );
         return ( DropDownChoice ) component;
     }

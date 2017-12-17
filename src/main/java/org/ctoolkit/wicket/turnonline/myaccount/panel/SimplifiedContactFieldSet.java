@@ -20,12 +20,12 @@ import org.ctoolkit.wicket.standard.model.I18NResourceModel;
  * The simplified contact person fieldset. Must be located within HTML form to post data.
  * Expected model properties:
  * <ul>
- * <li>contactPrefix &lt;String&gt;</li>
- * <li>contactPersonName  &lt;String&gt;</li>
- * <li>contactPersonSurname &lt;String&gt;</li>
- * <li>contactSuffix &lt;String&gt;</li>
- * <li>contactCellPhoneNumber &lt;String&gt;</li>
- * <li>contactEmail &lt;Boolean&gt;</li>
+ * <li>prefix &lt;String&gt;</li>
+ * <li>firstName  &lt;String&gt;</li>
+ * <li>lastName &lt;String&gt;</li>
+ * <li>suffix &lt;String&gt;</li>
+ * <li>phone &lt;String&gt;</li>
+ * <li>email &lt;Boolean&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>
@@ -34,10 +34,10 @@ import org.ctoolkit.wicket.standard.model.I18NResourceModel;
  * <li>title.contactPerson</li>
  * <li>label.show</li>
  * <li>label.prefix</li>
- * <li>label.name</li>
- * <li>label.surname</li>
+ * <li>label.firstName</li>
+ * <li>label.lastName</li>
  * <li>label.suffix</li>
- * <li>label.cellPhoneNumber</li>
+ * <li>label.phone</li>
  * <li>label.email</li>
  * </ul>
  *
@@ -53,13 +53,13 @@ public class SimplifiedContactFieldSet<T>
 
     private String prefixPath;
 
-    private String namePath;
+    private String firstNamePath;
 
-    private String surnamePath;
+    private String lastNamePath;
 
     private String suffixPath;
 
-    private String cellPhoneNumberPath;
+    private String phonePath;
 
     private String emailPath;
 
@@ -101,7 +101,7 @@ public class SimplifiedContactFieldSet<T>
         visibility.add( AutofillOff.get() );
 
         // contact prefix
-        TextField<String> contactPrefix = new TextField<String>( "contactPrefix" )
+        TextField<String> contactPrefix = new TextField<String>( "prefix" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -118,8 +118,8 @@ public class SimplifiedContactFieldSet<T>
         contactPrefix.add( new FormRowBehavior() );
         contactPrefix.add( AutofillOff.get() );
 
-        // contact person name
-        TextField<String> name = new TextField<String>( "contactPersonName" )
+        // contact person first name
+        TextField<String> firstName = new TextField<String>( "firstName" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -130,14 +130,14 @@ public class SimplifiedContactFieldSet<T>
             }
         };
 
-        name.setLabel( new I18NResourceModel( "label.name" ) );
-        add( name );
+        firstName.setLabel( new I18NResourceModel( "label.firstName" ) );
+        add( firstName );
 
-        name.add( new FormRowBehavior() );
-        name.add( AutofillOff.get() );
+        firstName.add( new FormRowBehavior() );
+        firstName.add( AutofillOff.get() );
 
-        // contact person surname
-        TextField<String> surname = new TextField<String>( "contactPersonSurname" )
+        // contact person last last name
+        TextField<String> lastName = new TextField<String>( "lastName" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -148,14 +148,14 @@ public class SimplifiedContactFieldSet<T>
             }
         };
 
-        surname.setLabel( new I18NResourceModel( "label.surname" ) );
-        add( surname );
+        lastName.setLabel( new I18NResourceModel( "label.lastName" ) );
+        add( lastName );
 
-        surname.add( new FormRowBehavior() );
-        surname.add( AutofillOff.get() );
+        lastName.add( new FormRowBehavior() );
+        lastName.add( AutofillOff.get() );
 
         // contact suffix
-        TextField<String> contactSuffix = new TextField<String>( "contactSuffix" )
+        TextField<String> contactSuffix = new TextField<String>( "suffix" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -173,7 +173,7 @@ public class SimplifiedContactFieldSet<T>
         contactSuffix.add( AutofillOff.get() );
 
         // cell phone number
-        TextField<String> cellPhoneNumber = new TextField<String>( "contactCellPhoneNumber" )
+        TextField<String> phoneNumber = new TextField<String>( "phone" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -184,14 +184,14 @@ public class SimplifiedContactFieldSet<T>
             }
         };
 
-        cellPhoneNumber.setLabel( new I18NResourceModel( "label.cellPhoneNumber" ) );
-        add( cellPhoneNumber );
+        phoneNumber.setLabel( new I18NResourceModel( "label.phoneNumber" ) );
+        add( phoneNumber );
 
-        cellPhoneNumber.add( new FormRowBehavior() );
-        cellPhoneNumber.add( AutofillOff.get() );
+        phoneNumber.add( new FormRowBehavior() );
+        phoneNumber.add( AutofillOff.get() );
 
         // contact email
-        TextField<String> contactEmail = new TextField<String>( "contactEmail" )
+        TextField<String> contactEmail = new TextField<String>( "email" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -211,10 +211,10 @@ public class SimplifiedContactFieldSet<T>
 
         this.visibilityPath = visibility.getPageRelativePath();
         this.prefixPath = contactPrefix.getPageRelativePath();
-        this.namePath = name.getPageRelativePath();
-        this.surnamePath = surname.getPageRelativePath();
+        this.firstNamePath = firstName.getPageRelativePath();
+        this.lastNamePath = lastName.getPageRelativePath();
         this.suffixPath = contactSuffix.getPageRelativePath();
-        this.cellPhoneNumberPath = cellPhoneNumber.getPageRelativePath();
+        this.phonePath = phoneNumber.getPageRelativePath();
         this.emailPath = contactEmail.getPageRelativePath();
     }
 
@@ -236,9 +236,9 @@ public class SimplifiedContactFieldSet<T>
     public boolean isEdited()
     {
         boolean edited = true;
-        if ( getContactPersonName().getModelObject() == null
-                && getContactPersonSurname().getModelObject() == null
-                && getContactCellPhoneNumber().getModelObject() == null
+        if ( getFirstName().getModelObject() == null
+                && getLastName().getModelObject() == null
+                && getPhoneNumber().getModelObject() == null
                 && getContactEmail().getModelObject() == null )
         {
             edited = false;
@@ -265,31 +265,31 @@ public class SimplifiedContactFieldSet<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the contact prefix text field instance
      */
-    public TextField addContactPrefix( Behavior... behaviors )
+    public TextField addPrefix( Behavior... behaviors )
     {
-        return ( TextField ) getContactPrefix().add( behaviors );
+        return ( TextField ) getPrefix().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the contact person name text field component.
+     * Adds a behavior modifier to the contact person first name text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the contact person name text field instance
+     * @return the contact person first name text field instance
      */
-    public TextField addContactPersonName( Behavior... behaviors )
+    public TextField addFirstName( Behavior... behaviors )
     {
-        return ( TextField ) getContactPersonName().add( behaviors );
+        return ( TextField ) getFirstName().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the contact person surname text field component.
+     * Adds a behavior modifier to the contact person last name text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the contact person surname text field instance
+     * @return the contact person last name text field instance
      */
-    public TextField addContactPersonSurname( Behavior... behaviors )
+    public TextField addLastName( Behavior... behaviors )
     {
-        return ( TextField ) getContactPersonSurname().add( behaviors );
+        return ( TextField ) getLastName().add( behaviors );
     }
 
     /**
@@ -298,20 +298,20 @@ public class SimplifiedContactFieldSet<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the contact suffix text field instance
      */
-    public TextField addContactSuffix( Behavior... behaviors )
+    public TextField addSuffix( Behavior... behaviors )
     {
-        return ( TextField ) getContactSuffix().add( behaviors );
+        return ( TextField ) getSuffix().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the contact cell phone number text field component.
+     * Adds a behavior modifier to the contact phone number text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the contact cell phone number text field instance
+     * @return the contact phone number text field instance
      */
-    public TextField addContactCellPhoneNumber( Behavior... behaviors )
+    public TextField addPhoneNumber( Behavior... behaviors )
     {
-        return ( TextField ) getContactCellPhoneNumber().add( behaviors );
+        return ( TextField ) getPhoneNumber().add( behaviors );
     }
 
     /**
@@ -342,7 +342,7 @@ public class SimplifiedContactFieldSet<T>
      *
      * @return the contact prefix text field instance
      */
-    public TextField getContactPrefix()
+    public TextField getPrefix()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.prefixPath;
         Component component = getPage().get( componentPath );
@@ -350,25 +350,25 @@ public class SimplifiedContactFieldSet<T>
     }
 
     /**
-     * Returns the contact person name text field instance.
+     * Returns the contact person first name text field instance.
      *
-     * @return the contact person name text field instance
+     * @return the contact person first name text field instance
      */
-    public TextField getContactPersonName()
+    public TextField getFirstName()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.namePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.firstNamePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
 
     /**
-     * Returns the contact person surname text field instance.
+     * Returns the contact person last name text field instance.
      *
-     * @return the contact person surname text field instance
+     * @return the contact person last name text field instance
      */
-    public TextField getContactPersonSurname()
+    public TextField getLastName()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.surnamePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.lastNamePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
@@ -378,7 +378,7 @@ public class SimplifiedContactFieldSet<T>
      *
      * @return the contact suffix text field instance
      */
-    public TextField getContactSuffix()
+    public TextField getSuffix()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.suffixPath;
         Component component = getPage().get( componentPath );
@@ -386,13 +386,13 @@ public class SimplifiedContactFieldSet<T>
     }
 
     /**
-     * Returns the contact cell phone number text field instance.
+     * Returns the contact phone number text field instance.
      *
-     * @return the contact cell phone number text field instance
+     * @return the contact phone number text field instance
      */
-    public TextField getContactCellPhoneNumber()
+    public TextField getPhoneNumber()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.cellPhoneNumberPath;
+        String componentPath = this.getPageRelativePath() + ":" + this.phonePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }

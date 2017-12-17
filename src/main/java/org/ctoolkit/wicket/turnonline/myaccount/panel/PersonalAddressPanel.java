@@ -19,10 +19,10 @@ import org.ctoolkit.wicket.turnonline.validator.ZipValidator;
  * The personal address form panel. Must be located within HTML form to post data.
  * Expected model properties:
  * <ul>
- * <li>personalAddressStreet &lt;String&gt;</li>
- * <li>personalAddressCity &lt;String&gt;</li>
- * <li>personalAddressZip &lt;String&gt;</li>
- * <li>personalAddressState &lt;String&gt;</li>
+ * <li>street &lt;String&gt;</li>
+ * <li>city &lt;String&gt;</li>
+ * <li>postcode &lt;String&gt;</li>
+ * <li>country &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>
@@ -31,8 +31,8 @@ import org.ctoolkit.wicket.turnonline.validator.ZipValidator;
  * <li>title.address</li>
  * <li>label.street</li>
  * <li>label.city</li>
- * <li>label.zip</li>
- * <li>label.state</li>
+ * <li>label.postcode</li>
+ * <li>label.country</li>
  * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
@@ -43,13 +43,13 @@ public abstract class PersonalAddressPanel<T>
 {
     private static final long serialVersionUID = 3308357904788269745L;
 
-    private String personalAddressStreetPath;
+    private String streetPath;
 
-    private String personalAddressCityPath;
+    private String cityPath;
 
-    private String personalAddressZipPath;
+    private String postcodePath;
 
-    private String personalAddressStatePath;
+    private String countryPath;
 
     /**
      * Constructor of personal address form panel instance.
@@ -92,7 +92,7 @@ public abstract class PersonalAddressPanel<T>
         super( id, new CompoundPropertyModel<>( model ) );
 
         // street
-        TextField<String> street = new TextField<>( "personalAddressStreet" );
+        TextField<String> street = new TextField<>( "street" );
         street.setRequired( required );
         street.setLabel( new I18NResourceModel( "label.street" ) );
         street.setEnabled( !readOnly );
@@ -102,7 +102,7 @@ public abstract class PersonalAddressPanel<T>
         street.add( AutofillAddress.get() );
 
         // city
-        TextField<String> city = new TextField<>( "personalAddressCity" );
+        TextField<String> city = new TextField<>( "city" );
         city.setRequired( required );
         city.setLabel( new I18NResourceModel( "label.city" ) );
         city.setEnabled( !readOnly );
@@ -111,32 +111,32 @@ public abstract class PersonalAddressPanel<T>
         city.add( new FormRowBehavior() );
         city.add( AutofillCity.get() );
 
-        // zip
-        TextField<String> zip = new TextField<>( "personalAddressZip" );
-        zip.setRequired( required );
-        zip.setLabel( new I18NResourceModel( "label.zip" ) );
-        zip.setEnabled( !readOnly );
-        add( zip );
+        // postcode
+        TextField<String> postcode = new TextField<>( "postcode" );
+        postcode.setRequired( required );
+        postcode.setLabel( new I18NResourceModel( "label.postcode" ) );
+        postcode.setEnabled( !readOnly );
+        add( postcode );
 
-        zip.add( new FormRowBehavior() );
-        zip.add( ZipValidator.get() );
-        zip.add( AutofillPostalCode.get() );
+        postcode.add( new FormRowBehavior() );
+        postcode.add( ZipValidator.get() );
+        postcode.add( AutofillPostalCode.get() );
 
-        // state
-        DropDownChoice state = provideCountry( "personalAddressState" );
-        state.setRequired( required );
-        state.setLabel( new I18NResourceModel( "label.state" ) );
-        state.setEnabled( !readOnly );
-        state.setNullValid( false );
-        add( state );
+        // country
+        DropDownChoice country = provideCountry( "country" );
+        country.setRequired( required );
+        country.setLabel( new I18NResourceModel( "label.country" ) );
+        country.setEnabled( !readOnly );
+        country.setNullValid( false );
+        add( country );
 
-        state.add( new FormRowBehavior() );
-        state.add( AutofillCountry.get() );
+        country.add( new FormRowBehavior() );
+        country.add( AutofillCountry.get() );
 
-        this.personalAddressStreetPath = street.getPageRelativePath();
-        this.personalAddressCityPath = city.getPageRelativePath();
-        this.personalAddressZipPath = zip.getPageRelativePath();
-        this.personalAddressStatePath = state.getPageRelativePath();
+        this.streetPath = street.getPageRelativePath();
+        this.cityPath = city.getPageRelativePath();
+        this.postcodePath = postcode.getPageRelativePath();
+        this.countryPath = country.getPageRelativePath();
     }
 
     /**
@@ -153,9 +153,9 @@ public abstract class PersonalAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the personal address street text field instance
      */
-    public TextField addPersonalAddressStreet( Behavior... behaviors )
+    public TextField addStreet( Behavior... behaviors )
     {
-        return ( TextField ) getPersonalAddressStreet().add( behaviors );
+        return ( TextField ) getStreet().add( behaviors );
     }
 
     /**
@@ -164,31 +164,31 @@ public abstract class PersonalAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the personal address city text field instance
      */
-    public TextField addPersonalAddressCity( Behavior... behaviors )
+    public TextField addCity( Behavior... behaviors )
     {
-        return ( TextField ) getPersonalAddressCity().add( behaviors );
+        return ( TextField ) getCity().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the personal address zip text field component.
+     * Adds a behavior modifier to the personal address postcode text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the personal address zip text field instance
+     * @return the personal address postcode text field instance
      */
-    public TextField addPersonalAddressZip( Behavior... behaviors )
+    public TextField addPostcode( Behavior... behaviors )
     {
-        return ( TextField ) getPersonalAddressZip().add( behaviors );
+        return ( TextField ) getPostcode().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the personal address state drop down select box component.
+     * Adds a behavior modifier to the personal address country drop down select box component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the personal address state drop down select box instance
+     * @return the personal address country drop down select box instance
      */
-    public DropDownChoice addPersonalAddressState( Behavior... behaviors )
+    public DropDownChoice addCountry( Behavior... behaviors )
     {
-        return ( DropDownChoice ) getPersonalAddressState().add( behaviors );
+        return ( DropDownChoice ) getCountry().add( behaviors );
     }
 
     /**
@@ -196,9 +196,9 @@ public abstract class PersonalAddressPanel<T>
      *
      * @return the personal address street text field instance
      */
-    public TextField getPersonalAddressStreet()
+    public TextField getStreet()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.personalAddressStreetPath;
+        String componentPath = this.getPageRelativePath() + ":" + this.streetPath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
@@ -208,33 +208,33 @@ public abstract class PersonalAddressPanel<T>
      *
      * @return the personal address city text field instance
      */
-    public TextField getPersonalAddressCity()
+    public TextField getCity()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.personalAddressCityPath;
+        String componentPath = this.getPageRelativePath() + ":" + this.cityPath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
 
     /**
-     * Returns the personal address zip text field instance.
+     * Returns the personal address postcode text field instance.
      *
-     * @return the personal address zip text field instance
+     * @return the personal address postcode text field instance
      */
-    public TextField getPersonalAddressZip()
+    public TextField getPostcode()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.personalAddressZipPath;
+        String componentPath = this.getPageRelativePath() + ":" + this.postcodePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
 
     /**
-     * Returns the personal address state drop down select box instance.
+     * Returns the personal address country drop down select box instance.
      *
-     * @return the personal address state drop down select box instance
+     * @return the personal address country drop down select box instance
      */
-    public DropDownChoice getPersonalAddressState()
+    public DropDownChoice getCountry()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.personalAddressStatePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.countryPath;
         Component component = getPage().get( componentPath );
         return ( DropDownChoice ) component;
     }

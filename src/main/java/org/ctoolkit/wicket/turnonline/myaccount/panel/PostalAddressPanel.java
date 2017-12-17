@@ -33,14 +33,13 @@ import org.ctoolkit.wicket.turnonline.validator.ZipValidator;
  * Expected model properties:
  * <ul>
  * <li>company &lt;Boolean&gt;</li>
- * <li>postalAddressSame &lt;Boolean&gt;</li>
- * <li>postalAddressBusinessName &lt;String&gt;</li>
- * <li>postalAddressName &lt;String&gt;</li>
- * <li>postalAddressSurname &lt;String&gt;</li>
- * <li>postalAddressStreet &lt;String&gt;</li>
- * <li>postalAddressCity &lt;String&gt;</li>
- * <li>postalAddressZip &lt;String&gt;</li>
- * <li>postalAddressState &lt;String&gt;</li>
+ * <li>businessName &lt;String&gt;</li>
+ * <li>firstName &lt;String&gt;</li>
+ * <li>lastName &lt;String&gt;</li>
+ * <li>street &lt;String&gt;</li>
+ * <li>city &lt;String&gt;</li>
+ * <li>postcode &lt;String&gt;</li>
+ * <li>country &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>
@@ -48,12 +47,12 @@ import org.ctoolkit.wicket.turnonline.validator.ZipValidator;
  * <ul>
  * <li>title.postalAddress</li>
  * <li>label.businessName</li>
- * <li>label.name</li>
- * <li>label.surname</li>
+ * <li>label.firstName</li>
+ * <li>label.lastName</li>
  * <li>label.street</li>
  * <li>label.city</li>
- * <li>label.zip</li>
- * <li>label.state</li>
+ * <li>label.postcode</li>
+ * <li>label.country</li>
  * </ul>
  * There is a dedicated property model that renders label based
  * on the evaluated <code>boolean</code> value of company.
@@ -72,17 +71,17 @@ public abstract class PostalAddressPanel<T>
 
     private String businessNamePath;
 
-    private String namePath;
+    private String firstNamePath;
 
-    private String surnamePath;
+    private String lastNamePath;
 
     private String streetPath;
 
     private String cityPath;
 
-    private String zipPath;
+    private String postcodePath;
 
-    private String statePath;
+    private String countryPath;
 
     /**
      * Constructor of postal address form panel instance.
@@ -91,9 +90,9 @@ public abstract class PostalAddressPanel<T>
      * @param id    the component id
      * @param model the component model
      */
-    public PostalAddressPanel( String id, IModel<T> model )
+    public PostalAddressPanel( String id, IModel<T> model, IModel<Boolean> visible )
     {
-        this( id, model, false );
+        this( id, model, visible, false );
     }
 
     /**
@@ -105,19 +104,19 @@ public abstract class PostalAddressPanel<T>
      */
     public PostalAddressPanel( String id,
                                IModel<T> model,
+                               final IModel<Boolean> visible,
                                boolean readOnly )
     {
         super( id, new CompoundPropertyModel<>( model ) );
         setOutputMarkupId( true );
 
         final IModel<Boolean> company = new PropertyModel<>( model, "company" );
-        final IModel<Boolean> visible = new PropertyModel<>( model, "postalAddressSame" );
 
         // checkbox to check postal address same
-        CheckBox postalAddressSame = new IndicatingAjaxCheckBox( "postalAddressSame" );
-        postalAddressSame.setLabel( new TitleModel( company ) );
-        postalAddressSame.setVisible( !readOnly );
-        postalAddressSame.add( new OnChangeAjaxBehavior()
+        CheckBox hasPostalAddress = new IndicatingAjaxCheckBox( "hasPostalAddress", visible );
+        hasPostalAddress.setLabel( new TitleModel( company ) );
+        hasPostalAddress.setVisible( !readOnly );
+        hasPostalAddress.add( new OnChangeAjaxBehavior()
         {
             private static final long serialVersionUID = 1L;
 
@@ -127,13 +126,13 @@ public abstract class PostalAddressPanel<T>
                 target.add( PostalAddressPanel.this );
             }
         } );
-        add( postalAddressSame );
+        add( hasPostalAddress );
 
-        postalAddressSame.add( new FormRowBehavior( true ) );
-        postalAddressSame.add( AutofillOff.get() );
+        hasPostalAddress.add( new FormRowBehavior( true ) );
+        hasPostalAddress.add( AutofillOff.get() );
 
-        // business name
-        TextField<String> businessName = new TextField<String>( "postalAddressBusinessName" )
+        // business firstName
+        TextField<String> businessName = new TextField<String>( "businessName" )
         {
             private static final long serialVersionUID = 7086952516840223357L;
 
@@ -141,7 +140,13 @@ public abstract class PostalAddressPanel<T>
             protected void onConfigure()
             {
                 super.onConfigure();
-                this.setVisible( !visible.getObject() && company.getObject() );
+                Boolean visibleObject = visible.getObject();
+                boolean isVisible = visibleObject == null ? false : visibleObject;
+
+                Boolean companyObject = company.getObject();
+                boolean isCompany = companyObject == null ? false : companyObject;
+
+                this.setVisible( !isVisible && isCompany );
             }
         };
         businessName.setLabel( new I18NResourceModel( "label.businessName" ) );
@@ -152,8 +157,8 @@ public abstract class PostalAddressPanel<T>
         businessName.add( new FormRowBehavior() );
         businessName.add( AutofillOrganization.get() );
 
-        // name
-        TextField<String> name = new TextField<String>( "postalAddressName" )
+        // first name
+        TextField<String> firstName = new TextField<String>( "firstName" )
         {
             private static final long serialVersionUID = 6959658578636824879L;
 
@@ -161,19 +166,25 @@ public abstract class PostalAddressPanel<T>
             protected void onConfigure()
             {
                 super.onConfigure();
-                this.setVisible( !visible.getObject() && !company.getObject() );
+                Boolean visibleObject = visible.getObject();
+                boolean isVisible = visibleObject == null ? false : visibleObject;
+
+                Boolean companyObject = company.getObject();
+                boolean isCompany = companyObject == null ? false : companyObject;
+
+                this.setVisible( !isVisible && !isCompany );
             }
         };
-        name.setLabel( new I18NResourceModel( "label.name" ) );
-        name.setEnabled( !readOnly );
-        name.setRequired( !readOnly );
-        add( name );
+        firstName.setLabel( new I18NResourceModel( "label.firstName" ) );
+        firstName.setEnabled( !readOnly );
+        firstName.setRequired( !readOnly );
+        add( firstName );
 
-        name.add( new FormRowBehavior() );
-        name.add( AutofillGivenName.get() );
+        firstName.add( new FormRowBehavior() );
+        firstName.add( AutofillGivenName.get() );
 
-        // surname
-        TextField<String> surname = new TextField<String>( "postalAddressSurname" )
+        // last name
+        TextField<String> lastName = new TextField<String>( "lastName" )
         {
             private static final long serialVersionUID = 4172820888920886458L;
 
@@ -181,19 +192,25 @@ public abstract class PostalAddressPanel<T>
             protected void onConfigure()
             {
                 super.onConfigure();
-                this.setVisible( !visible.getObject() && !company.getObject() );
+                Boolean visibleObject = visible.getObject();
+                boolean isVisible = visibleObject == null ? false : visibleObject;
+
+                Boolean companyObject = company.getObject();
+                boolean isCompany = companyObject == null ? false : companyObject;
+
+                this.setVisible( !isVisible && !isCompany );
             }
         };
-        surname.setLabel( new I18NResourceModel( "label.surname" ) );
-        surname.setEnabled( !readOnly );
-        surname.setRequired( !readOnly );
-        add( surname );
+        lastName.setLabel( new I18NResourceModel( "label.lastName" ) );
+        lastName.setEnabled( !readOnly );
+        lastName.setRequired( !readOnly );
+        add( lastName );
 
-        surname.add( new FormRowBehavior() );
-        surname.add( AutofillSurname.get() );
+        lastName.add( new FormRowBehavior() );
+        lastName.add( AutofillSurname.get() );
 
         // street
-        TextField<String> street = new TextField<>( "postalAddressStreet" );
+        TextField<String> street = new TextField<>( "street" );
         street.setLabel( new I18NResourceModel( "label.street" ) );
         street.setEnabled( !readOnly );
         street.setRequired( !readOnly );
@@ -204,7 +221,7 @@ public abstract class PostalAddressPanel<T>
         street.add( new VisibleIfModelFalse( visible ) );
 
         // city
-        TextField<String> city = new TextField<>( "postalAddressCity" );
+        TextField<String> city = new TextField<>( "city" );
         city.setLabel( new I18NResourceModel( "label.city" ) );
         city.setEnabled( !readOnly );
         city.setRequired( !readOnly );
@@ -214,35 +231,35 @@ public abstract class PostalAddressPanel<T>
         city.add( AutofillCity.get() );
         city.add( new VisibleIfModelFalse( visible ) );
 
-        // zip
-        TextField<String> zip = new TextField<>( "postalAddressZip" );
-        zip.setLabel( new I18NResourceModel( "label.zip" ) );
-        zip.setEnabled( !readOnly );
-        zip.setRequired( !readOnly );
-        add( zip );
+        // postcode
+        TextField<String> postcode = new TextField<>( "postcode" );
+        postcode.setLabel( new I18NResourceModel( "label.postcode" ) );
+        postcode.setEnabled( !readOnly );
+        postcode.setRequired( !readOnly );
+        add( postcode );
 
-        zip.add( new FormRowBehavior() );
-        zip.add( ZipValidator.get() );
-        zip.add( AutofillPostalCode.get() );
-        zip.add( new VisibleIfModelFalse( visible ) );
+        postcode.add( new FormRowBehavior() );
+        postcode.add( ZipValidator.get() );
+        postcode.add( AutofillPostalCode.get() );
+        postcode.add( new VisibleIfModelFalse( visible ) );
 
-        // state
-        DropDownChoice state = provideCountry( "postalAddressState" );
-        state.setLabel( new I18NResourceModel( "label.state" ) );
-        state.setEnabled( !readOnly );
-        state.setRequired( !readOnly );
-        add( state );
-        state.add( new FormRowBehavior() );
-        state.add( AutofillCountry.get() );
-        state.add( new VisibleIfModelFalse( visible ) );
+        // country
+        DropDownChoice country = provideCountry( "country" );
+        country.setLabel( new I18NResourceModel( "label.country" ) );
+        country.setEnabled( !readOnly );
+        country.setRequired( !readOnly );
+        add( country );
+        country.add( new FormRowBehavior() );
+        country.add( AutofillCountry.get() );
+        country.add( new VisibleIfModelFalse( visible ) );
 
         this.businessNamePath = businessName.getPageRelativePath();
-        this.namePath = name.getPageRelativePath();
-        this.surnamePath = surname.getPageRelativePath();
+        this.firstNamePath = firstName.getPageRelativePath();
+        this.lastNamePath = lastName.getPageRelativePath();
         this.streetPath = street.getPageRelativePath();
         this.cityPath = city.getPageRelativePath();
-        this.zipPath = zip.getPageRelativePath();
-        this.statePath = state.getPageRelativePath();
+        this.postcodePath = postcode.getPageRelativePath();
+        this.countryPath = country.getPageRelativePath();
     }
 
     /**
@@ -271,31 +288,31 @@ public abstract class PostalAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the postal address business name text field instance
      */
-    public TextField addPostalAddressBusinessName( Behavior... behaviors )
+    public TextField addBusinessName( Behavior... behaviors )
     {
-        return ( TextField ) getPostalAddressBusinessName().add( behaviors );
+        return ( TextField ) getBusinessName().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the postal address name text field component.
+     * Adds a behavior modifier to the postal address first name text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the postal address name text field instance
+     * @return the postal address first name text field instance
      */
-    public TextField addPostalAddressName( Behavior... behaviors )
+    public TextField addFirstName( Behavior... behaviors )
     {
-        return ( TextField ) getPostalAddressName().add( behaviors );
+        return ( TextField ) getFirstName().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the postal address surname text field component.
+     * Adds a behavior modifier to the postal address last name text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the postal address surname text field instance
+     * @return the postal address last name text field instance
      */
-    public TextField addPostalAddressSurname( Behavior... behaviors )
+    public TextField addLastName( Behavior... behaviors )
     {
-        return ( TextField ) getPostalAddressSurname().add( behaviors );
+        return ( TextField ) getLastName().add( behaviors );
     }
 
     /**
@@ -304,9 +321,9 @@ public abstract class PostalAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the postal address street text field instance
      */
-    public TextField addPostalAddressStreet( Behavior... behaviors )
+    public TextField addStreet( Behavior... behaviors )
     {
-        return ( TextField ) getPostalAddressStreet().add( behaviors );
+        return ( TextField ) getStreet().add( behaviors );
     }
 
     /**
@@ -315,31 +332,31 @@ public abstract class PostalAddressPanel<T>
      * @param behaviors the behavior modifier(s) to be added
      * @return the postal address city text field instance
      */
-    public TextField addPostalAddressCity( Behavior... behaviors )
+    public TextField addCity( Behavior... behaviors )
     {
-        return ( TextField ) getPostalAddressCity().add( behaviors );
+        return ( TextField ) getCity().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the postal address zip text field component.
+     * Adds a behavior modifier to the postal address postcode text field component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the postal address zip text field instance
+     * @return the postal address postcode text field instance
      */
-    public TextField addPostalAddressZip( Behavior... behaviors )
+    public TextField addPostcode( Behavior... behaviors )
     {
-        return ( TextField ) getPostalAddressZip().add( behaviors );
+        return ( TextField ) getPostcode().add( behaviors );
     }
 
     /**
-     * Adds a behavior modifier to the postal address state drop down select box component.
+     * Adds a behavior modifier to the postal address country drop down select box component.
      *
      * @param behaviors the behavior modifier(s) to be added
-     * @return the postal address state drop down select box instance
+     * @return the postal address country drop down select box instance
      */
-    public DropDownChoice addPostalAddressState( Behavior... behaviors )
+    public DropDownChoice addCountry( Behavior... behaviors )
     {
-        return ( DropDownChoice ) getPostalAddressState().add( behaviors );
+        return ( DropDownChoice ) getCountry().add( behaviors );
     }
 
     /**
@@ -347,7 +364,7 @@ public abstract class PostalAddressPanel<T>
      *
      * @return the postal address business name text field instance
      */
-    public TextField getPostalAddressBusinessName()
+    public TextField getBusinessName()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.businessNamePath;
         Component component = getPage().get( componentPath );
@@ -355,25 +372,25 @@ public abstract class PostalAddressPanel<T>
     }
 
     /**
-     * Returns the postal person name text field instance.
+     * Returns the postal person first name text field instance.
      *
-     * @return the postal person name text field instance
+     * @return the postal person first name text field instance
      */
-    public TextField getPostalAddressName()
+    public TextField getFirstName()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.namePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.firstNamePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
 
     /**
-     * Returns the postal person surname text field instance.
+     * Returns the postal person last name text field instance.
      *
-     * @return the postal person surname text field instance
+     * @return the postal person last name text field instance
      */
-    public TextField getPostalAddressSurname()
+    public TextField getLastName()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.surnamePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.lastNamePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
@@ -383,7 +400,7 @@ public abstract class PostalAddressPanel<T>
      *
      * @return the postal address street text field instance
      */
-    public TextField getPostalAddressStreet()
+    public TextField getStreet()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.streetPath;
         Component component = getPage().get( componentPath );
@@ -395,7 +412,7 @@ public abstract class PostalAddressPanel<T>
      *
      * @return the postal address city text field instance
      */
-    public TextField getPostalAddressCity()
+    public TextField getCity()
     {
         String componentPath = this.getPageRelativePath() + ":" + this.cityPath;
         Component component = getPage().get( componentPath );
@@ -403,25 +420,25 @@ public abstract class PostalAddressPanel<T>
     }
 
     /**
-     * Returns the postal address zip text field instance.
+     * Returns the postal address postcode text field instance.
      *
-     * @return the postal address zip text field instance
+     * @return the postal address postcode text field instance
      */
-    public TextField getPostalAddressZip()
+    public TextField getPostcode()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.zipPath;
+        String componentPath = this.getPageRelativePath() + ":" + this.postcodePath;
         Component component = getPage().get( componentPath );
         return ( TextField ) component;
     }
 
     /**
-     * Returns the postal address state drop down select box instance.
+     * Returns the postal address country drop down select box instance.
      *
-     * @return the postal address state drop down select box instance
+     * @return the postal address country drop down select box instance
      */
-    public DropDownChoice getPostalAddressState()
+    public DropDownChoice getCountry()
     {
-        String componentPath = this.getPageRelativePath() + ":" + this.statePath;
+        String componentPath = this.getPageRelativePath() + ":" + this.countryPath;
         Component component = getPage().get( componentPath );
         return ( DropDownChoice ) component;
     }
@@ -447,7 +464,9 @@ public abstract class PostalAddressPanel<T>
         @Override
         public String getObject()
         {
-            return model.getObject() ? trueLabelModel.getString() : falseLabelModel.getString();
+            Boolean modelObject = model.getObject();
+            boolean is = modelObject == null ? false : modelObject;
+            return is ? trueLabelModel.getString() : falseLabelModel.getString();
         }
 
         @Override

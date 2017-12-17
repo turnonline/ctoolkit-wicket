@@ -28,7 +28,6 @@ import org.ctoolkit.wicket.turnonline.validator.VatIdValidator;
  * <li>taxId &lt;String&gt;</li>
  * <li>vatId &lt;String&gt;</li>
  * <li>vatPayer &lt;Boolean&gt;</li>
- * <li>contactCellPhoneNumber &lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>
@@ -41,7 +40,6 @@ import org.ctoolkit.wicket.turnonline.validator.VatIdValidator;
  * <li>label.taxId</li>
  * <li>label.vatId</li>
  * <li>label.vatPayer</li>
- * <li>label.contactPhoneNumber</li>
  * </ul>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
@@ -63,8 +61,6 @@ public abstract class CompanyBasicInfo<T>
     private String vatIdPath;
 
     private String vatPayerPath;
-
-    private String contactCellPhoneNumberPath;
 
     /**
      * Constructor of company basic info panel instance.
@@ -165,22 +161,12 @@ public abstract class CompanyBasicInfo<T>
         vatPayer.setVisible( !readOnly );
         add( vatPayer );
 
-        // contact cell phone number
-        TextField<String> contactCellPhoneNumber = new TextField<>( "contactCellPhoneNumber" );
-        contactCellPhoneNumber.setLabel( new I18NResourceModel( "label.contactPhoneNumber" ) );
-        contactCellPhoneNumber.setEnabled( !readOnly );
-        add( contactCellPhoneNumber );
-
-        contactCellPhoneNumber.add( new FormRowBehavior() );
-        contactCellPhoneNumber.add( new AutofillBehavior( AutofillBehavior.Autofill.PHONE_NUMBER ) );
-
         this.businessNamePath = businessName.getPageRelativePath();
         this.legalFormPath = legalForm.getPageRelativePath();
         this.companyIdPath = companyId.getPageRelativePath();
         this.taxIdPath = taxId.getPageRelativePath();
         this.vatIdPath = vatId.getPageRelativePath();
         this.vatPayerPath = vatPayer.getPageRelativePath();
-        this.contactCellPhoneNumberPath = contactCellPhoneNumber.getPageRelativePath();
     }
 
     /**
@@ -258,17 +244,6 @@ public abstract class CompanyBasicInfo<T>
     }
 
     /**
-     * Adds a behavior modifier to the contact cell phone number text field component.
-     *
-     * @param behaviors the behavior modifier(s) to be added
-     * @return the contact cell phone number text field instance
-     */
-    public TextField addContactCellPhoneNumber( Behavior... behaviors )
-    {
-        return ( TextField ) getContactCellPhoneNumber().add( behaviors );
-    }
-
-    /**
      * Returns the business name text field instance.
      *
      * @return the business name text field instance
@@ -338,17 +313,5 @@ public abstract class CompanyBasicInfo<T>
         String componentPath = this.getPageRelativePath() + ":" + this.vatPayerPath;
         Component component = getPage().get( componentPath );
         return ( CheckBox ) component;
-    }
-
-    /**
-     * Returns the contact cell phone number text field instance.
-     *
-     * @return the contact cell phone number text field instance
-     */
-    public TextField getContactCellPhoneNumber()
-    {
-        String componentPath = this.getPageRelativePath() + ":" + this.contactCellPhoneNumberPath;
-        Component component = getPage().get( componentPath );
-        return ( TextField ) component;
     }
 }
