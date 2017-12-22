@@ -15,7 +15,7 @@ import java.util.List;
 public class DefaultSchema
         implements MenuSchema
 {
-    public static final ListModel<NavigationItem> EMPTY = new ListModel<>( new ArrayList<NavigationItem>() );
+    public static final ListModel<NavItem> EMPTY = new ListModel<>( new ArrayList<NavItem>() );
 
     private static final long serialVersionUID = -3699216716579329067L;
 
@@ -36,7 +36,7 @@ public class DefaultSchema
      * @return the empty list
      */
     @Override
-    public IModel<List<NavigationItem>> getSwipeMenuItems()
+    public IModel<List<NavItem>> getSwipeMenuItems()
     {
         return EMPTY;
     }
@@ -47,7 +47,7 @@ public class DefaultSchema
      * @return the empty list
      */
     @Override
-    public IModel<List<NavigationItem>> getMenuItems()
+    public IModel<List<NavItem>> getMenuItems()
     {
         return EMPTY;
     }
@@ -58,7 +58,7 @@ public class DefaultSchema
      * @return the empty list
      */
     @Override
-    public IModel<List<NavigationItem>> getFooterMenuItems()
+    public IModel<List<NavItem>> getFooterMenuItems()
     {
         return EMPTY;
     }

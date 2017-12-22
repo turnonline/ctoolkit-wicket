@@ -6,7 +6,7 @@ import org.apache.wicket.model.IModel;
 /**
  * ULabel is label which does not escape values.
  *
- * @author <a href="mailto:jozef.pohorelec@ctoolkit.org>Jozef Pohorelec</a>"
+ * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
 public class ULabel
         extends Label

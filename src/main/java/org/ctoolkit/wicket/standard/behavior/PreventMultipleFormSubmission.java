@@ -10,18 +10,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Behavior disable multiple form submission
+ * The behavior to avoid multiple form submission.
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
-public class PreventMultipleFormSubmission extends Behavior {
+public class PreventMultipleFormSubmission
+        extends Behavior
+{
+    private static final long serialVersionUID = 1L;
 
     @Override
-    public void renderHead(Component component, IHeaderResponse response) {
-        PackageTextTemplate template = new PackageTextTemplate( PreventMultipleFormSubmission.class, "prevent-multiple-form-submission.js" );
+    public void renderHead( Component component, IHeaderResponse response )
+    {
+        String fileName = "prevent-multiple-form-submission.js";
+        PackageTextTemplate template = new PackageTextTemplate( PreventMultipleFormSubmission.class, fileName );
         Map<String, Object> variables = new HashMap<>();
         variables.put( "markupId", component.getMarkupId() );
 
-        response.render(OnDomReadyHeaderItem.forScript(template.asString( variables )));
+        response.render( OnDomReadyHeaderItem.forScript( template.asString( variables ) ) );
     }
 }

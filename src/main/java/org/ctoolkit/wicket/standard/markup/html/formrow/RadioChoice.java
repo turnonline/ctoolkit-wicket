@@ -188,7 +188,7 @@ public class RadioChoice<T>
     /**
      * Template method that can be overridden by clients that implement IOnChangeListener to be
      * notified by onChange events of a select element. This method does nothing by default.
-     * <p/>
+     * <p>
      * Called when a option is selected of a dropdown list that wants to be notified of this event.
      * This method is to be implemented by clients that want to be notified of selection events.
      *
@@ -382,8 +382,8 @@ public class RadioChoice<T>
     /**
      * You may subclass this method to provide additional attributes to the &lt;input ..&gt; tag.
      *
-     * @param index
-     * @param choice
+     * @param index  the index
+     * @param choice the choice type
      * @return tag attribute name/value pairs.
      */
     protected IValueMap getAdditionalAttributes( final int index, final T choice )

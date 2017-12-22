@@ -85,6 +85,8 @@ public class IdentityOptions
      * Possible values:
      * firebaseui.auth.CredentialHelper.NONE
      * firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+     *
+     * @param credentialHelper the one of the possible value to be set
      */
     public void setCredentialHelper( String credentialHelper )
     {
@@ -173,6 +175,8 @@ public class IdentityOptions
 
     /**
      * Rendered as authDomain ${projectId}.firebaseapp.com and projectId ${projectId}.
+     *
+     * @param projectId the project ID to be set
      */
     public void setProjectId( String projectId )
     {
@@ -191,6 +195,8 @@ public class IdentityOptions
 
     /**
      * Rendered as databaseURL https://${databaseName}.firebaseio.com
+     *
+     * @param databaseName the database name to be set
      */
     public void setDatabaseName( String databaseName )
     {
@@ -209,6 +215,8 @@ public class IdentityOptions
 
     /**
      * Rendered as storageBucket ${bucketName}.appspot.com
+     *
+     * @param bucketName the bucket name to be set
      */
     public void setBucketName( String bucketName )
     {
@@ -227,6 +235,8 @@ public class IdentityOptions
 
     /**
      * Rendered as messagingSenderId ${senderId}.
+     *
+     * @param senderId the sender ID to be set
      */
     public void setSenderId( String senderId )
     {

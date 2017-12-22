@@ -1,7 +1,7 @@
 package org.ctoolkit.wicket.standard.markup.autofill;
 
 /**
- * The autofill {@link Autofill#POSTAL_CODE} singleton behavior implementation.
+ * The autofill {@link AutofillBehavior.Autofill#POSTAL_CODE} singleton behavior implementation.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */

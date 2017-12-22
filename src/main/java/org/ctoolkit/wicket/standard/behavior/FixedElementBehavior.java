@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * The behavior that renders a JavaScript snippet from 'fixed-element-behavior.js' (on dom ready).
  *
- * @author <a href="mailto:jozef.pohorelec@ctoolkit.org>Jozef Pohorelec</a>"
+ * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
 public class FixedElementBehavior
         extends Behavior

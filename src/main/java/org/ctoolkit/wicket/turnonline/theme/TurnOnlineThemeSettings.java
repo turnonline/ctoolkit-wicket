@@ -90,8 +90,8 @@ public class TurnOnlineThemeSettings
     /**
      * Sets the stylesheet reference.
      *
-     * @param theme the theme name of the stylesheet reference as a key
-     * @return the stylesheet reference to be set
+     * @param theme               the theme name of the stylesheet reference as a key
+     * @param stylesheetReference the stylesheet reference to be set
      */
     void setStylesheetReference( String theme, ResourceReference stylesheetReference )
     {

@@ -12,8 +12,8 @@ import org.ctoolkit.wicket.standard.model.I18NResourceModel;
  * Personal data form. Must be located within HTML form.
  * Expected model properties:
  * <ul>
- * <li>firstName<String></li>
- * <li>lastName<String></li>
+ * <li>firstName&lt;String&gt;</li>
+ * <li>lastName&lt;String&gt;</li>
  * </ul>
  * The model instance is being wrapped by {@link CompoundPropertyModel}.
  * <p>

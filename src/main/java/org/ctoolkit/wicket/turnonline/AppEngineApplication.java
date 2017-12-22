@@ -14,7 +14,7 @@ import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.settings.IRequestCycleSettings;
-import org.ctoolkit.wicket.turnonline.markup.html.basic.HtmlBottomJavaScriptDecorator;
+import org.ctoolkit.wicket.standard.markup.html.basic.HtmlBottomJavaScriptDecorator;
 import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;

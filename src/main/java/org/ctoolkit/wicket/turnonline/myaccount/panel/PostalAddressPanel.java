@@ -87,12 +87,13 @@ public abstract class PostalAddressPanel<T>
      * Constructor of postal address form panel instance.
      * By default fields are editable.
      *
-     * @param id    the component id
-     * @param model the component model
+     * @param id     the component id
+     * @param model  the component model
+     * @param hidden the boolean indication whether the form will be hidden or not
      */
-    public PostalAddressPanel( String id, IModel<T> model, IModel<Boolean> visible )
+    public PostalAddressPanel( String id, IModel<T> model, IModel<Boolean> hidden )
     {
-        this( id, model, visible, false );
+        this( id, model, hidden, false );
     }
 
     /**
@@ -100,11 +101,12 @@ public abstract class PostalAddressPanel<T>
      *
      * @param id       the component id
      * @param model    the component model
+     * @param hidden the boolean indication whether the form will be hidden or not
      * @param readOnly the boolean indication whether to render this component as read only
      */
     public PostalAddressPanel( String id,
                                IModel<T> model,
-                               final IModel<Boolean> visible,
+                               final IModel<Boolean> hidden,
                                boolean readOnly )
     {
         super( id, new CompoundPropertyModel<>( model ) );
@@ -113,7 +115,7 @@ public abstract class PostalAddressPanel<T>
         final IModel<Boolean> company = new PropertyModel<>( model, "company" );
 
         // checkbox to check postal address same
-        CheckBox hasPostalAddress = new IndicatingAjaxCheckBox( "hasPostalAddress", visible );
+        CheckBox hasPostalAddress = new IndicatingAjaxCheckBox( "hasPostalAddress", hidden );
         hasPostalAddress.setLabel( new TitleModel( company ) );
         hasPostalAddress.setVisible( !readOnly );
         hasPostalAddress.add( new OnChangeAjaxBehavior()
@@ -140,7 +142,7 @@ public abstract class PostalAddressPanel<T>
             protected void onConfigure()
             {
                 super.onConfigure();
-                Boolean visibleObject = visible.getObject();
+                Boolean visibleObject = hidden.getObject();
                 boolean isVisible = visibleObject == null ? false : visibleObject;
 
                 Boolean companyObject = company.getObject();
@@ -166,7 +168,7 @@ public abstract class PostalAddressPanel<T>
             protected void onConfigure()
             {
                 super.onConfigure();
-                Boolean visibleObject = visible.getObject();
+                Boolean visibleObject = hidden.getObject();
                 boolean isVisible = visibleObject == null ? false : visibleObject;
 
                 Boolean companyObject = company.getObject();
@@ -192,7 +194,7 @@ public abstract class PostalAddressPanel<T>
             protected void onConfigure()
             {
                 super.onConfigure();
-                Boolean visibleObject = visible.getObject();
+                Boolean visibleObject = hidden.getObject();
                 boolean isVisible = visibleObject == null ? false : visibleObject;
 
                 Boolean companyObject = company.getObject();
@@ -218,7 +220,7 @@ public abstract class PostalAddressPanel<T>
 
         street.add( new FormRowBehavior() );
         street.add( AutofillAddress.get() );
-        street.add( new VisibleIfModelFalse( visible ) );
+        street.add( new VisibleIfModelFalse( hidden ) );
 
         // city
         TextField<String> city = new TextField<>( "city" );
@@ -229,7 +231,7 @@ public abstract class PostalAddressPanel<T>
 
         city.add( new FormRowBehavior() );
         city.add( AutofillCity.get() );
-        city.add( new VisibleIfModelFalse( visible ) );
+        city.add( new VisibleIfModelFalse( hidden ) );
 
         // postcode
         TextField<String> postcode = new TextField<>( "postcode" );
@@ -241,7 +243,7 @@ public abstract class PostalAddressPanel<T>
         postcode.add( new FormRowBehavior() );
         postcode.add( ZipValidator.get() );
         postcode.add( AutofillPostalCode.get() );
-        postcode.add( new VisibleIfModelFalse( visible ) );
+        postcode.add( new VisibleIfModelFalse( hidden ) );
 
         // country
         DropDownChoice country = provideCountry( "country" );
@@ -251,7 +253,7 @@ public abstract class PostalAddressPanel<T>
         add( country );
         country.add( new FormRowBehavior() );
         country.add( AutofillCountry.get() );
-        country.add( new VisibleIfModelFalse( visible ) );
+        country.add( new VisibleIfModelFalse( hidden ) );
 
         this.businessNamePath = businessName.getPageRelativePath();
         this.firstNamePath = firstName.getPageRelativePath();

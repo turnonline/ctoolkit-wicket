@@ -1,7 +1,7 @@
 package org.ctoolkit.wicket.standard.markup.autofill;
 
 /**
- * The autofill {@link Autofill#CITY} singleton behavior implementation.
+ * The autofill {@link AutofillBehavior.Autofill#CITY} singleton behavior implementation.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */

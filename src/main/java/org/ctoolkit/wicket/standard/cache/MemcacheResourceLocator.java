@@ -58,6 +58,7 @@ public class MemcacheResourceLocator
      *
      * @param finders  the default wicket resource finders
      * @param memcache the App Engine cache shared between instances
+     * @param mapper   the map of: overriding a path with a new path value
      */
     public MemcacheResourceLocator( @Nonnull List<IResourceFinder> finders,
                                     @Nonnull Cache memcache,

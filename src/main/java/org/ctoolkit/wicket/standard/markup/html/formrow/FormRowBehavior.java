@@ -12,12 +12,13 @@ import org.apache.wicket.util.string.Strings;
 /**
  * Behavior wraps FormComponent with label and div:
  * <pre>
- *     &lt;div&gt;
- *         &lt;label&gt;${label}&lt;/label&gt;
+ * {@code
+ *     <div>
+ *         <label>${label}</label>
  *         [component]
- *     &lt;/div&gt;
+ *     </div>
+ * }
  * </pre>
- * <p/>
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */

@@ -1,4 +1,4 @@
-package org.ctoolkit.wicket.turnonline.markup.html.basic;
+package org.ctoolkit.wicket.standard.markup.html.basic;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;

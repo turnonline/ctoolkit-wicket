@@ -12,7 +12,7 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The drop down model that is a bridge between choices model (map of code -> choice)
+ * The drop down model that is a bridge between choices model (map of code and choice)
  * and and target model.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>

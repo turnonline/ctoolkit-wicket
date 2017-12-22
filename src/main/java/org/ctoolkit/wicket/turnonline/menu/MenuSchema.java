@@ -16,21 +16,21 @@ public interface MenuSchema
     /**
      * Returns the list of swipe menu items.
      *
-     * @return the list of {@link NavigationItem}
+     * @return the list of {@link NavItem}
      */
-    IModel<List<NavigationItem>> getSwipeMenuItems();
+    IModel<List<NavItem>> getSwipeMenuItems();
 
     /**
      * Returns the list of menu items.
      *
-     * @return the list of {@link NavigationItem}
+     * @return the list of {@link NavItem}
      */
-    IModel<List<NavigationItem>> getMenuItems();
+    IModel<List<NavItem>> getMenuItems();
 
     /**
      * Returns the list of footer menu items.
      *
-     * @return the list of {@link NavigationItem}
+     * @return the list of {@link NavItem}
      */
-    IModel<List<NavigationItem>> getFooterMenuItems();
+    IModel<List<NavItem>> getFooterMenuItems();
 }

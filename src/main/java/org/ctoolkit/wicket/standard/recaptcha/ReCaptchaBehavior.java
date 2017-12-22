@@ -7,7 +7,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 
 /**
- * The Google reCAPTCHA behaviour that contributes related JavaScript resources from CDN to the </head> tag.
+ * The Google reCAPTCHA behaviour that contributes related JavaScript resources from CDN to the {@code </head>} tag.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */

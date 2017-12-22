@@ -2,170 +2,79 @@ package org.ctoolkit.wicket.turnonline.menu;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.ctoolkit.wicket.turnonline.util.CookiesUtil;
 
 import java.util.List;
 
 /**
- * The component renders a list of static {@link NavigationItem}. It also add a css class to navigation item if that
+ * The component renders a list of static {@link NavItem}. It also adds a css class to navigation item if that
  * item class is equal to parent page class.
+ * The expected HTML might have for examplea following wicket components.
+ * {@link NavItem} wicket IDs ('link-nav-item' and 'link-nav-item-label') must match:
+ * <p>
+ * <b>For example</b>
+ * <pre>
+ * {@code
+ * <li wicket:id="navigation">
+ *      <a wicket:id="link-nav-item">
+ *          <span wicket:id="link-nav-item-label"></span>
+ *      </a>
+ * </li>
+ * }
+ * </pre>
+ * This will render repeated list of {@code <li>..<li/>} HTML tags.
  *
  * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
 public class Navigation
-        extends Panel
+        extends ListView<NavItem>
 {
-    private static final long serialVersionUID = -1063460846957044329L;
-
-    private RepeatingView repeater;
-
-    private IModel<List<NavigationItem>> items;
+    private static final long serialVersionUID = 7770930801430140492L;
 
     /**
-     * Construct a new navigation panel
+     * Constructs a new navigation bar.
+     *
+     * @param id the wicket component id
+     */
+    public Navigation( String id )
+    {
+        super( id );
+    }
+
+    /**
+     * Constructs a new navigation bar.
      *
      * @param id    the wicket component id
-     * @param items the static list of navigation items
+     * @param model the model of the static list of navigation items
      */
-    public Navigation( String id, IModel<List<NavigationItem>> items )
+    public Navigation( String id, IModel<? extends List<? extends NavItem>> model )
     {
-        this( id, items, null );
+        super( id, model );
     }
 
     /**
-     * Construct a new navigation panel
+     * Constructs a new navigation bar.
      *
-     * @param id     the wicket component id
-     * @param items  the static list of navigation items
-     * @param filter the filter to filter out navigation items
+     * @param id   the wicket component id
+     * @param list the static list of navigation items
      */
-    public Navigation( String id, IModel<List<NavigationItem>> items, IModel<NavigationItem.Filter> filter )
+    public Navigation( String id, List<? extends NavItem> list )
     {
-        super( id, filter );
-        setOutputMarkupId( false );
-        setRenderBodyOnly( true );
-
-        this.items = items;
-        repeater = new RepeatingView( "nav" );
-        add( repeater );
+        super( id, list );
     }
 
-    @Override
-    @SuppressWarnings( "unchecked" )
-    protected void onBeforeRender()
+    private boolean actualPageClassSelected( Class<? extends Page> actualPage )
     {
-        Class<? extends Page> actualPage = this.getPage().getPageClass();
-
-        NavigationItem.Filter filter = ( NavigationItem.Filter ) getDefaultModelObject();
-        boolean showPrivatePage = false;
-
-        if ( filter != null )
+        List<? extends NavItem> items = getList();
+        for ( NavItem item : items )
         {
-            showPrivatePage = filter.showPrivatePage();
-        }
-
-        repeater.removeAll();
-
-        for ( NavigationItem item : items.getObject() )
-        {
-            // filter page links to be shown
-            if ( filter != null )
-            {
-                if ( showPrivatePage )
-                {
-                    if ( !item.isPrivatePage() )
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    if ( item.isPrivatePage() )
-                    {
-                        continue;
-                    }
-                }
-            }
-
-            WebMarkupContainer navItem = new WebMarkupContainer( repeater.newChildId() );
-            repeater.add( navItem );
-
-            AbstractLink link;
-            if ( item.getUrlModel() != null )
-            {
-                link = new ExternalLink( "link-nav-item", item.getUrlModel() );
-            }
-            else if ( item.getPageClass() != null )
-            {
-                link = new BookmarkablePageLink<Page>( "link-nav-item", item.getPageClass() );
-                if ( item.getPageClass().equals( actualPage ) )
-                {
-                    link.add( AttributeModifier.replace( "class", "selected" ) );
-                }
-                else
-                {
-                    // use case when actual page class is set by client (javascript)
-                    // set only if actual page class was not selected by wicket
-                    if ( !actualPageClassSelected( filter, showPrivatePage, actualPage ) )
-                    {
-                        if ( item.getPageClass().equals( CookiesUtil.getPageClassFromCookie() ) )
-                        {
-                            link.add( AttributeModifier.replace( "class", "selected" ) );
-                        }
-                    }
-                }
-            }
-            else
-            {
-                throw new IllegalArgumentException( "You must specify either link url or page class to be able render navigation item link: " + item );
-            }
-
-            navItem.add( link );
-
-            Label linkLabel = new Label( "link-nav-item-label", item.getLabelModel() );
-            linkLabel.setEscapeModelStrings( false );
-            link.add( linkLabel );
-
-            if ( item.getCssClass() != null )
-            {
-                link.add( AttributeModifier.append( "class", item.getCssClass() ) );
-            }
-        }
-
-        super.onBeforeRender();
-    }
-
-    private boolean actualPageClassSelected( NavigationItem.Filter filter, boolean showPrivatePage, Class<? extends Page> actualPage )
-    {
-        for ( NavigationItem item : items.getObject() )
-        {
-            // filter page links to be shown
-            if ( filter != null )
-            {
-                if ( showPrivatePage )
-                {
-                    if ( !item.isPrivatePage() )
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    if ( item.isPrivatePage() )
-                    {
-                        continue;
-                    }
-                }
-            }
-
             if ( item.getPageClass() != null && item.getPageClass().equals( actualPage ) )
             {
                 return true;
@@ -173,5 +82,58 @@ public class Navigation
         }
 
         return false;
+    }
+
+    @Override
+    protected void populateItem( ListItem<NavItem> populated )
+    {
+        IModel<NavItem> model = populated.getModel();
+        NavItem item = model.getObject();
+
+        AbstractLink link;
+        if ( item.getUrlModel() != null )
+        {
+            link = new ExternalLink( "link-nav-item", item.getUrlModel() );
+        }
+        else if ( item.getPageClass() != null )
+        {
+            Class<? extends Page> currentPage = this.getPage().getPageClass();
+            link = new BookmarkablePageLink<Page>( "link-nav-item", item.getPageClass() );
+
+            if ( item.getPageClass().equals( currentPage ) )
+            {
+                link.add( AttributeModifier.replace( "class", "selected" ) );
+            }
+            else
+            {
+                // use case when actual page class is set by client (javascript)
+                // set only if actual page class was not selected by wicket
+                if ( !actualPageClassSelected( currentPage ) )
+                {
+                    if ( item.getPageClass().equals( CookiesUtil.getPageClassFromCookie() ) )
+                    {
+                        link.add( AttributeModifier.replace( "class", "selected" ) );
+                    }
+                }
+            }
+        }
+        else
+        {
+            String message = "You must specify either link url or page class to be able render navigation item link: ";
+            throw new IllegalArgumentException( message + item );
+        }
+
+
+        Label linkLabel = new Label( "link-nav-item-label", item.getLabelModel() );
+        linkLabel.setEscapeModelStrings( false );
+        linkLabel.setRenderBodyOnly( true );
+        link.add( linkLabel );
+
+        if ( item.getCssClass() != null )
+        {
+            link.add( AttributeModifier.append( "class", item.getCssClass() ) );
+        }
+
+        populated.add( link );
     }
 }

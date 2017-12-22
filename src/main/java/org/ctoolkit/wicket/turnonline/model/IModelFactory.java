@@ -4,6 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.ctoolkit.wicket.turnonline.menu.MenuSchema;
@@ -71,6 +72,7 @@ public interface IModelFactory
      * @param pageModel the model as an optional source
      * @return the logo URL model or <tt>null</tt>
      */
+    @Deprecated
     IModel<String> getLogoUrlModel( @Nullable IModel<?> pageModel );
 
     /**
@@ -87,6 +89,7 @@ public interface IModelFactory
      *
      * @return the current number of items in the shopping cart model
      */
+    @Deprecated
     IModel<Long> getCartItemsCountModel();
 
     /**
@@ -103,6 +106,18 @@ public interface IModelFactory
      * @return the my account label model or <tt>null</tt>
      */
     IModel<String> getMyAccountLabelModel();
+
+    /**
+     * The authenticated user profile with following expected properties:
+     * <ul>
+     * <li>email</li>
+     * <li>name</li>
+     * <li>picture</li>
+     * </ul>
+     *
+     * @return the logged in user model, {@code null} if there is no authenticated user
+     */
+    IModel getLoggedInAccountModel();
 
     /**
      * Returns the model representation whether page header's shopping cart link will be rendered or not.
@@ -129,6 +144,15 @@ public interface IModelFactory
      * @return the resolved stylesheet resource reference array or empty array
      */
     ResourceReference[] getStylesheetReference( @Nullable IModel<?> pageModel, @Nonnull RuntimeConfigurationType type );
+
+    /**
+     * Returns the array of application wide behaviors or {@code null}.
+     *
+     * @param type      the wicket runtime configuration type
+     * @param pageModel the optional model as an optional source
+     * @return the array of behaviors or {@code null}
+     */
+    Behavior[] getBehaviors( @Nonnull RuntimeConfigurationType type, @Nullable IModel<?> pageModel );
 
     /**
      * Returns the Google Analytics Tracking ID or <tt>null</tt> to not render.

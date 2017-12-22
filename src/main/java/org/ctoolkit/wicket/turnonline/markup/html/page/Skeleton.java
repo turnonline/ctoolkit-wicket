@@ -1,14 +1,18 @@
 package org.ctoolkit.wicket.turnonline.markup.html.page;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.MetaDataHeaderItem;
 import org.apache.wicket.markup.head.StringHeaderItem;
 import org.apache.wicket.markup.html.GenericWebPage;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -21,6 +25,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.util.string.Strings;
+import org.ctoolkit.wicket.standard.behavior.IdAttributeModifier;
+import org.ctoolkit.wicket.standard.markup.html.form.ajax.IndicatingAjaxButton;
 import org.ctoolkit.wicket.turnonline.AppEngineApplication;
 import org.ctoolkit.wicket.turnonline.model.IModelFactory;
 import org.slf4j.Logger;
@@ -42,6 +48,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class Skeleton<T>
         extends GenericWebPage<T>
 {
+    public static final String FEEDBACK_MARKUP_ID = IndicatingAjaxButton.FEEDBACK_MARKUP_ID;
+
+    public static final String HTML_BOTTOM_FILTER_NAME = "html-bottom-container";
+
     public static final String PARAM_LANG = "lang";
 
     static final String DEFAULT_HEADER_DESCRIPTION_EXPRESSION = "headerDescription";
@@ -244,7 +254,7 @@ public abstract class Skeleton<T>
     /**
      * Provides the header description expression to get 'content' from the associated model
      * in order to be rendered in meta tag 'description'.
-     * <p/>
+     * <p>
      * Unless overridden method returns null and is not going to be rendered.
      *
      * @return the header description expression
@@ -257,7 +267,7 @@ public abstract class Skeleton<T>
     /**
      * Provides the header keywords expression to get 'content' from the associated model
      * in order to be rendered in meta tag 'keywords'.
-     * <p/>
+     * <p>
      * Unless overridden method returns null and is not going to be rendered.
      *
      * @return the header keywords expression
@@ -270,7 +280,7 @@ public abstract class Skeleton<T>
     /**
      * Returns the variation as a server name where app operates plus product name. Composed as Domain format expects,
      * excluding '/p' prefix
-     * <p/>
+     * <p>
      * This value is being used to alternate the HTML markup for wicket web page (components reuse this value as well
      * unless won't be overridden directly in component).
      *
@@ -291,6 +301,54 @@ public abstract class Skeleton<T>
     }
 
     /**
+     * Provides a customized {@link FeedbackPanel} instance,
+     * click on the message is getting focus of the component with error.
+     *
+     * @return the feedback panel
+     */
+    protected FeedbackPanel newFeedbackPanel()
+    {
+        return newFeedbackPanel( FEEDBACK_MARKUP_ID );
+    }
+
+    /**
+     * Provides a customized {@link FeedbackPanel} instance,
+     * click on the message is getting focus of the component with error.
+     *
+     * @param id the component id
+     * @return the feedback panel
+     */
+    protected FeedbackPanel newFeedbackPanel( String id )
+    {
+        return new FeedbackPanel( id )
+        {
+            private static final long serialVersionUID = 1221594216921232749L;
+
+            @Override
+            protected Component newMessageDisplayComponent( String id, FeedbackMessage message )
+            {
+                Component reporter = message.getReporter();
+                String markupId = reporter.getMarkupId();
+                for ( IdAttributeModifier am : reporter.getBehaviors( IdAttributeModifier.class ) )
+                {
+                    markupId = am.getMarkupId();
+                }
+
+                Component component = super.newMessageDisplayComponent( id, message );
+
+                if ( reporter instanceof FormComponent && message.getLevel() == FeedbackMessage.ERROR )
+                {
+                    String value = "document.getElementById('" + markupId + "').focus()";
+                    component.add( AttributeModifier.append( "onclick", value ) );
+                    component.add( AttributeModifier.append( "class", "feedbackPanelAnchor" ) );
+                }
+
+                return component;
+            }
+        };
+    }
+
+    /**
      * Returns the Google Analytics Tracking ID. Called during render phase.
      * By default it returns <tt>null</tt>.
      *
@@ -304,6 +362,7 @@ public abstract class Skeleton<T>
     /**
      * Get google analytics script. If you want different script just override this method.
      *
+     * @param trackingId the google analytics tracking ID
      * @return google analytics script
      */
     protected String getGoogleAnalyticsScript( String trackingId )

@@ -28,18 +28,13 @@ public class SwipeMenu
 {
     private static final long serialVersionUID = -3928863090779279417L;
 
-    private IModel<List<NavigationItem>> items;
+    private IModel<List<NavItem>> items;
 
     private RepeatingView repeater;
 
-    public SwipeMenu( String id, IModel<List<NavigationItem>> items )
+    public SwipeMenu( String id, IModel<List<NavItem>> items )
     {
-        this( id, items, null );
-    }
-
-    public SwipeMenu( String id, IModel<List<NavigationItem>> items, IModel<NavigationItem.Filter> filter )
-    {
-        super( id, filter );
+        super( id );
 
         setOutputMarkupId( true );
         setRenderBodyOnly( false );
@@ -87,37 +82,10 @@ public class SwipeMenu
     {
         Class<? extends Page> actualPage = this.getPage().getPageClass();
 
-        NavigationItem.Filter filter = ( NavigationItem.Filter ) getDefaultModelObject();
-        boolean showPrivatePage = false;
-
-        if ( filter != null )
-        {
-            showPrivatePage = filter.showPrivatePage();
-        }
-
         repeater.removeAll();
 
-        for ( NavigationItem item : items.getObject() )
+        for ( NavItem item : items.getObject() )
         {
-            // filter page links to be shown
-            if ( filter != null )
-            {
-                if ( showPrivatePage )
-                {
-                    if ( !item.isPrivatePage() )
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    if ( item.isPrivatePage() )
-                    {
-                        continue;
-                    }
-                }
-            }
-
             WebMarkupContainer navItem = new WebMarkupContainer( repeater.newChildId() );
             repeater.add( navItem );
 

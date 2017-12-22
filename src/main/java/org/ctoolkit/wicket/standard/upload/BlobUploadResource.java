@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * The AppEngine specific blob upload resource handler. In the response the uploaded blob serving URL
  * is being evaluated and sent back to the client together with blob key as JSON.
- * <p/>
+ * <p>
  * It processes only the single (the first found) blob key from the request.
  * Fires BlobUploadSuccessEvent via {@link EventBus} as standard wicket event mechanism is not available here.
  *

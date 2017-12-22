@@ -12,7 +12,7 @@ import org.ctoolkit.wicket.standard.model.I18NResourceModel;
  * The toggle menu button. Contributes a JavaScript snippet to the header.
  * <p>
  * Expected i18 resource bundle:
- * <ul>D
+ * <ul>
  * <li>label.menu</li>
  * </ul>
  *

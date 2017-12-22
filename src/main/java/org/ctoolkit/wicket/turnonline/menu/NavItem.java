@@ -9,11 +9,11 @@ import java.io.Serializable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The <code>NavigationItem</code> object with payloads for {@link Navigation} renderer.
+ * The target page navigation item configuration to be rendered by {@link Navigation}.
  *
- * @author <a href="mailto:jozef.pohorelec@ctoolkit.org>Jozef Pohorelec</a>"
+ * @author <a href="mailto:jozef.pohorelec@ctoolkit.org">Jozef Pohorelec</a>
  */
-public class NavigationItem
+public class NavItem
         implements Serializable
 {
     private static final long serialVersionUID = 4429514372684701048L;
@@ -26,19 +26,16 @@ public class NavigationItem
 
     private String cssClass;
 
-    private boolean privatePage;
-
     /**
      * Constructs a new navigation item. Represents a public page.
      *
      * @param url   the URL where to navigate
      * @param label the label for given URL
      */
-    public NavigationItem( IModel<String> url, IModel<?> label )
+    public NavItem( IModel<String> url, IModel<?> label )
     {
         this.urlModel = url;
         this.labelModel = label;
-        this.privatePage = false;
     }
 
     /**
@@ -48,7 +45,7 @@ public class NavigationItem
      * @param label    the label for given URL
      * @param cssClass css class
      */
-    public NavigationItem( IModel<String> url, IModel<?> label, String cssClass )
+    public NavItem( IModel<String> url, IModel<?> label, String cssClass )
     {
         this.urlModel = url;
         this.labelModel = label;
@@ -58,29 +55,13 @@ public class NavigationItem
     /**
      * Constructs a new navigation item.
      *
-     * @param url         the URL where to navigate
-     * @param label       the label for given URL
-     * @param privatePage true to setup navigation for private purpose
+     * @param pageClass the page class where to navigate
+     * @param label     the label for given URL
      */
-    public NavigationItem( IModel<String> url, IModel<?> label, boolean privatePage )
-    {
-        this.urlModel = url;
-        this.labelModel = label;
-        this.privatePage = privatePage;
-    }
-
-    /**
-     * Constructs a new navigation item.
-     *
-     * @param pageClass   the page class where to navigate
-     * @param label       the label for given URL
-     * @param privatePage true to setup navigation for private purpose
-     */
-    public NavigationItem( Class<? extends WebPage> pageClass, IModel<?> label, boolean privatePage )
+    public NavItem( Class<? extends WebPage> pageClass, IModel<?> label )
     {
         this.pageClass = pageClass;
         this.labelModel = label;
-        this.privatePage = privatePage;
     }
 
     /**
@@ -90,27 +71,11 @@ public class NavigationItem
      * @param label     the label for given URL
      * @param cssClass  css class
      */
-    public NavigationItem( Class<? extends WebPage> pageClass, IModel<?> label, String cssClass )
+    public NavItem( Class<? extends WebPage> pageClass, IModel<?> label, String cssClass )
     {
         this.pageClass = pageClass;
         this.labelModel = label;
         this.cssClass = cssClass;
-    }
-
-    /**
-     * Constructs a new navigation item.
-     *
-     * @param pageClass   the page class where to navigate
-     * @param label       the label for given URL
-     * @param cssClass    css class
-     * @param privatePage true to setup navigation for private purpose
-     */
-    public NavigationItem( Class<? extends WebPage> pageClass, IModel<?> label, String cssClass, boolean privatePage )
-    {
-        this.pageClass = pageClass;
-        this.labelModel = label;
-        this.cssClass = cssClass;
-        this.privatePage = privatePage;
     }
 
     /**
@@ -145,34 +110,14 @@ public class NavigationItem
         return cssClass;
     }
 
-    public boolean isPrivatePage()
-    {
-        return privatePage;
-    }
-
     @Override
     public String toString()
     {
-        return "NavigationItem{" +
+        return "NavItem{" +
                 "pageClass=" + pageClass +
                 ", urlModel=" + urlModel +
                 ", labelModel=" + labelModel +
                 ", cssClass='" + cssClass + '\'' +
-                ", privatePage=" + privatePage +
                 '}';
-    }
-
-    /**
-     * The filter to filter out provided static list of navigation items.
-     */
-    public abstract static class Filter
-            implements Serializable
-    {
-        /**
-         * Override to manage visibility of either public or private pages.
-         *
-         * @return true to show public pages only. False to show private pages only.
-         */
-        public abstract boolean showPrivatePage();
     }
 }

@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>
  * Once a single captcha instance has been successfully validated the value will be shared
  * among other captcha instances via session thus no further validation will be required till session invalidation.
- * A visibility of the reCAPTCHA widget must be handled by the client -> override {@link #isVisible()}.
+ * A visibility of the reCAPTCHA widget must be handled by the client, override {@link #isVisible()}.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
