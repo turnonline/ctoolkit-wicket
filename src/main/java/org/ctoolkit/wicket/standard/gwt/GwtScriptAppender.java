@@ -4,10 +4,10 @@ import com.google.common.base.Strings;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptUrlReferenceHeaderItem;
 import org.apache.wicket.markup.head.MetaDataHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.Response;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -79,23 +79,31 @@ public class GwtScriptAppender
         {
             response.render( MetaDataHeaderItem.forMetaTag( new Model<>( "gwt:property" ), localeModel ) );
         }
+    }
+
+    @Override
+    public void afterRender( final Component component )
+    {
+        super.afterRender( component );
+        Response r = component.getResponse();
 
         // Polymer javascript import comes as first if defined
-        StringBuilder builder;
         if ( !Strings.isNullOrEmpty( polymerImportPrefix ) )
         {
-            builder = new StringBuilder( polymerImportPrefix );
-            builder.append( "/bower_components/webcomponentsjs/webcomponents.js" );
-            response.render( JavaScriptUrlReferenceHeaderItem.forUrl( builder.toString() ) );
+            r.write( "<script src=\"" );
+            r.write( polymerImportPrefix );
+            r.write( "/bower_components/webcomponentsjs/webcomponents.js" );
+            r.write( "\">" );
+            r.write( "</script>" );
         }
 
-        // GWT source script snippets
-        builder = new StringBuilder();
+        // GWT source script snippet
         for ( String src : sources )
         {
-            builder.append( src );
-            response.render( JavaScriptUrlReferenceHeaderItem.forUrl( builder.toString() ) );
-            builder = new StringBuilder();
+            r.write( "<script type=\"text/javascript\" language=\"javascript\" src=\"" );
+            r.write( src );
+            r.write( "\">" );
+            r.write( "</script>" );
         }
     }
 
