@@ -99,7 +99,6 @@ public abstract class DecoratedPage<T>
 
         final Roles roles = factory.getRoles();
         final String accountRole = factory.getAccountRole();
-        IModel<String> myAccountLabelModel = factory.getMyAccountLabelModel();
         IModel loggedInAccountModel = factory.getLoggedInAccountModel();
 
         Application application = Application.get();

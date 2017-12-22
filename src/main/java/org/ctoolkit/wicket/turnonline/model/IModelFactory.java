@@ -100,14 +100,6 @@ public interface IModelFactory
     Roles getRoles();
 
     /**
-     * The model that renders a label of currently logged in user.
-     * Model or model's object is <tt>null</tt> if no user is being logged in.
-     *
-     * @return the my account label model or <tt>null</tt>
-     */
-    IModel<String> getMyAccountLabelModel();
-
-    /**
      * The authenticated user profile with following expected properties:
      * <ul>
      * <li>email</li>
@@ -118,14 +110,6 @@ public interface IModelFactory
      * @return the logged in user model, {@code null} if there is no authenticated user
      */
     IModel getLoggedInAccountModel();
-
-    /**
-     * Returns the model representation whether page header's shopping cart link will be rendered or not.
-     * Cannot return <tt>null</tt>.
-     *
-     * @return the shopping cart link visibility model
-     */
-    IModel<Boolean> getShoppingCartVisibilityModel();
 
     /**
      * Returns the model representation whether page header's search box will be rendered or not.
