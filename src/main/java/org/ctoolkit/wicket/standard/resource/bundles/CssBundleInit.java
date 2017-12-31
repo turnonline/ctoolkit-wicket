@@ -11,13 +11,46 @@ import org.apache.wicket.util.string.Strings;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
  * It mounts given CSS files as {@link CssResourceReference}.
+ * <p>
+ * <b>Example of the usage</b>
+ * <pre>
+ * {@code
+ *
+ * public class CssBundle
+ *      extends CssBundleInit
+ * {
+ *  private static final long serialVersionUID = 1L;
+ *
+ *  private static final CssBundle INSTANCE = new CssBundle();
+ *
+ *  public CssBundle()
+ *  {
+ *      super( getFiles() );
+ *  }
+ *
+ *  public static CssBundle get()
+ *  {
+ *      return INSTANCE;
+ *  }
+ *
+ *  private static List<String> getFiles()
+ *  {
+ *      List<String> files = new ArrayList<>();
+ *
+ *      files.add( "/css/bootstrap.min.css" );
+ *      files.add( "/css/core.min.css" );
+ *
+ *      return files;
+ *  }
+ * }
+ * }
+ * </pre>
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
@@ -38,7 +71,7 @@ public class CssBundleInit
      * @param cssFiles the list of CSS file names,
      *                 either relative to the resources folder (prefixed with '/') or scope's package
      */
-    public CssBundleInit( @Nonnull Set<String> cssFiles )
+    public CssBundleInit( @Nonnull List<String> cssFiles )
     {
         this( CssBundleInit.class, NAME, cssFiles );
     }
@@ -50,7 +83,7 @@ public class CssBundleInit
      * @param cssFiles the list of CSS file names,
      *                 either relative to the resources folder (prefixed with '/') or scope's package
      */
-    public CssBundleInit( @Nonnull Class<?> scope, @Nonnull Set<String> cssFiles )
+    public CssBundleInit( @Nonnull Class<?> scope, @Nonnull List<String> cssFiles )
     {
         this( scope, NAME, cssFiles );
     }
@@ -63,14 +96,14 @@ public class CssBundleInit
      * @param cssFiles the list of CSS file names,
      *                 either relative to the resources folder (prefixed with '/') or scope's package
      */
-    public CssBundleInit( @Nonnull Class<?> scope, @Nonnull String name, @Nonnull Set<String> cssFiles )
+    public CssBundleInit( @Nonnull Class<?> scope, @Nonnull String name, @Nonnull List<String> cssFiles )
     {
         super( scope, checkNotNull( name ), getHeaderItems( scope, cssFiles ) );
         this.scope = checkNotNull( scope );
         this.name = name;
     }
 
-    private static List<CssReferenceHeaderItem> getHeaderItems( @Nonnull Class<?> scope, @Nonnull Set<String> cssFiles )
+    private static List<CssReferenceHeaderItem> getHeaderItems( @Nonnull Class<?> scope, @Nonnull List<String> cssFiles )
     {
         List<CssReferenceHeaderItem> resources = new ArrayList<>();
 

@@ -11,7 +11,6 @@ import org.apache.wicket.util.string.Strings;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,7 +37,7 @@ public class JavaScriptBundleInit
      * @param jsFiles the list of JS file names,
      *                either relative to the resources folder (prefixed with '/') or scope's package
      */
-    public JavaScriptBundleInit( @Nonnull Set<String> jsFiles )
+    public JavaScriptBundleInit( @Nonnull List<String> jsFiles )
     {
         this( JavaScriptBundleInit.class, NAME, jsFiles );
     }
@@ -50,7 +49,7 @@ public class JavaScriptBundleInit
      * @param jsFiles the list of JS file names,
      *                either relative to the resources folder (prefixed with '/') or scope's package
      */
-    public JavaScriptBundleInit( @Nonnull Class<?> scope, @Nonnull Set<String> jsFiles )
+    public JavaScriptBundleInit( @Nonnull Class<?> scope, @Nonnull List<String> jsFiles )
     {
         this( scope, NAME, jsFiles );
     }
@@ -63,7 +62,7 @@ public class JavaScriptBundleInit
      * @param jsFiles the list of JS file names,
      *                either relative to the resources folder (prefixed with '/') or scope's package
      */
-    public JavaScriptBundleInit( @Nonnull Class<?> scope, @Nonnull String name, @Nonnull Set<String> jsFiles )
+    public JavaScriptBundleInit( @Nonnull Class<?> scope, @Nonnull String name, @Nonnull List<String> jsFiles )
     {
         super( JavaScriptBundleInit.class, checkNotNull( name ), getHeaderItems( scope, jsFiles ) );
         this.scope = checkNotNull( scope );
@@ -71,7 +70,7 @@ public class JavaScriptBundleInit
     }
 
     private static List<JavaScriptReferenceHeaderItem> getHeaderItems( @Nonnull Class<?> scope,
-                                                                       @Nonnull Set<String> jsFiles )
+                                                                       @Nonnull List<String> jsFiles )
     {
         List<JavaScriptReferenceHeaderItem> resources = new ArrayList<>();
 
