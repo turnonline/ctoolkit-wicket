@@ -1,12 +1,10 @@
 package org.ctoolkit.wicket.turnonline.model;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.ctoolkit.wicket.turnonline.menu.MenuSchema;
 import org.ctoolkit.wicket.turnonline.menu.SearchResponse;
 
@@ -110,24 +108,6 @@ public interface IModelFactory
      * @return the logged in user model, {@code null} if there is no authenticated user
      */
     IModel getLoggedInAccountModel();
-
-    /**
-     * Returns the model representation whether page header's search box will be rendered or not.
-     * If returns <tt>null</tt> the search box will be rendered.
-     *
-     * @return the search box visibility model
-     */
-    IModel<Boolean> getSearchBoxVisibilityModel();
-
-    /**
-     * Returns application default stylesheet resource reference array or empty array.
-     * It may take in to account current server name and {@link Component#getVariation()}.
-     *
-     * @param pageModel the model as an optional source
-     * @param type      the wicket runtime configuration type
-     * @return the resolved stylesheet resource reference array or empty array
-     */
-    ResourceReference[] getStylesheetReference( @Nullable IModel<?> pageModel, @Nonnull RuntimeConfigurationType type );
 
     /**
      * Returns the array of application wide behaviors or {@code null}.

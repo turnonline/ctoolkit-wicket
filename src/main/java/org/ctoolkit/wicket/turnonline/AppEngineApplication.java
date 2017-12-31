@@ -18,8 +18,6 @@ import org.ctoolkit.wicket.standard.markup.html.basic.HtmlBottomJavaScriptDecora
 import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.ctoolkit.wicket.turnonline.markup.html.page.DecoratedPage.HTML_BOTTOM_FILTER_NAME;
 
@@ -115,16 +113,6 @@ public abstract class AppEngineApplication
                 }
             }
         };
-    }
-
-    /**
-     * Returns the list of theme names that application support.
-     *
-     * @return the list of themes or empty set
-     */
-    public Set<String> getThemeNames()
-    {
-        return new HashSet<>();
     }
 
     /**

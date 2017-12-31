@@ -2,7 +2,6 @@ package org.ctoolkit.wicket.turnonline.markup.html.page;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -22,15 +21,12 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.util.string.Strings;
 import org.ctoolkit.wicket.standard.behavior.IdAttributeModifier;
 import org.ctoolkit.wicket.standard.markup.html.form.ajax.IndicatingAjaxButton;
 import org.ctoolkit.wicket.turnonline.AppEngineApplication;
 import org.ctoolkit.wicket.turnonline.model.IModelFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -60,8 +56,6 @@ public abstract class Skeleton<T>
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger log = LoggerFactory.getLogger( Skeleton.class );
-
     private boolean checkDefaultModelObjectIsNull = false;
 
     @Inject
@@ -80,19 +74,6 @@ public abstract class Skeleton<T>
     public Skeleton( PageParameters parameters )
     {
         super( parameters );
-    }
-
-    @Override
-    public void renderHead( IHeaderResponse response )
-    {
-        IModel<?> model = getDefaultModel();
-        RuntimeConfigurationType configurationType = AppEngineApplication.get().getConfigurationType();
-        ResourceReference[] stylesheetReference = modelFactory.getStylesheetReference( model, configurationType );
-
-        for ( ResourceReference next : stylesheetReference )
-        {
-            response.render( CssHeaderItem.forReference( next ) );
-        }
     }
 
     protected IModelFactory modelFactory()
