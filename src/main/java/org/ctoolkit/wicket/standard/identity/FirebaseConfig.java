@@ -1,4 +1,4 @@
-package org.ctoolkit.wicket.turnonline.identity;
+package org.ctoolkit.wicket.standard.identity;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  * @see <a href="https://github.com/firebase/firebaseui-web">FirebaseUI open-source JavaScript library for Web</a>
  */
-public class IdentityOptions
+public class FirebaseConfig
         implements Serializable
 {
     private static final long serialVersionUID = 649739600329865627L;
@@ -67,7 +67,7 @@ public class IdentityOptions
 
     private ListMultimap<Provider, CustomParameter> customParameters;
 
-    public IdentityOptions()
+    public FirebaseConfig()
     {
         scopes = MultimapBuilder.ListMultimapBuilder.enumKeys( Provider.class ).arrayListValues().build();
         customParameters = MultimapBuilder.ListMultimapBuilder.enumKeys( Provider.class ).arrayListValues().build();
@@ -100,7 +100,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions redirect()
+    public FirebaseConfig redirect()
     {
         this.signInFlow = SignInFlow.REDIRECT;
         return this;
@@ -111,7 +111,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions popup()
+    public FirebaseConfig popup()
     {
         this.signInFlow = SignInFlow.POPUP;
         return this;
@@ -158,7 +158,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions none()
+    public FirebaseConfig none()
     {
         this.credentialHelper = CredentialHelper.NONE;
         return this;
@@ -174,7 +174,7 @@ public class IdentityOptions
      *                 in form 'xxx.apps.googleusercontent.com'
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions oneTapSignUp( @Nonnull String clientId )
+    public FirebaseConfig oneTapSignUp( @Nonnull String clientId )
     {
         String errorMessage = "Client Id is being required if Google one tap sign-up has been configured.";
         this.clientId = checkNotNull( clientId, errorMessage );
@@ -187,7 +187,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions accountChooser()
+    public FirebaseConfig accountChooser()
     {
         this.credentialHelper = CredentialHelper.ACCOUNT_CHOOSER;
         return this;
@@ -232,7 +232,7 @@ public class IdentityOptions
      * @param provider the login provider to be added
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions add( @Nonnull Provider provider )
+    public FirebaseConfig add( @Nonnull Provider provider )
     {
         checkNotNull( provider );
         if ( providers.contains( provider ) )
@@ -267,7 +267,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions google()
+    public FirebaseConfig google()
     {
         return add( Provider.Google );
     }
@@ -280,7 +280,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions facebook()
+    public FirebaseConfig facebook()
     {
         return add( Provider.Facebook );
     }
@@ -293,7 +293,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions twitter()
+    public FirebaseConfig twitter()
     {
         return add( Provider.Twitter );
     }
@@ -306,7 +306,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions github()
+    public FirebaseConfig github()
     {
         return add( Provider.Github );
     }
@@ -316,7 +316,7 @@ public class IdentityOptions
      *
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions email()
+    public FirebaseConfig email()
     {
         return email( true );
     }
@@ -330,7 +330,7 @@ public class IdentityOptions
      * @param requireDisplayName true be configured to require the user to enter a display name
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions email( boolean requireDisplayName )
+    public FirebaseConfig email( boolean requireDisplayName )
     {
         this.requireDisplayName = requireDisplayName;
         return add( Provider.Email );
@@ -354,7 +354,7 @@ public class IdentityOptions
      * @param scope the scope to be added to the list of 'scopes'
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions scope( @Nonnull String scope )
+    public FirebaseConfig scope( @Nonnull String scope )
     {
         checkNotNull( scope );
 
@@ -386,7 +386,7 @@ public class IdentityOptions
      * @param value    the property value to be added to the list of 'customParameters'
      * @return this configuration instance to chain fluent calls
      */
-    public IdentityOptions parameter( @Nonnull String property, @Nonnull String value )
+    public FirebaseConfig parameter( @Nonnull String property, @Nonnull String value )
     {
         checkNotNull( property );
         checkNotNull( value );

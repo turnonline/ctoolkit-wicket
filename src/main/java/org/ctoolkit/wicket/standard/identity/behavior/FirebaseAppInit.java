@@ -11,7 +11,7 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.resource.UrlResourceReference;
 import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.util.template.PackageTextTemplate;
-import org.ctoolkit.wicket.turnonline.identity.IdentityOptions;
+import org.ctoolkit.wicket.standard.identity.FirebaseConfig;
 
 import javax.annotation.Nonnull;
 import java.text.MessageFormat;
@@ -23,10 +23,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Firebase UI Auth widget initialization. Resources are being configured to be served via static CDN URL reference.
  * Locale sensitive. Locale will be taken from the binded component.
- * The properties from {@link IdentityOptions} will be used to render Firebase initialization script.
+ * The properties from {@link FirebaseConfig} will be used to render Firebase initialization script.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
- * @see IdentityOptions
+ * @see FirebaseConfig
  */
 public class FirebaseAppInit
         extends Behavior
@@ -49,14 +49,14 @@ public class FirebaseAppInit
 
     private String firebaseInitScript;
 
-    private IdentityOptions options;
+    private FirebaseConfig options;
 
-    public FirebaseAppInit( @Nonnull IdentityOptions options )
+    public FirebaseAppInit( @Nonnull FirebaseConfig options )
     {
         this( options, false );
     }
 
-    public FirebaseAppInit( @Nonnull IdentityOptions options, boolean uiOn )
+    public FirebaseAppInit( @Nonnull FirebaseConfig options, boolean uiOn )
     {
         String errorMessage = "FirebaseUI for Web - Auth widget version is mandatory";
         this.uiWidgetVersion = checkNotNull( options.getUiWidgetVersion(), errorMessage );

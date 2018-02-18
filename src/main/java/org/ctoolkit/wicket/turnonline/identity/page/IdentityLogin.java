@@ -1,9 +1,9 @@
 package org.ctoolkit.wicket.turnonline.identity.page;
 
 import org.apache.wicket.model.IModel;
+import org.ctoolkit.wicket.standard.identity.FirebaseConfig;
 import org.ctoolkit.wicket.standard.identity.behavior.FirebaseAppInit;
 import org.ctoolkit.wicket.standard.model.I18NResourceModel;
-import org.ctoolkit.wicket.turnonline.identity.IdentityOptions;
 import org.ctoolkit.wicket.turnonline.markup.html.page.DecoratedPage;
 
 import javax.inject.Inject;
@@ -25,11 +25,11 @@ public class IdentityLogin<T>
     private static final long serialVersionUID = -6264709084901970501L;
 
     @Inject
-    private IdentityOptions identityOptions;
+    private FirebaseConfig firebaseConfig;
 
     public IdentityLogin()
     {
-        add( new FirebaseAppInit( identityOptions, true ) );
+        add( new FirebaseAppInit( firebaseConfig, true ) );
     }
 
     @Override

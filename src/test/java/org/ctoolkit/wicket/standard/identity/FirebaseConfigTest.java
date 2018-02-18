@@ -1,20 +1,20 @@
-package org.ctoolkit.wicket.turnonline.identity;
+package org.ctoolkit.wicket.standard.identity;
 
 import org.testng.annotations.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
 /**
- * Unit testing {@link IdentityOptions}.
+ * Unit testing {@link FirebaseConfig}.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
-public class IdentityOptionsTest
+public class FirebaseConfigTest
 {
     @Test
     public void getSignInOptionsAsString()
     {
-        IdentityOptions config = new IdentityOptions();
+        FirebaseConfig config = new FirebaseConfig();
 
         String clientId = "xxx.apps.googleusercontent.com";
         String scope = "https://www.googleapis.com/auth/plus.login";
@@ -27,11 +27,11 @@ public class IdentityOptionsTest
         String optionsAsString = config.getSignInOptionsAsString();
 
         // testing providers
-        assertThat( optionsAsString ).contains( IdentityOptions.Provider.Google.getValue() );
-        assertThat( optionsAsString ).contains( IdentityOptions.Provider.Facebook.getValue() );
-        assertThat( optionsAsString ).contains( IdentityOptions.Provider.Github.getValue() );
-        assertThat( optionsAsString ).doesNotContain( IdentityOptions.Provider.Twitter.getValue() );
-        assertThat( optionsAsString ).doesNotContain( IdentityOptions.Provider.Email.getValue() );
+        assertThat( optionsAsString ).contains( FirebaseConfig.Provider.Google.getValue() );
+        assertThat( optionsAsString ).contains( FirebaseConfig.Provider.Facebook.getValue() );
+        assertThat( optionsAsString ).contains( FirebaseConfig.Provider.Github.getValue() );
+        assertThat( optionsAsString ).doesNotContain( FirebaseConfig.Provider.Twitter.getValue() );
+        assertThat( optionsAsString ).doesNotContain( FirebaseConfig.Provider.Email.getValue() );
 
         // testing clientId
         assertThat( optionsAsString ).contains( clientId );
