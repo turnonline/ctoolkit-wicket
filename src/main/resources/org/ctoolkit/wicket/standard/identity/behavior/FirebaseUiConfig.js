@@ -12,6 +12,7 @@ var uiConfig = {
         }
     },
     credentialHelper: [${credentialHelper}],
+    signInFlow: '${signInFlow}',
     signInSuccessUrl: '${signInSuccessUrl}',
     signInOptions: [
         ${signInOptions}

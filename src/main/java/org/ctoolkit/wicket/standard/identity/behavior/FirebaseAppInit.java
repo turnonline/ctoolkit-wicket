@@ -22,17 +22,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Firebase UI Auth widget initialization. Resources are being configured to be served via static CDN URL reference.
- * Locale sensitive, locale taken from the binded component.
+ * Locale sensitive. Locale will be taken from the binded component.
  * The properties from {@link IdentityOptions} will be used to render Firebase initialization script.
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
+ * @see IdentityOptions
  */
 public class FirebaseAppInit
         extends Behavior
 {
     private static final long serialVersionUID = 1L;
 
-    private static final String JS_AUTH_CDN_URL = "https://www.gstatic.com/firebasejs/ui/{0}/firebase-ui-auth{1}.js";
+    private static final String FIREBASE_UI_BASE_URL = "https://www.gstatic.com/firebasejs/ui/";
+
+    private static final String JS_AUTH_CDN_URL = FIREBASE_UI_BASE_URL + "{0}/firebase-ui-auth{1}.js";
 
     private final String uiWidgetVersion;
 
@@ -55,16 +58,12 @@ public class FirebaseAppInit
 
     public FirebaseAppInit( @Nonnull IdentityOptions options, boolean uiOn )
     {
-        this( "2.4.0", "4.5.1", options, uiOn );
-    }
+        String errorMessage = "FirebaseUI for Web - Auth widget version is mandatory";
+        this.uiWidgetVersion = checkNotNull( options.getUiWidgetVersion(), errorMessage );
 
-    public FirebaseAppInit( @Nonnull String uiWidgetVersion,
-                            @Nonnull String firebaseVersion,
-                            @Nonnull IdentityOptions options,
-                            boolean uiOn )
-    {
-        this.uiWidgetVersion = checkNotNull( uiWidgetVersion );
-        this.firebaseVersion = checkNotNull( firebaseVersion );
+        errorMessage = "Firebase version is mandatory";
+        this.firebaseVersion = checkNotNull( options.getFirebaseVersion(), errorMessage );
+
         this.options = checkNotNull( options );
         this.uiOn = uiOn;
     }
@@ -103,7 +102,7 @@ public class FirebaseAppInit
         }
 
         // CSS reference preparation
-        url = Url.parse( "https://www.gstatic.com/firebasejs/ui/" + uiWidgetVersion + "/firebase-ui-auth.css" );
+        url = Url.parse( FIREBASE_UI_BASE_URL + uiWidgetVersion + "/firebase-ui-auth.css" );
         cssAuthCdnReference = new UrlResourceReference( url );
     }
 
