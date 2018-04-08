@@ -57,9 +57,9 @@ public class FirebaseConfig
 
     private List<Provider> providers = new ArrayList<>();
 
-    private String uiWidgetVersion = "2.6.1";
+    private String uiWidgetVersion = "2.7.0";
 
-    private String firebaseVersion = "4.10.0";
+    private String firebaseVersion = "4.12.1";
 
     private boolean requireDisplayName;
 
@@ -627,7 +627,7 @@ public class FirebaseConfig
      * Sets the version of the FirebaseUI for Web - Auth.
      * Check GitHub: <a href="mailto:https://github.com/firebase/firebaseui-web/releases">latest release</a>
      * <p>
-     * The default value '2.6.1' will be used if not set.
+     * The default value '2.7.0' will be used if not set.
      *
      * @param version the Firebase UI widget version to be set
      */
@@ -650,7 +650,7 @@ public class FirebaseConfig
      * Sets the version of the Firebase.
      * Check the initialization code snippet in the Firebase console to find current version.
      * <p>
-     * The default value '4.10.0' will be used if not set.
+     * The default value '4.12.1' will be used if not set.
      *
      * @param version the Firebase version to be set
      */
