@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>
  * Configuration composition supports fluent actions, for example:
  * <pre>
- *  IdentityOptions config = new IdentityOptions();
+ *  FirebaseConfig config = new FirebaseConfig();
  *
  *  config.oneTapSignUp("123").google().parameter( "prompt", "select_account" );
  *  config.scope( "https://www.googleapis.com/auth/plus.login" );
