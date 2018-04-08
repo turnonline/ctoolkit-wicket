@@ -1,5 +1,6 @@
 package org.ctoolkit.wicket.standard.identity;
 
+import mockit.Tested;
 import org.testng.annotations.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -11,20 +12,21 @@ import static com.google.common.truth.Truth.assertThat;
  */
 public class FirebaseConfigTest
 {
+    @Tested
+    private FirebaseConfig tested;
+
     @Test
     public void getSignInOptionsAsString()
     {
-        FirebaseConfig config = new FirebaseConfig();
-
         String clientId = "xxx.apps.googleusercontent.com";
         String scope = "https://www.googleapis.com/auth/plus.login";
 
-        config.oneTapSignUp( clientId ).google().parameter( "prompt", "select_account" );
-        config.scope( scope );
-        config.facebook().scope( "public_profile" ).scope( "user_friends" );
-        config.github();
+        tested.oneTapSignUp( clientId ).google().parameter( "prompt", "select_account" );
+        tested.scope( scope );
+        tested.facebook().scope( "public_profile" ).scope( "user_friends" );
+        tested.github();
 
-        String optionsAsString = config.getSignInOptionsAsString();
+        String optionsAsString = tested.getSignInOptionsAsString();
 
         // testing providers
         assertThat( optionsAsString ).contains( FirebaseConfig.Provider.Google.getValue() );
