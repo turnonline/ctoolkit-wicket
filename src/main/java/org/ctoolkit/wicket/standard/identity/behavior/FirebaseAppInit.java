@@ -33,7 +33,9 @@ public class FirebaseAppInit
 {
     private static final long serialVersionUID = 1L;
 
-    private static final String FIREBASE_UI_BASE_URL = "https://www.gstatic.com/firebasejs/ui/";
+    private static final String FIREBASE_BASE_URL = "https://www.gstatic.com/firebasejs/";
+
+    private static final String FIREBASE_UI_BASE_URL = FIREBASE_BASE_URL + "ui/";
 
     private static final String JS_AUTH_CDN_URL = FIREBASE_UI_BASE_URL + "{0}/firebase-ui-auth{1}.js";
 
@@ -45,7 +47,9 @@ public class FirebaseAppInit
 
     private UrlResourceReference cssAuthCdnReference;
 
-    private UrlResourceReference jsFirebaseCdnReference;
+    private UrlResourceReference jsFirebaseAuthCdnReference;
+
+    private UrlResourceReference jsFirebaseAppCdnReference;
 
     private String firebaseInitScript;
 
@@ -71,8 +75,11 @@ public class FirebaseAppInit
     @Override
     public void bind( Component component )
     {
-        Url url = Url.parse( "https://www.gstatic.com/firebasejs/" + firebaseVersion + "/firebase.js" );
-        jsFirebaseCdnReference = new UrlResourceReference( url );
+        Url url = Url.parse( FIREBASE_BASE_URL + firebaseVersion + "/firebase-app.js" );
+        jsFirebaseAppCdnReference = new UrlResourceReference( url );
+
+        url = Url.parse( FIREBASE_BASE_URL + firebaseVersion + "/firebase-auth.js" );
+        jsFirebaseAuthCdnReference = new UrlResourceReference( url );
 
         // JavaScript firebase init script preparation
         PackageTextTemplate template;
@@ -135,7 +142,10 @@ public class FirebaseAppInit
         response.render( CssHeaderItem.forReference( cssAuthCdnReference ) );
 
         // JavaScript contribution, order is important. Added at the bottom of HTML, before other script tags.
-        JavaScriptReferenceHeaderItem headerItem = JavaScriptHeaderItem.forReference( jsFirebaseCdnReference );
+        JavaScriptReferenceHeaderItem headerItem = JavaScriptHeaderItem.forReference( jsFirebaseAppCdnReference );
+        response.render( new PriorityHeaderItem( headerItem ) );
+
+        headerItem = JavaScriptHeaderItem.forReference( jsFirebaseAuthCdnReference );
         response.render( new PriorityHeaderItem( headerItem ) );
 
         headerItem = JavaScriptHeaderItem.forReference( jsAuthCdnReference );

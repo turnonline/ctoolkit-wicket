@@ -2,7 +2,8 @@
 var uiConfig = {
     callbacks: {
         // Called when the user has been successfully signed in.
-        signInSuccess: function ( currentUser, credential, redirectUrl ) {
+        signInSuccessWithAuthResult: function ( authResult, redirectUrl ) {
+            var currentUser = authResult.user;
             currentUser.getIdToken().then( function ( accessToken ) {
                 // ftoken cookie at server will be used to validate signed in user
                 setCookie( "ftoken", accessToken, 3600000 );
