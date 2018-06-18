@@ -19,7 +19,7 @@ import org.wicketstuff.gae.GaeApplication;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static org.ctoolkit.wicket.turnonline.markup.html.page.DecoratedPage.HTML_BOTTOM_FILTER_NAME;
+import static org.ctoolkit.wicket.turnonline.markup.html.page.Skeleton.HTML_BOTTOM_FILTER_NAME;
 
 /**
  * The base wicket application intended to run on Google AppEngine.

@@ -26,9 +26,7 @@ import org.apache.wicket.util.string.Strings;
 import org.ctoolkit.wicket.standard.behavior.IdAttributeModifier;
 import org.ctoolkit.wicket.standard.markup.html.form.ajax.IndicatingAjaxButton;
 import org.ctoolkit.wicket.turnonline.AppEngineApplication;
-import org.ctoolkit.wicket.turnonline.model.IModelFactory;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
@@ -58,9 +56,6 @@ public abstract class Skeleton<T>
 
     private boolean checkDefaultModelObjectIsNull = false;
 
-    @Inject
-    private IModelFactory modelFactory;
-
     public Skeleton()
     {
         super();
@@ -74,11 +69,6 @@ public abstract class Skeleton<T>
     public Skeleton( PageParameters parameters )
     {
         super( parameters );
-    }
-
-    protected IModelFactory modelFactory()
-    {
-        return modelFactory;
     }
 
     private String getLangParam()
