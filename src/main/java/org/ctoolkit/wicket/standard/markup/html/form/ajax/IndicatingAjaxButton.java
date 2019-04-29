@@ -13,6 +13,8 @@ import org.ctoolkit.wicket.standard.event.AjaxSubmitErrorEvent;
 import org.ctoolkit.wicket.standard.event.AjaxSubmitEvent;
 import org.ctoolkit.wicket.standard.markup.html.basic.ajax.AjaxStandardIndicatorAppender;
 
+import java.util.Optional;
+
 /**
  * The AJAX fallback submit button that renders progress info while AJAX request is in progress.
  * On form error entire form is being added to target + non null feedback panel
@@ -48,33 +50,31 @@ public class IndicatingAjaxButton
     }
 
     @Override
-    protected void onSubmit( AjaxRequestTarget target, Form<?> form )
+    protected void onSubmit( Optional<AjaxRequestTarget> target )
     {
-        send( getPage(), Broadcast.BREADTH, new AjaxSubmitEvent( target ) );
+        send( getPage(), Broadcast.BREADTH, new AjaxSubmitEvent( target.orElse( null ) ) );
 
         Component feedback = getPage().get( FEEDBACK_MARKUP_ID );
-        //noinspection ConstantConditions
-        if ( feedback != null && target != null )
+        if ( feedback != null && target.isPresent() )
         {
-            target.add( feedback );
+            target.get().add( feedback );
         }
     }
 
     @Override
-    protected void onError( AjaxRequestTarget target, Form<?> form )
+    protected void onError( Optional<AjaxRequestTarget> target )
     {
-        send( getPage(), Broadcast.BREADTH, new AjaxSubmitErrorEvent( target ) );
+        send( getPage(), Broadcast.BREADTH, new AjaxSubmitErrorEvent( target.orElse( null ) ) );
 
         Component feedback = getPage().get( FEEDBACK_MARKUP_ID );
-        //noinspection ConstantConditions
-        if ( target != null )
+        if ( target.isPresent() )
         {
             if ( feedback != null )
             {
-                target.add( feedback );
+                target.get().add( feedback );
             }
 
-            target.add( form );
+            target.get().add( getForm() );
         }
     }
 

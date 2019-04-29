@@ -55,7 +55,7 @@ public class LinkedInShareButton
     {
         super.onComponentTag( tag );
 
-        UrlEncoder encoder = UrlEncoder.FULL_PATH_INSTANCE;
+        UrlEncoder encoder = UrlEncoder.PATH_INSTANCE;
         String url = encoder.encode( getDefaultModelObjectAsString(), "UTF-8" );
 
         tag.setName( "script" );

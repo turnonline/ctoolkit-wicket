@@ -1,7 +1,7 @@
 package org.ctoolkit.wicket.standard.model;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 
 import java.util.Locale;
 
@@ -11,7 +11,7 @@ import java.util.Locale;
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class LanguageModel
-        extends AbstractReadOnlyModel<String>
+        implements IModel<String>
 {
     private static final long serialVersionUID = 1L;
 

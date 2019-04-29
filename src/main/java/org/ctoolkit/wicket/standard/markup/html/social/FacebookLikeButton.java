@@ -55,7 +55,7 @@ public class FacebookLikeButton
 
     private String src()
     {
-        UrlEncoder encoder = UrlEncoder.FULL_PATH_INSTANCE;
+        UrlEncoder encoder = UrlEncoder.PATH_INSTANCE;
         String lang = getLocale().getLanguage();
         String likeLink = MessageFormat.format( FACEBOOK_LIKE, lang + "_" + lang.toUpperCase() );
 

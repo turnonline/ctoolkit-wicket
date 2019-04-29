@@ -1,5 +1,8 @@
 package org.ctoolkit.wicket.standard.upload;
 
+import com.github.openjson.JSONArray;
+import com.github.openjson.JSONException;
+import com.github.openjson.JSONObject;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.FileInfo;
@@ -7,15 +10,12 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.common.eventbus.EventBus;
 import com.google.common.html.HtmlEscapers;
-import org.apache.wicket.ajax.json.JSONArray;
-import org.apache.wicket.ajax.json.JSONException;
-import org.apache.wicket.ajax.json.JSONObject;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.http.flow.AbortWithHttpErrorCodeException;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.util.string.Strings;
-import org.apache.wicket.util.upload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,6 +1,6 @@
 package org.ctoolkit.wicket.standard.model;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.ctoolkit.wicket.standard.util.WicketUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
 public class ExternalLinkModel
-        extends AbstractReadOnlyModel<String>
+        implements IModel<String>
 {
     private static final long serialVersionUID = 1L;
 

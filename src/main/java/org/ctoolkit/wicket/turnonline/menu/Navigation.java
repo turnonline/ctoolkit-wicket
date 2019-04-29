@@ -54,7 +54,7 @@ public class Navigation
      * @param id    the wicket component id
      * @param model the model of the static list of navigation items
      */
-    public Navigation( String id, IModel<? extends List<? extends NavItem>> model )
+    public Navigation( String id, IModel<? extends List<NavItem>> model )
     {
         super( id, model );
     }
@@ -65,7 +65,7 @@ public class Navigation
      * @param id   the wicket component id
      * @param list the static list of navigation items
      */
-    public Navigation( String id, List<? extends NavItem> list )
+    public Navigation( String id, List<NavItem> list )
     {
         super( id, list );
     }

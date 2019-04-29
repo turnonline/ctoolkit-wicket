@@ -3,7 +3,6 @@ package org.ctoolkit.wicket.standard.markup.html.panel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.ctoolkit.wicket.standard.markup.html.basic.ULabel;
@@ -76,7 +75,7 @@ public class MessagePanel
     }
 
     private class ClassModel
-            extends AbstractReadOnlyModel<String>
+            implements IModel<String>
     {
         private static final long serialVersionUID = 6935818251136100844L;
 

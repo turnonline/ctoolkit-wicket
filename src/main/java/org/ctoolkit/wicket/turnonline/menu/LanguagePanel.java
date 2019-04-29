@@ -45,7 +45,7 @@ public class LanguagePanel
         WebMarkupContainer language = new WebMarkupContainer( "language" );
         add( language );
 
-        IModel<List<? extends Locale>> itemsModel = Model.ofList( items );
+        IModel<List<Locale>> itemsModel = Model.ofList( items );
         ListView<Locale> listView = new ListView<Locale>( "flag-repeater", itemsModel )
         {
             private static final long serialVersionUID = 1L;

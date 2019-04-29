@@ -1,7 +1,7 @@
 package org.ctoolkit.wicket.standard.model;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.Session;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 /**
@@ -16,12 +16,16 @@ public class I18NResourceModel
 
     public I18NResourceModel( String resourceKey, Object... parameters )
     {
-        super( resourceKey, null, new Model(), notFoundProperty( Session.get().getLocale().getLanguage(), resourceKey ), parameters );
+        super( resourceKey, ( Component ) null );
+        setDefaultValue( notFoundProperty( Session.get().getLocale().getLanguage(), resourceKey ) );
+        setParameters( parameters );
     }
 
     public I18NResourceModel( Builder builder, Object... parameters )
     {
-        super( builder.resourceKey, null, new Model(), builder.defaultValue, parameters );
+        super( builder.resourceKey, ( Component ) null );
+        setDefaultValue( builder.defaultValue );
+        setParameters( parameters );
     }
 
     /**

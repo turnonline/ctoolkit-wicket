@@ -13,7 +13,7 @@ import org.apache.wicket.protocol.https.Scheme;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.settings.IRequestCycleSettings;
+import org.apache.wicket.settings.RequestCycleSettings;
 import org.ctoolkit.wicket.standard.markup.html.basic.HtmlBottomJavaScriptDecorator;
 import org.wicketstuff.gae.GaeApplication;
 
@@ -85,7 +85,7 @@ public abstract class AppEngineApplication
         getMarkupSettings().setStripWicketTags( true );
 
         // disable wickets redirect after post mechanism because it does not work well in GAE
-        getRequestCycleSettings().setRenderStrategy( IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER );
+        getRequestCycleSettings().setRenderStrategy( RequestCycleSettings.RenderStrategy.ONE_PASS_RENDER );
 
         getPageSettings().setVersionPagesByDefault( false );
 
