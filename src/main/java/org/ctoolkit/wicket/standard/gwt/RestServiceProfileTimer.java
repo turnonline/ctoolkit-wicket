@@ -35,6 +35,7 @@ import java.util.Date;
  *
  * @author <a href="mailto:aurel.medvegy@ctoolkit.org">Aurel Medvegy</a>
  */
+@Deprecated
 public abstract class RestServiceProfileTimer
         extends WebMarkupContainer
 {
