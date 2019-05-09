@@ -14,6 +14,7 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 import org.ctoolkit.wicket.standard.identity.FirebaseConfig;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +55,12 @@ public class FirebaseAppInit
     private String firebaseInitScript;
 
     private FirebaseConfig options;
+
+    private Class<?> scope;
+
+    private String fileName;
+
+    private Arguments callback;
 
     public FirebaseAppInit( @Nonnull FirebaseConfig options )
     {
@@ -151,8 +158,59 @@ public class FirebaseAppInit
         headerItem = JavaScriptHeaderItem.forReference( jsAuthCdnReference );
         response.render( new PriorityHeaderItem( headerItem ) );
 
-        // config script to be loaded by JS
-        JavaScriptHeaderItem scriptItem = JavaScriptHeaderItem.forScript( firebaseInitScript, "firebase_init" );
+        String firebaseInit;
+        if ( scope != null && fileName != null )
+        {
+            Map<String, Object> arguments = null;
+            if ( callback != null )
+            {
+                arguments = new HashMap<>();
+                callback.onRequest( arguments );
+            }
+
+            PackageTextTemplate template = new PackageTextTemplate( scope, fileName );
+            firebaseInit = firebaseInitScript + "\n" + template.asString( arguments );
+        }
+        else
+        {
+            firebaseInit = firebaseInitScript;
+        }
+
+        JavaScriptHeaderItem scriptItem = JavaScriptHeaderItem.forScript( firebaseInit, "firebase_init" );
         response.render( new PriorityHeaderItem( scriptItem ) );
+    }
+
+    /**
+     * Specify JavaScript file name to be rendered right after the FirebaseAppInit.js.
+     *
+     * @param scope    the <code>Class</code> package to be used for loading the specified file name
+     * @param fileName the name of the file, relative to the <code>scope</code> position
+     */
+    public FirebaseAppInit fileName( @Nonnull Class<?> scope, @Nonnull String fileName )
+    {
+        this.scope = checkNotNull( scope, "Scope cannot be null" );
+        this.fileName = checkNotNull( fileName, "fileName cannot be null" );
+        return this;
+    }
+
+    /**
+     * Callback that provides request specific arguments to be rendered
+     * by script specified by {@link #fileName(Class, String)}.
+     *
+     * @param args the arguments callback
+     */
+    public FirebaseAppInit fileNameArguments( Arguments args )
+    {
+        this.callback = args;
+        return this;
+    }
+
+    /**
+     * {@code Map<String, Object>} type callback.
+     */
+    public interface Arguments
+            extends Serializable
+    {
+        void onRequest( @Nonnull Map<String, Object> arguments );
     }
 }

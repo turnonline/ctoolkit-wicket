@@ -11,6 +11,7 @@ import org.apache.wicket.util.template.PackageTextTemplate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ import java.util.Map;
  * @author <a href="mailto:medvegy@turnonline.biz">Aurel Medvegy</a>
  * @see PackageTextTemplate
  */
-public abstract class BootConfiguration
+public class BootConfiguration
         extends Behavior
 {
     private static final long serialVersionUID = 7181505491763594021L;
@@ -49,6 +50,8 @@ public abstract class BootConfiguration
     private Map<String, Object> variables;
 
     private PackageTextTemplate template;
+
+    private Arguments callback;
 
     /**
      * Constructor. Initialized with default scope and file name.
@@ -95,10 +98,16 @@ public abstract class BootConfiguration
     @Override
     public void renderHead( Component component, IHeaderResponse response )
     {
-        Map<String, Object> args = getArgs();
+        Map<String, Object> arguments = null;
+        if ( callback != null )
+        {
+            arguments = new HashMap<>();
+            callback.onRequest( arguments );
+        }
+
         String specific;
 
-        if ( args != null && !args.isEmpty() )
+        if ( arguments != null && !arguments.isEmpty() )
         {
             Map<String, Object> all;
             if ( variables == null )
@@ -110,24 +119,36 @@ public abstract class BootConfiguration
                 all = new HashMap<>( variables );
             }
 
-            all.putAll( args );
+            all.putAll( arguments );
             specific = template.asString( all );
         }
         else
         {
             specific = template.asString( variables );
         }
+
         JavaScriptContentHeaderItem item = JavaScriptHeaderItem.forScript( specific, component.getMarkupId() );
         response.render( new PriorityHeaderItem( item ) );
     }
 
     /**
-     * Override in order to provide request specific variables.
+     * Callback that provides request specific arguments to be rendered
+     * by script specified in constructor.
      *
-     * @return the request specific variables or {@code null} if none
+     * @param args the arguments callback
      */
-    protected Map<String, Object> getArgs()
+    public BootConfiguration arguments( Arguments args )
     {
-        return null;
+        this.callback = args;
+        return this;
+    }
+
+    /**
+     * {@code Map<String, Object>} type callback.
+     */
+    public interface Arguments
+            extends Serializable
+    {
+        void onRequest( @Nonnull Map<String, Object> arguments );
     }
 }
