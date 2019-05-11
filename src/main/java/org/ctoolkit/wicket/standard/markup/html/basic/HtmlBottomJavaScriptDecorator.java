@@ -1,11 +1,22 @@
 package org.ctoolkit.wicket.standard.markup.html.basic;
 
+import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.IWrappedHeaderItem;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
-import org.apache.wicket.markup.head.filter.JavaScriptFilteredIntoFooterHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.markup.head.OnLoadHeaderItem;
+import org.apache.wicket.markup.head.ResourceAggregator;
+import org.apache.wicket.markup.head.filter.AbstractHeaderResponseFilter;
+import org.apache.wicket.markup.head.filter.FilteringHeaderResponse;
+import org.apache.wicket.markup.head.filter.OppositeHeaderResponseFilter;
 import org.apache.wicket.markup.html.IHeaderResponseDecorator;
+import org.apache.wicket.util.lang.Args;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Decorator to manage JS contribution.
@@ -18,21 +29,51 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class HtmlBottomJavaScriptDecorator
         implements IHeaderResponseDecorator
 {
-    private final String filterName;
+    private final List<FilteringHeaderResponse.IHeaderResponseFilter> filters;
 
     /**
      * Constructor.
      *
-     * @param footerName the name of the bucket that you will use for your footer container
+     * @param filterName the name of the footer container
      */
-    public HtmlBottomJavaScriptDecorator( String footerName )
+    public HtmlBottomJavaScriptDecorator( @Nonnull String filterName )
     {
-        this.filterName = checkNotNull( footerName );
+        Args.notEmpty( filterName, "filterName" );
+
+        filters = new ArrayList<>();
+
+        final AbstractHeaderResponseFilter jsAcceptingFilter = new AbstractHeaderResponseFilter( filterName )
+        {
+            public boolean accepts( HeaderItem item )
+            {
+                HeaderItem wrapped;
+                if ( item instanceof IWrappedHeaderItem )
+                {
+                    wrapped = ( ( IWrappedHeaderItem ) item ).getWrapped();
+                }
+                else
+                {
+                    wrapped = item;
+                }
+
+                return wrapped instanceof JavaScriptHeaderItem ||
+                        wrapped instanceof OnDomReadyHeaderItem ||
+                        wrapped instanceof OnLoadHeaderItem;
+            }
+        };
+
+        filters.add( jsAcceptingFilter );
+        filters.add( new OppositeHeaderResponseFilter( "headBucket", jsAcceptingFilter ) );
     }
 
-    @Override
-    public IHeaderResponse decorate( IHeaderResponse response )
+    /**
+     * decorates the original {@link IHeaderResponse}
+     *
+     * @param response original {@link IHeaderResponse}
+     * @return decorated {@link IHeaderResponse}
+     */
+    public IHeaderResponse decorate( final IHeaderResponse response )
     {
-        return new JavaScriptFilteredIntoFooterHeaderResponse( response, filterName );
+        return new ResourceAggregator( new FilteringHeaderResponse( response, "headBucket", filters ) );
     }
 }
