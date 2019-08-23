@@ -116,8 +116,11 @@ public class FirebaseAppInit
         }
 
         // CSS reference preparation
-        url = Url.parse( FIREBASE_UI_BASE_URL + uiWidgetVersion + "/firebase-ui-auth.css" );
-        cssAuthCdnReference = new UrlResourceReference( url );
+        if ( this.uiOn )
+        {
+            url = Url.parse( FIREBASE_UI_BASE_URL + uiWidgetVersion + "/firebase-ui-auth.css" );
+            cssAuthCdnReference = new UrlResourceReference( url );
+        }
     }
 
     @Override
@@ -146,7 +149,10 @@ public class FirebaseAppInit
         UrlResourceReference jsAuthCdnReference = new UrlResourceReference( url );
 
         // CSS header contribution
-        response.render( CssHeaderItem.forReference( cssAuthCdnReference ) );
+        if ( this.uiOn )
+        {
+            response.render( CssHeaderItem.forReference( cssAuthCdnReference ) );
+        }
 
         // JavaScript contribution, order is important. Added at the bottom of HTML, before other script tags.
         JavaScriptReferenceHeaderItem headerItem = JavaScriptHeaderItem.forReference( jsFirebaseAppCdnReference );
