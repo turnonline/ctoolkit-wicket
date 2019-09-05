@@ -1,7 +1,7 @@
 // Initialize Firebase
 var config = {
     apiKey: '${apiKey}',
-    authDomain: '${projectId}.firebaseapp.com',
+    authDomain: '${authDomain}',
     databaseURL: 'https://${databaseName}.firebaseio.com',
     projectId: '${projectId}',
     storageBucket: '${bucketName}.appspot.com',

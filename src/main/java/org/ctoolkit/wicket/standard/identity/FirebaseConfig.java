@@ -47,6 +47,8 @@ public class FirebaseConfig
 
     private String projectId;
 
+    private String authDomain;
+
     private String databaseName;
 
     private String bucketName;
@@ -57,9 +59,9 @@ public class FirebaseConfig
 
     private List<Provider> providers = new ArrayList<>();
 
-    private String uiWidgetVersion = "3.0.0";
+    private String uiWidgetVersion = "4.1.0";
 
-    private String firebaseVersion = "5.0.4";
+    private String firebaseVersion = "6.5.0";
 
     private boolean requireDisplayName;
 
@@ -67,6 +69,7 @@ public class FirebaseConfig
 
     private ListMultimap<Provider, CustomParameter> customParameters;
 
+    @SuppressWarnings( "UnstableApiUsage" )
     public FirebaseConfig()
     {
         scopes = MultimapBuilder.ListMultimapBuilder.enumKeys( Provider.class ).arrayListValues().build();
@@ -550,6 +553,27 @@ public class FirebaseConfig
     public void setProjectId( String projectId )
     {
         this.projectId = projectId;
+    }
+
+    /**
+     * The optional 'authDomain' Firebase property, that has a higher priority over
+     * composition of the ${projectId}.firebaseapp.com if provided.
+     *
+     * @return the optional authDomain
+     */
+    public String getAuthDomain()
+    {
+        return authDomain;
+    }
+
+    /**
+     * Sets the 'authDomain' Firebase property, usually as a Authorized Domain.
+     *
+     * @param authDomain Authorized Domain to be rendered as a 'authDomain' in Firebase init script
+     */
+    public void setAuthDomain( String authDomain )
+    {
+        this.authDomain = authDomain;
     }
 
     /**

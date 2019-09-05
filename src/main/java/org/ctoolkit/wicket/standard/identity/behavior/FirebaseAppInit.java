@@ -99,6 +99,15 @@ public class FirebaseAppInit
         variables.put( "bucketName", options.getBucketName() );
         variables.put( "senderId", options.getSenderId() );
 
+        if ( options.getAuthDomain() != null )
+        {
+            variables.put( "authDomain", options.getAuthDomain() );
+        }
+        else
+        {
+            variables.put( "authDomain", options.getProjectId() + ".firebaseapp.com" );
+        }
+
         firebaseInitScript = template.asString( variables );
 
         if ( uiOn )
