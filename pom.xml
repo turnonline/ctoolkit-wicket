@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.ctoolkit.wicket</groupId>
     <artifactId>ctoolkit-wicket</artifactId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.9</version>
     <packaging>jar</packaging>
     <name>CtoolkiT Apache Wicket Components</name>
     <description>CtoolkiT Apache Wicket Components designed for Google AppEngine</description>
@@ -19,7 +19,7 @@
         <connection>scm:git:[fetch=]git@github.com:turnonline/ctoolkit-wicket.git</connection>
         <developerConnection>scm:git:[push=]git@github.com:turnonline/ctoolkit-wicket.git</developerConnection>
         <url>https://github.com/turnonline/ctoolkit-wicket</url>
-        <tag>HEAD</tag>
+        <tag>ctoolkit-wicket-0.9</tag>
     </scm>
 
     <issueManagement>
